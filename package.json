@@ -35,6 +35,7 @@
         "firebase": "^10.13.1",
         "fullcalendar": "^6.1.15",
         "gsap": "^3.12.5",
+        "izitoast": "^1.4.0",
         "jquery": "^3.7.1",
         "jspdf": "^2.5.2",
         "jspdf-autotable": "^3.8.4",

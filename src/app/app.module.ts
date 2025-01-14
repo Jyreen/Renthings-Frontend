@@ -17,6 +17,7 @@ import { RentItemsComponent } from './rent-items/rent-items.component';
 import { ItemDetailsComponent } from './rent-items/item-details.component';
 import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
+import { FilterUsersPipe } from './messaging/filter-users.pipe';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MessageComponent } from './messaging/message.component';
         RentItemsComponent,
         ItemDetailsComponent, 
         ListItemComponent,
-        MessageComponent
+        MessageComponent,
+        FilterUsersPipe
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },

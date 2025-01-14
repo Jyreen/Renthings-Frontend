@@ -9,14 +9,8 @@
               <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" />
             </div>
           </div>
-          <div class="img-select">
-            <div *ngFor="let img of item.images; let i = index" class="img-item">
-              <a href="#" (click)="setMainImage(img)">
-                <img [src]="img" alt="{{ item.Item_name }}" />
-              </a>
-            </div>
-          </div>
         </div>
+
         <!-- card right -->
         <div class="product-content">
           <h2 class="product-title">{{ item.Item_name }}</h2>
@@ -28,23 +22,120 @@
             <p>{{ item.Item_Description }}</p>
           </div>
           <div class="purchase-info">
-            <input type="number" min="1" value="1" />
-            <button type="button" class="btn btn-dark" (click)="sendMessage(item)">
-              Rent Item
-            </button>
-            <button type="button" class="btn" (click)="buyNow(item)">
+            <button type="button" class="btn btn-dark" (click)="openMessageModal()">
               Send Message
             </button>
-          </div>
+          </div>          
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Message Modal -->
+<div *ngIf="isModalOpen" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Send Message</h2>
+    <textarea [(ngModel)]="message" placeholder="Type your message here..."></textarea>
+    <div class="modal-actions">
+      <button (click)="sendMessage()" class="btn btn-dark">Send</button>
+      <button (click)="closeMessageModal()" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Message Modal -->
+<div *ngIf="isModalOpen" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Send Message</h2>
+    <textarea [(ngModel)]="message" placeholder="Type your message here..." value="Is this available?"></textarea>
+    <div class="modal-actions">
+      <button (click)="sendMessage()" class="btn btn-dark">Send</button>
+      <button (click)="closeMessageModal()" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>
 
 
   <style>
+    /* Modal Overlay: Semi-transparent background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly dark background */
+  display: flex;
+  justify-content: center; /* Centers the modal horizontally */
+  align-items: center; /* Centers the modal vertically */
+  z-index: 9999; /* Make sure it's on top of other content */
+}
+
+/* Modal Content: The actual modal box */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow to make it pop */
+  z-index: 10000; /* Ensure modal is above everything else */
+  animation: slideIn 0.3s ease-out; /* Optional: smooth animation for modal popup */
+}
+
+/* Textarea styling */
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: none;
+  min-height: 100px;
+}
+
+/* Modal Actions: Align buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-dark {
+  background-color: #343a40; /* Dark button color */
+}
+
+.btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.btn-dark:hover {
+  background-color: #23272b;
+}
+
+/* Optional: Animation for modal appearance */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
     
     * {

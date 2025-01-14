@@ -33,7 +33,9 @@
               "src/assets/ultras-1.0.0/icomoon/icomoon.css",
               "src/assets/ultras-1.0.0/css/vendor.css",
               "src/assets/ultras-1.0.0/style.css",
-              "src/assets/css/css2.css"
+              "src/assets/css/css2.css",
+              "node_modules/izitoast/dist/css/iziToast.min.css"
+
             ],
             "scripts": [
               "src/assets/admin-boostrap/js/bootstrap.bundle.min.js",
@@ -44,7 +46,8 @@
               "src/assets/ultras-1.0.0/js/modernizr.js",
               "src/assets/ultras-1.0.0/js/jquery-1.11.0.min.js",
               "src/assets/ultras-1.0.0/js/plugins.js",
-              "src/assets/ultras-1.0.0/js/script.js"
+              "src/assets/ultras-1.0.0/js/script.js",
+              "node_modules/izitoast/dist/js/iziToast.min.js"
             ]
           },
           "configurations": {

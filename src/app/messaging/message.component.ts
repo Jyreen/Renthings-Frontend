@@ -1,73 +1,126 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../_services';
+import { ChatService } from '../_services/chat.service';
 import { Chat } from '../_models/chat';
+import iziToast from 'izitoast';
 
 @Component({
   selector: 'app-message',
-  templateUrl: './message.component.html',
+  templateUrl: './message.component.html'
 })
 export class MessageComponent implements OnInit {
-  userId: string = 'currentUserId'; // Replace with logic to fetch the logged-in user ID
-  selectedChatUserId: string | null = null; // Tracks the selected chat user ID
-  selectedChatUser: any = null; // Tracks the selected chat user's full details
-  chatUsers: any[] = []; // List of chat participants
-  messages: Chat[] = []; // Current conversation messages
-  newMessage: string = ''; // Message input by user
+  userId: number = 0;
+  selectedChatUserId: number | null = null;
+  selectedChatUser: any = null;
+  chatUsers: any[] = [];
+  messages: Chat[] = [];
+  newMessage: string = '';
+  searchQuery: string = '';
+  loadingUsers: boolean = false;
+  loadingMessages: boolean = false;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
-    this.loadChatUsers(); // Fetch chat participants on component initialization
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.userId = user?.id || 0; // Set the current user's ID from localStorage
+    if (!this.userId) {
+      iziToast.error({
+        title: 'Error',
+        message: 'No user is logged in.',
+        position: 'topRight',
+      });
+      return;
+    }
+    this.loadChatUsers();
   }
 
-  // Fetch users available for chats
   loadChatUsers(): void {
-    this.chatService.getChatUsers(this.userId).subscribe({
+    this.loadingUsers = true;
+    this.chatService.getChatUsers(this.userId.toString()).subscribe({
       next: (users) => {
-        this.chatUsers = users;
+        this.chatUsers = users.map((user: any) => ({
+          ...user,
+          unreadCount: user.unreadCount || 0,
+          lastMessage: user.lastMessage || 'No messages yet',
+        }));
+        this.loadingUsers = false;
       },
       error: (err) => {
-        console.error('Error loading chat users:', err);
-      },
-    });
-  }
-
-  // Fetch conversation with a selected user
-  loadConversation(otherUserId: string): void {
-    this.selectedChatUserId = otherUserId;
-
-    // Fetch the selected user's full data
-    this.selectedChatUser = this.chatUsers.find(user => user.id === otherUserId) || null;
-
-    this.chatService.getConversation(Number(otherUserId)).subscribe({
-      next: (conversation) => {
-        this.messages = conversation;
-
-        // Mark messages as read for the selected conversation
-        conversation.forEach((message) => {
-          if (!message.read && message.receiver_id === Number(this.userId)) {
-            this.chatService.markAsRead(message.id).subscribe({
-              error: (err) => console.error('Error marking message as read:', err),
-            });
-          }
+        this.loadingUsers = false;
+        iziToast.error({
+          title: 'Error',
+          message: 'Failed to load chat users.',
+          position: 'topRight',
         });
+        console.error(err);
+      },
+    });
+  }
+  
+
+  loadConversation(otherUserId: number): void {
+    if (this.selectedChatUserId === otherUserId) return;
+
+    this.selectedChatUserId = otherUserId;
+    this.selectedChatUser = this.chatUsers.find((user) => user.id === otherUserId) || null;
+    this.loadingMessages = true;
+
+    this.chatService.getConversation(otherUserId).subscribe({
+      next: (conversation) => {
+        this.messages = conversation.map((msg: Chat) => ({
+          ...msg,
+          isSentByCurrentUser: msg.sender_id === this.userId,
+        }));
+        this.loadingMessages = false;
+
+        const unreadMessages = conversation.filter(
+          (msg) => !msg.read && msg.receiver_id === this.userId
+        );
+        unreadMessages.forEach((msg) =>
+          this.chatService.markAsRead(msg.id).subscribe({
+            error: (err) => {
+              iziToast.error({
+                title: 'Error',
+                message: 'Failed to mark message as read.',
+                position: 'topRight',
+              });
+              console.error(err);
+            },
+          })
+        );
       },
       error: (err) => {
-        console.error('Error loading conversation:', err);
+        this.loadingMessages = false;
+        iziToast.error({
+          title: 'Error',
+          message: 'Failed to load conversation.',
+          position: 'topRight',
+        });
+        console.error(err);
       },
     });
   }
 
-  // Send a message to the currently selected user
   sendMessage(): void {
     if (this.newMessage.trim() && this.selectedChatUserId) {
-      this.chatService.sendMessage(Number(this.selectedChatUserId), this.newMessage).subscribe({
+      this.chatService.sendMessage(this.selectedChatUserId, this.newMessage).subscribe({
         next: (sentMessage) => {
-          this.messages.push(sentMessage); // Add the sent message to the conversation
-          this.newMessage = ''; // Clear the input field
+          this.messages.push(sentMessage);
+          this.newMessage = '';
+          iziToast.success({
+            title: 'Success',
+            message: 'Your message was sent successfully!',
+            position: 'bottomRight',
+            timeout: 3000,
+          });
         },
         error: (err) => {
-          console.error('Error sending message:', err);
+          iziToast.error({
+            title: 'Error',
+            message: 'Failed to send message.',
+            position: 'topRight',
+          });
+          console.error(err);
         },
       });
     }
