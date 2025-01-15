@@ -22,37 +22,51 @@
           (click)="loadConversation(user.id)"
           [class.active]="user.id === selectedChatUserId"
         >
-          <img [src]="user.avatar || 'https://via.placeholder.com/50'" [alt]="user.name" />
+        <img [src]="'http://localhost:4000/assets/'+ user.acc_image" [alt]="user.acc_firstname" />
           <div class="info">
-            <h3>{{ user.acc_firstName }} {{ user.acc_lastName }}</h3>
-            <p class="last-message">{{ user.lastMessage }}</p>
+            <h3>{{ user.acc_firstname }} {{ user.acc_lastname }}</h3>
+            <p
+              class="last-message"
+              [class.unread]="user.isUnread"
+            >
+              {{ user.lastMessage }}
+            </p>
           </div>
           <span *ngIf="user.unreadCount > 0" class="badge">{{ user.unreadCount }}</span>
         </div>
       </aside>
-      <!-- end of chat list-->
+          
+      <!-- End of chat list-->
 
       <!-- Chat Area -->
       <section class="chat-area">
         <div class="chat-header">
-          <h2>{{ selectedChatUser?.acc_firstName || 'Select a conversation' }}</h2>
+          <h2>{{ selectedChatUser?.acc_firstname || 'Select a conversation' }}</h2>
         </div>
-        <!-- Ang chat message -->
+      
+        <!-- Chat messages -->
         <div class="chat-messages">
           <ng-container *ngIf="messages.length; else noMessages">
-            <div *ngFor="let message of messages" class="message" [class.sent]="message.isSentByCurrentUser" [class.received]="!message.isSentByCurrentUser">
+            <div
+              *ngFor="let message of messages"
+              class="message"
+              [ngClass]="{
+                sent: message.isSentByCurrentUser,
+                received: !message.isSentByCurrentUser
+              }"
+            >
               <p class="message-text">{{ message.message }}</p>
               <span class="message-time">{{ message.created_at | date: 'short' }}</span>
             </div>
           </ng-container>
-
-          <!-- Mo pop up ni ug walay message-->
+      
+          <!-- Placeholder if no messages -->
           <ng-template #noMessages>
             <p class="placeholder">No messages yet.</p>
           </ng-template>
         </div>
-
-        <!-- Diri para mo chat sa mga message-->
+      
+        <!-- Chat input area -->
         <div class="chat-input" *ngIf="selectedChatUserId">
           <textarea
             [(ngModel)]="newMessage"
@@ -62,11 +76,13 @@
           <button (click)="sendMessage()">Send</button>
         </div>
       </section>
+      
       <!-- End of chat area -->
 
     </div>
   </main>
 </div>
+
 
 
 <style>
@@ -229,57 +245,77 @@ header input {
 }
 
 .chat-messages {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  height: 60vh;
   overflow-y: auto;
-  padding: 1rem;
-  background: var(--chat-bg);
-  border-radius: var(--border-radius);
+  background-color: #f9f9f9;
 }
 
 .message {
-  margin-bottom: 1rem;
-  max-width: 70%;
-  padding: 0.7rem;
-  border-radius: var(--border-radius);
+  max-width: 60%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  position: relative;
 }
 
 .message.sent {
-  background: var(--message-sent);
   align-self: flex-end;
+  background-color: #d1f0d1;
+  border-top-right-radius: 0;
 }
 
 .message.received {
-  background: var(--message-received);
   align-self: flex-start;
+  background-color: #f0f0f0;
+  border-top-left-radius: 0;
+}
+
+.message-text {
+  margin: 0;
+}
+
+.message-time {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+  text-align: right;
 }
 
 .chat-input {
   display: flex;
-  gap: 1rem;
   align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
 }
+
 
 .chat-input textarea {
   flex: 1;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   resize: none;
-  border: 1px solid #ddd;
-  border-radius: var(--border-radius);
-  padding: 0.5rem;
-  font-size: 1rem;
 }
 
 .chat-input button {
-  background: var(--secondary-color);
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: var(--border-radius);
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
 }
 
 .chat-input button:hover {
-  background: #27ae60;
-}
+  background-color: #0056b3;
+} 
+
 </style>

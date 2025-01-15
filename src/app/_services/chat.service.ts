@@ -1,16 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Chat } from '../_models/chat';
 import { environment } from '../../environments/environment';
+import { Chat } from '../_models/chat';
+import { io, Socket } from 'socket.io-client';
 
 const baseUrl = `${environment.apiUrl}/chat`;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatService {
-  constructor(private http: HttpClient) {}
+  private socket: Socket;
+
+  constructor(private http: HttpClient) {
+    // Initialize the Socket.IO connection
+    this.socket = io(environment.apiUrl);
+
+    // Listen for connection status
+    this.socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    this.socket.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    });
+  }
 
   /**
    * Send a message to a user.
@@ -58,20 +73,33 @@ export class ChatService {
   }
 
   /**
-   * Delete a specific message.
-   * @param message_id - ID of the message to be deleted.
-   * @returns An Observable indicating the deletion status.
+   * Real-time listener for new messages.
+   * @param callback - A function to handle new message events.
    */
-  deleteMessage(message_id: number): Observable<void> {
-    return this.http.delete<void>(`${baseUrl}/delete/${message_id}`);
+  onNewMessage(callback: (message: Chat) => void): void {
+    this.socket.on('new_message', callback);
   }
 
   /**
-   * Search messages in the chat.
-   * @param query - The search term to filter messages.
-   * @returns An Observable of the filtered Chat objects.
+   * Join a specific chat room.
+   * @param roomId - The ID of the chat room to join.
    */
-  searchMessages(query: string): Observable<Chat[]> {
-    return this.http.get<Chat[]>(`${baseUrl}/search`, { params: { query } });
+  joinRoom(roomId: string): void {
+    this.socket.emit('join', roomId);
+  }
+
+  /**
+   * Leave a specific chat room.
+   * @param roomId - The ID of the chat room to leave.
+   */
+  leaveRoom(roomId: string): void {
+    this.socket.emit('leave', roomId);
+  }
+
+  /**
+   * Disconnect the WebSocket connection.
+   */
+  disconnect(): void {
+    this.socket.disconnect();
   }
 }
