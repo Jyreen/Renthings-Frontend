@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Chat } from '../_models/chat';
 import { io, Socket } from 'socket.io-client';
@@ -12,19 +12,48 @@ const baseUrl = `${environment.apiUrl}/chat`;
 })
 export class ChatService {
   private socket: Socket;
+  private messageSubject = new Subject<Chat>();
+  private activeRooms: Set<string> = new Set();
 
   constructor(private http: HttpClient) {
     // Initialize the Socket.IO connection
-    this.socket = io(environment.apiUrl);
+    this.socket = io(environment.apiUrl, {
+      transports: ['websocket'],
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000
+    });
 
     // Listen for connection status
     this.socket.on('connect', () => {
-      console.log('Connected to WebSocket server');
+      console.log('Connected to WebSocket server:', this.socket.id);
+      // Rejoin active rooms after reconnection
+      this.activeRooms.forEach(roomId => {
+        this.joinRoom(roomId);
+      });
     });
 
     this.socket.on('disconnect', () => {
       console.log('Disconnected from WebSocket server');
     });
+
+    this.socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+
+    // Listen for new messages but only from others
+    this.socket.on('new_message', (message: Chat) => {
+      console.log('New message received via socket:', message);
+      
+      // Only process messages that we didn't send
+      if (this.socket.id !== message.socketId) {
+          this.messageSubject.next(message);
+      }
+      
+  });
+  
+    
   }
 
   /**
@@ -34,7 +63,11 @@ export class ChatService {
    * @returns An Observable of the sent Chat object.
    */
   sendMessage(receiver_id: number, message: string): Observable<Chat> {
-    return this.http.post<Chat>(`${baseUrl}/send`, { receiver_id, message });
+    return this.http.post<Chat>(`${baseUrl}/send`, { 
+      receiver_id, 
+      message,
+      socketId: this.socket.id // Include socket ID to prevent echo
+    });
   }
 
   /**
@@ -77,29 +110,58 @@ export class ChatService {
    * @param callback - A function to handle new message events.
    */
   onNewMessage(callback: (message: Chat) => void): void {
-    this.socket.on('new_message', callback);
+    this.messageSubject.subscribe(callback);
   }
 
   /**
    * Join a specific chat room.
-   * @param roomId - The ID of the chat room to join.
+   * @param userId - The ID of the chat room to join.
    */
-  joinRoom(roomId: string): void {
-    this.socket.emit('join', roomId);
+  joinRoom(userId: string): void {
+    console.log('Joining room:', userId);
+    this.socket.emit('joinRoom', userId);
+    this.activeRooms.add(userId);
   }
 
   /**
    * Leave a specific chat room.
-   * @param roomId - The ID of the chat room to leave.
+   * @param userId - The ID of the chat room to leave.
    */
-  leaveRoom(roomId: string): void {
-    this.socket.emit('leave', roomId);
+  leaveRoom(userId: string): void {
+    console.log('Leaving room:', userId);
+    this.socket.emit('leaveRoom', userId);
+    this.activeRooms.delete(userId);
   }
 
   /**
-   * Disconnect the WebSocket connection.
+   * Check if socket is connected
+   * @returns boolean indicating connection status
+   */
+  isConnected(): boolean {
+    return this.socket?.connected || false;
+  }
+
+  /**
+   * Get current socket ID
+   * @returns string socket ID or null if not connected
+   */
+  getSocketId(): string | null {
+    return this.socket?.id || null;
+  }
+
+  /**
+   * Clean up socket connection and subscriptions.
    */
   disconnect(): void {
-    this.socket.disconnect();
+    if (this.socket) {
+      // Leave all rooms before disconnecting
+      this.activeRooms.forEach(roomId => {
+        this.leaveRoom(roomId);
+      });
+      this.activeRooms.clear();
+      
+      this.socket.disconnect();
+      this.messageSubject.complete();
+    }
   }
 }

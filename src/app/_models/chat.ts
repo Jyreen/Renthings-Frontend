@@ -3,6 +3,7 @@ export class Chat {
     sender_id: number;
     receiver_id: number;
     message: string;
+    socketId?: string;  // Added for socket identification
     read: boolean;
     created_at?: Date;
     updated_at?: Date;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatService, AccountService } from '../_services';
 import { Chat } from '../_models/chat';
 import iziToast from 'izitoast';
@@ -7,7 +7,7 @@ import iziToast from 'izitoast';
   selector: 'app-message',
   templateUrl: './message.component.html'
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, OnDestroy {
   userId: number = 0;
   selectedChatUserId: number | null = null;
   selectedChatUser: any = null;
@@ -22,7 +22,7 @@ export class MessageComponent implements OnInit {
 
   ngOnInit(): void {
     const account = this.accountService.accountValue;
-  
+
     if (!account) {
       iziToast.error({
         title: 'Error',
@@ -31,9 +31,9 @@ export class MessageComponent implements OnInit {
       });
       return;
     }
-  
+
     this.userId = account.id ? Number(account.id) : 0;
-  
+
     if (!this.userId || isNaN(this.userId)) {
       iziToast.error({
         title: 'Error',
@@ -42,19 +42,35 @@ export class MessageComponent implements OnInit {
       });
       return;
     }
-  
+
+    this.chatService.joinRoom(this.userId.toString());
+
     // Load chat users initially
     this.loadChatUsers();
-  
-    // Listen for new messages via WebSocket
-    this.chatService.onNewMessage((message) => {
+
+    // Listen for new messages
+    this.chatService.onNewMessage((message: Chat) => {
+      console.log('Message received in component:', message);
       this.handleIncomingMessage(message);
-      console.log('New message received:', message);
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.selectedChatUserId) {
+      this.chatService.leaveRoom(this.selectedChatUserId.toString());
+    }
+    this.chatService.leaveRoom(this.userId.toString());
+    this.chatService.disconnect();
+  }
+
   handleIncomingMessage(message: Chat): void {
-    // Check if the message is part of the currently selected conversation
+    // Avoid duplicates based on socketId and message ID
+    if (message.socketId === this.chatService.getSocketId()) {
+      console.log('Ignoring duplicate message from sender');
+      return;
+    }
+  
+    // Push message if it matches the current chat or is a new one
     if (message.sender_id === this.selectedChatUserId || message.receiver_id === this.selectedChatUserId) {
       this.messages.push({
         ...message,
@@ -62,7 +78,7 @@ export class MessageComponent implements OnInit {
       });
     }
   
-    // Update the chat user list
+    // Update chat users list
     const userIndex = this.chatUsers.findIndex(
       (user) => user.id === message.sender_id || user.id === message.receiver_id
     );
@@ -70,15 +86,10 @@ export class MessageComponent implements OnInit {
     if (userIndex !== -1) {
       this.chatUsers[userIndex].lastMessage = message.message;
   
-      // Increment unread count if the message is not from the current user and not in the current chat
-      if (
-        message.sender_id !== this.userId &&
-        message.sender_id !== this.selectedChatUserId
-      ) {
+      if (message.sender_id !== this.userId && message.sender_id !== this.selectedChatUserId) {
         this.chatUsers[userIndex].unreadCount += 1;
       }
     } else {
-      // Add new user to the list if not already present
       this.chatUsers.push({
         id: message.sender_id,
         unreadCount: message.sender_id !== this.userId ? 1 : 0,
@@ -86,7 +97,7 @@ export class MessageComponent implements OnInit {
       });
     }
   
-    // Show notification if the user is not in the current chat
+    // Notify for messages not in the selected chat
     if (message.sender_id !== this.selectedChatUserId) {
       iziToast.info({
         title: 'New Message',
@@ -95,6 +106,7 @@ export class MessageComponent implements OnInit {
       });
     }
   }
+  
 
   scrollToBottom(): void {
     setTimeout(() => {
@@ -104,9 +116,7 @@ export class MessageComponent implements OnInit {
       }
     }, 100);
   }
-  
 
-  // Load the list of chat users
   loadChatUsers(): void {
     this.loadingUsers = true;
     this.chatService.getChatUsers(this.userId.toString()).subscribe({
@@ -129,22 +139,19 @@ export class MessageComponent implements OnInit {
     });
   }
 
-  // Load the conversation for a specific user
   loadConversation(otherUserId: number): void {
     if (this.selectedChatUserId === otherUserId) return;
-  
-    // Leave the previous chat room
+
     if (this.selectedChatUserId) {
       this.chatService.leaveRoom(this.selectedChatUserId.toString());
     }
-  
-    // Join the new chat room
+
     this.chatService.joinRoom(otherUserId.toString());
-  
+
     this.selectedChatUserId = otherUserId;
     this.selectedChatUser = this.chatUsers.find((user) => user.id === otherUserId) || null;
     this.loadingMessages = true;
-  
+
     this.chatService.getConversation(otherUserId).subscribe({
       next: (conversation) => {
         this.messages = conversation.map((msg: Chat) => ({
@@ -152,8 +159,7 @@ export class MessageComponent implements OnInit {
           isSentByCurrentUser: msg.sender_id === this.userId,
         }));
         this.loadingMessages = false;
-  
-        // Mark unread messages as read
+
         const unreadMessages = conversation.filter(
           (msg) => !msg.read && msg.receiver_id === this.userId
         );
@@ -168,8 +174,7 @@ export class MessageComponent implements OnInit {
             },
           })
         );
-  
-        // Update unread count and last message
+
         const userIndex = this.chatUsers.findIndex((user) => user.id === otherUserId);
         if (userIndex !== -1) {
           this.chatUsers[userIndex].unreadCount = 0;
@@ -187,9 +192,7 @@ export class MessageComponent implements OnInit {
       },
     });
   }
-  
 
-  // Send a new message
   sendMessage(): void {
     if (this.newMessage.trim() && this.selectedChatUserId) {
       this.chatService.sendMessage(this.selectedChatUserId, this.newMessage).subscribe({
@@ -198,8 +201,6 @@ export class MessageComponent implements OnInit {
           this.newMessage = '';
           this.scrollToBottom();
 
-
-          // Update chat user list with the new message
           const userIndex = this.chatUsers.findIndex(
             (user) => user.id === this.selectedChatUserId
           );
