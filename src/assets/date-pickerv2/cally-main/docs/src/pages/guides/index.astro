@@ -1,0 +1,35 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Link from "../../components/Link.astro";
+---
+
+<Layout
+  meta={{
+    title: "Guides",
+    description:
+      "A series of guides and walkthroughs on how to get the most out of Cally's calendar components.",
+  }}
+>
+  <h1 slot="intro">Guides</h1>
+
+  <p>
+    The following guides will help you learn how to best use Cally's components.
+    For information on each component see the
+    <Link href="/components/">Component API</Link> docs.
+
+    <ul>
+      <li>
+        <Link href="/guides/frameworks/">Frameworks</Link> - integrating with your
+        framework of choice
+      </li>
+      <li>
+        <Link href="/guides/theming/">Theming</Link> - customizing the look and feel
+        to match your app
+      </li>
+      <li>
+        <Link href="/guides/usage/">Usage</Link> - integrating with your existing
+        components to build more complex UIs
+      </li>
+    </ul>
+  </p>
+</Layout>

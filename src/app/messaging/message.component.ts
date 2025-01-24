@@ -64,21 +64,18 @@ export class MessageComponent implements OnInit, OnDestroy {
   }
 
   handleIncomingMessage(message: Chat): void {
-    // Avoid duplicates based on socketId and message ID
-    if (message.socketId === this.chatService.getSocketId()) {
-      console.log('Ignoring duplicate message from sender');
+    // Ignore messages sent by the current user
+    if (message.sender_id === this.userId) {
       return;
     }
   
-    // Push message if it matches the current chat or is a new one
     if (message.sender_id === this.selectedChatUserId || message.receiver_id === this.selectedChatUserId) {
       this.messages.push({
         ...message,
-        isSentByCurrentUser: message.sender_id === this.userId,
+        isSentByCurrentUser: false,
       });
     }
   
-    // Update chat users list
     const userIndex = this.chatUsers.findIndex(
       (user) => user.id === message.sender_id || user.id === message.receiver_id
     );
@@ -97,7 +94,6 @@ export class MessageComponent implements OnInit, OnDestroy {
       });
     }
   
-    // Notify for messages not in the selected chat
     if (message.sender_id !== this.selectedChatUserId) {
       iziToast.info({
         title: 'New Message',
@@ -106,6 +102,7 @@ export class MessageComponent implements OnInit, OnDestroy {
       });
     }
   }
+  
   
 
   scrollToBottom(): void {
@@ -195,19 +192,34 @@ export class MessageComponent implements OnInit, OnDestroy {
 
   sendMessage(): void {
     if (this.newMessage.trim() && this.selectedChatUserId) {
-      this.chatService.sendMessage(this.selectedChatUserId, this.newMessage).subscribe({
+      const messageContent = this.newMessage.trim();
+      const tempMessage: Chat = {
+        id: Math.random(), // Temporary ID to uniquely identify the message in the UI
+        sender_id: this.userId,
+        receiver_id: this.selectedChatUserId,
+        message: messageContent,
+        read: false,
+        created_at: new Date(), // Use current date for created_at
+        isSentByCurrentUser: true,
+      };
+  
+      // Add the message immediately for a responsive UI
+      this.messages.push(tempMessage);
+      this.scrollToBottom();
+      this.newMessage = '';
+  
+      // Update the last message for the selected user
+      const userIndex = this.chatUsers.findIndex(user => user.id === this.selectedChatUserId);
+      if (userIndex !== -1) {
+        this.chatUsers[userIndex].lastMessage = tempMessage.message;
+      }
+  
+      // Send the message to the backend
+      this.chatService.sendMessage(this.selectedChatUserId, messageContent).subscribe({
         next: (sentMessage) => {
-          this.messages.push(sentMessage);
-          this.newMessage = '';
-          this.scrollToBottom();
-
-          const userIndex = this.chatUsers.findIndex(
-            (user) => user.id === this.selectedChatUserId
-          );
-          if (userIndex !== -1) {
-            this.chatUsers[userIndex].lastMessage = sentMessage.message;
-          }
-
+          // Optionally replace tempMessage with the server's message
+          tempMessage.id = sentMessage.id; // Replace temporary ID with the actual one
+          tempMessage.created_at = sentMessage.created_at; // Update timestamp from the server
           iziToast.success({
             title: 'Success',
             message: 'Message sent successfully!',
@@ -221,8 +233,10 @@ export class MessageComponent implements OnInit, OnDestroy {
             message: 'Failed to send message.',
             position: 'topRight',
           });
+          // Optionally remove the tempMessage from the UI
+          this.messages = this.messages.filter(msg => msg !== tempMessage);
         },
       });
     }
-  }
+  }  
 }

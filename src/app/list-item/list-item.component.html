@@ -10,6 +10,132 @@
       Create New Item
     </button>
   
+    <!-- Subscription modal -->
+
+      
+  <!-- Subscription Modal -->
+  <div
+  class="background overlay"
+  *ngIf="showSubscriptionModal"
+  style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1500px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000000;
+  "
+  >
+  <div class="container">
+    <div class="panel pricing-table">
+      <button
+        (click)="closeSubscriptionModal()"
+        style="position: absolute; top: 10px; right: 10px;"
+      >
+        &times;
+      </button>
+  
+      <!-- 3 Months Plan -->
+      <div class="pricing-plan">
+        <!--
+        <img
+          src="https://via.placeholder.com/150?text=3+Months+Plan"
+          alt="3 Months Plan"
+          class="pricing-img"
+        />
+        -->
+        <h2 class="pricing-header">3 Months</h2>
+        <ul class="pricing-features">
+          <li class="pricing-features-item">4 Rental Listings</li>
+          <li class="pricing-features-item">Basic Support</li>
+          <li class="pricing-features-item">Limited analytics</li>
+        </ul>
+        <span class="pricing-price">₱50</span>
+        <a (click)="openPaymentModal(3, 50)" class="pricing-button">Select</a>
+      </div>
+  
+      <!-- 6 Months Plan -->
+      <div class="pricing-plan">
+       <!--
+        <img
+          src="https://via.placeholder.com/150?text=6+Months+Plan"
+          alt="6 Months Plan"
+          class="pricing-img"
+        /> 
+       -->
+        <h2 class="pricing-header">6 Months</h2>
+        <ul class="pricing-features">
+          <li class="pricing-features-item">10 Rental Listings</li>
+          <li class="pricing-features-item">Priority Support</li>
+          <li class="pricing-features-item">Enhanced analytics</li>
+        </ul>
+        <span class="pricing-price">₱70</span>
+        <a (click)="openPaymentModal(6, 70)" class="pricing-button">Select</a>
+      </div>
+  
+      <!-- 12 Months Plan -->
+      <div class="pricing-plan">
+        <!--
+        <img
+          src="https://via.placeholder.com/150?text=12+Months+Plan"
+          alt="12 Months Plan"
+          class="pricing-img"
+        />
+        -->
+        <h2 class="pricing-header">1 Year</h2>
+        <ul class="pricing-features">
+          <li class="pricing-features-item">Unlimited Rental Listings</li>
+          <li class="pricing-features-item">24/7 Dedicated Support</li>
+          <li class="pricing-features-item">Advanced analytics and insights</li>
+          <li class="pricing-features-item">Featured placement for listings</li>
+        </ul>
+        <span class="pricing-price">₱85</span>
+        <a (click)="openPaymentModal(12, 85)" class="pricing-button">Select</a>
+      </div>
+    </div>
+  </div>
+    
+  </div>
+
+<!-- QR Code Payment Modal -->
+<div class="payment-modal" *ngIf="showPaymentModal">
+  <div class="modal-content">
+    <button class="close-button" (click)="closePaymentModal()">
+      &times;
+    </button>
+    <h3 class="modal-title">PAYMENT FOR {{ subscriptionDuration }} MONTHS</h3>
+    <div class="modal-body">
+      <div class="qr-section">
+        <img
+          src="assets/QR.png"
+          alt="QR Code"
+          class="qr-image"
+        />
+        <p class="amount-text">Amount: ₱{{ subscriptionAmount }}</p>
+      </div>
+      <div class="upload-section">
+        <label for="receipt" class="upload-label">
+          Upload GCash Receipt:
+        </label>
+        <input type="file" id="receipt" (change)="handleReceiptUpload($event)" />
+        <p class="verification-note">
+          Note: Your payment will be subject to admin verification. Any jokes will result in a ban.
+        </p>
+        <button class="submit-button" (click)="submitPayment()">
+          Submit Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+
     <!-- Create Item Modal -->
   <div
   *ngIf="showCreateModal"
@@ -24,7 +150,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000000;
   "
   >
   <div
@@ -45,14 +171,6 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        background-color: #ff5c5c;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        font-size: 16px;
       "
     >
       &times;
@@ -346,4 +464,267 @@
     </div>
   </div>
 </div>
+
 </div>
+
+
+
+
+
+
+
+
+
+<style>
+  html {
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: red;
+  }
+
+  .modal-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  .modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .qr-section {
+    text-align: center;
+    flex: 1;
+    margin-right: 20px;
+  }
+
+  .qr-image {
+    width: 700px;
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .amount-text {
+    font-weight: bold;
+  }
+
+  .upload-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload-label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  #receipt {
+    margin-bottom: 10px;
+  }
+
+  .verification-note {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  .submit-button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+.background {
+  padding: 0 25px 25px;
+  position: relative;
+  width: 100%;
+  z-index: 100000000;
+}
+
+.background::after {
+  content: '';
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60a9ff', endColorstr='#4394f4',GradientType=0 );
+  height: 100px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .background {
+    padding: 0 0 25px;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  padding: 50px 0 0;
+  max-width: 960px;
+  width: 100%;
+}
+
+.panel {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px 25px;
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+.pricing-table {
+  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 900px) {
+  .pricing-table {
+    flex-direction: row;
+  }
+}
+
+.pricing-table * {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pricing-plan {
+  border-bottom: 1px solid #e1f1ff;
+  padding: 25px;
+}
+
+.pricing-plan:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 900px) {
+  .pricing-plan {
+    border-bottom: none;
+    border-right: 1px solid #e1f1ff;
+    flex-basis: 100%;
+    padding: 25px 50px;
+  }
+
+  .pricing-plan:last-child {
+    border-right: none;
+  }
+}
+
+.pricing-img {
+  margin-bottom: 25px;
+  max-width: 100%;
+}
+
+.pricing-header {
+  color: #888;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.pricing-features {
+  color: #016FF9;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 50px 0 25px;
+}
+
+.pricing-features-item {
+  border-top: 1px solid #e1f1ff;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 15px 0;
+}
+
+.pricing-features-item:last-child {
+  border-bottom: 1px solid #e1f1ff;
+}
+
+.pricing-price {
+  color: #016FF9;
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.pricing-button {
+  border: 1px solid #9dd1ff;
+  border-radius: 10px;
+  color: #348EFE;
+  display: inline-block;
+  margin: 25px 0;
+  padding: 15px 35px;
+  text-decoration: none;
+  transition: all 150ms ease-in-out;
+}
+
+.pricing-button:hover,
+.pricing-button:focus {
+  background-color: #e1f1ff;
+}
+
+.pricing-button.is-featured {
+  background-color: #48aaff;
+  color: #fff;
+}
+
+.pricing-button.is-featured:hover,
+.pricing-button.is-featured:active {
+  background-color: #269aff;
+}
+</style>
+
+
+
+
+
+
+
+

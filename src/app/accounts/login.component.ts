@@ -53,7 +53,11 @@ export class LoginComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false,
         }).then(() => {
-          this.router.navigate(['/home']); // Redirect to the home page
+          if(this.accountService.accountValue.acc_role == "Admin"){
+            this.router.navigate(['/admin']); 
+          } else {
+            this.router.navigate(['/home']); // Redirect to the home page
+          }
         });
       },
       error: (error) => {

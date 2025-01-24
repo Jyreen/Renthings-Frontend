@@ -18,8 +18,14 @@ import { ItemDetailsComponent } from './rent-items/item-details.component';
 import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
 import { FilterUsersPipe } from './messaging/filter-users.pipe';
+import { DateRangePickerComponent } from './rent-items/date-range-picker.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
     imports: [
         BrowserModule,
@@ -27,7 +33,12 @@ import { FilterUsersPipe } from './messaging/filter-users.pipe';
         ReactiveFormsModule,
         HttpClientModule,
         AppRoutingModule,
-        CommonModule
+        CommonModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatNativeDateModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -38,13 +49,14 @@ import { FilterUsersPipe } from './messaging/filter-users.pipe';
         ItemDetailsComponent, 
         ListItemComponent,
         MessageComponent,
-        FilterUsersPipe
+        FilterUsersPipe,
+        DateRangePickerComponent
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
+        
     ],
     bootstrap: [AppComponent]
 })

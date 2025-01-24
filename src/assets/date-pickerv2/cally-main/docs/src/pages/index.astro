@@ -1,0 +1,204 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Code } from "astro:components";
+import PageIntro from "../components/PageIntro.astro";
+import Example from "../components/Example.astro";
+import Heading from "../components/Heading.astro";
+import Link from "../components/Link.astro";
+import FeatureExample from "../components/FeatureExample.astro";
+
+const tagline = "Small, feature-rich calendar components";
+---
+
+<Layout
+  root
+  meta={{
+    title: "Cally: small, feature-rich calendar components",
+    description:
+      "Open source calendar components for selecting single dates or date ranges. Framework-agnostic, themeable, localizable, accessible.",
+  }}
+  og={{ type: "website" }}
+>
+  <PageIntro slot="intro">{tagline}</PageIntro>
+
+  <FeatureExample />
+
+  <Heading level={2}>Goals</Heading>
+
+  <ul>
+    <li><strong>Small bundle size</strong> - less than 8.5KB min/gzip</li>
+    <li>
+      <strong>Full feature set</strong> - single dates, ranges, display multiple
+      months
+    </li>
+    <li>
+      <strong>HTML-friendly</strong> - easy to author, framework-independent
+    </li>
+    <li>
+      <strong>Minimal dependencies</strong> - only one
+    </li>
+    <li><strong>Accessible</strong> - keyboard and screen reader</li>
+    <li>
+      <strong>Localizable</strong> - <code>Intl.DateTimeFormat</code>, CSS
+      logical properties, RTL support
+    </li>
+    <li>
+      <strong>Themeable</strong> - CSS parts and custom properties to offer flexibility
+      and power
+    </li>
+    <li>
+      <strong>Composable</strong> - impose no DOM specific structure, play well with
+      others
+    </li>
+  </ul>
+
+  <p>
+    The aim is not to give you a full date picker, instead only the lower-level
+    building blocks that allow you to build your own. You likely already have
+    your own inputs, buttons, popover etc components. So why not use them?
+  </p>
+
+  <p>
+    By making minimal assumptions about how the components will look and
+    function, we can keep the bundle size small without compromising on
+    functionality or ability to customize.
+  </p>
+
+  <Heading level={2}>Installation</Heading>
+
+  <p>
+    In the simplest scenario, include a script tag in your HTML page. The
+    components are then immediately available for use. For example, using unpkg:
+  </p>
+
+  <Code
+    lang="html"
+    code={`<script type="module" src="https://unpkg.com/cally"></script>`}
+  />
+
+  <p>
+    Alternatively, you can install the package via npm or your preferred package
+    manager:
+  </p>
+
+  <Code lang="shell" code="npm install cally" />
+
+  <p>
+    Then import the components into your JavaScript or TypeScript file. For
+    example, using ES modules:
+  </p>
+
+  <Code lang="javascript" code={`import "cally";`} />
+
+  <Heading level={2}>Quick start</Heading>
+
+  <p>
+    Assuming you have followed the installation instructions, the next step is
+    to put the components to use.
+  </p>
+
+  <Heading level={3}>Single date</Heading>
+
+  <p>
+    For a single date, use the <code>{`<calendar-date>`}</code> component, and place
+    inside it a <code>{`<calendar-month>`}</code> component.
+  </p>
+
+  <Example lineLength={50}>
+    <calendar-date>
+      <calendar-month></calendar-month>
+    </calendar-date>
+  </Example>
+
+  <Heading level={3}>Date range</Heading>
+
+  For a date range, use the <code>{`<calendar-range>`}</code> component, and place
+  inside it a <code>{`<calendar-month>`}</code> component.
+
+  <Example lineLength={50}>
+    <calendar-range>
+      <calendar-month></calendar-month>
+    </calendar-range>
+  </Example>
+
+  <Heading level={3}>Multiple months</Heading>
+
+  <p>
+    To display multiple months, add more <code>{`<calendar-month>`}</code> components
+    inside <code>{`<calendar-range>`}</code> or <code>{`<calendar-date>`}</code>
+    components. You must set the <code>months</code> attribute of the range and date
+    calendars to the number of months you will display. Then configure the
+    <code>offset</code> attribute of each <code>{`<calendar-month>`}</code> to specify
+    the month it represents relative to the first visible month.
+  </p>
+
+  <p>
+    By default, the <code>{`<calendar-month>`}</code> components will stack vertically.
+    You will likely want to use flexbox or css grid to improve the layout as seen
+    below.
+  </p>
+
+  <Example
+    lineLength={50}
+    css={`
+      .grid {
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    `}
+  >
+    <calendar-range months="2">
+      <div class="grid">
+        <calendar-month></calendar-month>
+        <calendar-month offset="1"></calendar-month>
+      </div>
+    </calendar-range>
+  </Example>
+
+  <Heading level={2}>Next steps</Heading>
+
+  <p>
+    For a detailed look at each component, check out the respective
+    <Link href="/components/">component API</Link> docs. The
+    <Link href="/guides/">guides</Link> section offers walkthroughs on
+    <Link href="/guides/theming/">theming</Link>,
+    <Link href="/guides/frameworks/">framework integration</Link>, and
+    <Link href="/guides/usage/">usage with existing components</Link>.
+  </p>
+
+  <p>
+    If you are evaluating accessibility, please read the
+    <Link href="/accessibility/">accessibility statement</Link> to understand how
+    these components work, how they have been tested, and any known issues.
+  </p>
+
+  <p>
+    If you have an issue or feature request, please open an issue in the
+    <a href="https://github.com/WickyNilliams/cally">repository</a>.
+  </p>
+
+  <Heading level={2}>Acknowledgments</Heading>
+
+  <p>
+    Cally is a spiritual successor to my earlier work on
+    <a href="https://duetds.github.io/date-picker/">Duet date picker</a>. Shout
+    out to everyone that made it possible to open source that. The component
+    APIs are partially inspired by the Date and Time components from <a
+      href="https://react-spectrum.adobe.com/react-aria/components.html#date-and-time"
+      >React ARIA Components</a
+    >, though there is some amount of convergent evolution. Much appreciation to
+    <a href="https://stream7.github.io/">Nikos Gereoudakis</a> for transferring ownership
+    of the <code>cally</code> package on npm. And finally, thanks to
+    <a href="https://twitter.com/Uppercod">@Uppercod</a> for his work on
+    <a href="https://atomicojs.dev/">Atomico</a>.
+  </p>
+</Layout>
+
+<style is:global>
+  calendar-date,
+  calendar-range {
+    margin: 0 auto;
+  }
+</style>

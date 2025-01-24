@@ -22,6 +22,9 @@
             <p>{{ item.Item_Description }}</p>
           </div>
           <div class="purchase-info">
+            <button type="button" class="btn btn-primary" (click)="openRentModal()">
+              Rent Item
+            </button>
             <button type="button" class="btn btn-dark" (click)="openMessageModal()">
               Send Message
             </button>
@@ -45,6 +48,37 @@
 </div>
 
 
+<!-- Rent Modal -->
+<div *ngIf="isRentModalOpen" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Rent Item</h2>
+    <form>
+      <mat-form-field appearance="fill" class="date-picker">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" name="startDate" />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill" class="date-picker">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" name="endDate" />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+    </form>
+
+    <br>
+    <div class="modal-actions">
+      <button class="btn btn-success" (click)="confirmRent()">Confirm</button>
+      <button class="btn btn-secondary" (click)="closeRentModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+
 <!-- Message Modal -->
 <div *ngIf="isModalOpen" class="modal-overlay">
   <div class="modal-content">
@@ -59,6 +93,94 @@
 
 
   <style>
+
+.container {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+label {
+  font-size: 18px;
+}
+
+input {
+    padding: 10px 15px !important;
+    border: 1px solid #CFD8DC !important;
+    border-radius: 4px !important;
+    box-sizing: border-box;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-size: 16px !important;
+    letter-spacing: 1px;
+    position: relative;
+    width: 100%;
+}
+
+input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #FFA000 !important;
+    outline-width: 0;
+}
+
+.daterangepicker {
+  background-color: #fff;
+  border-radius: 0 !important;
+  align-content: center !important;
+  padding: 0 !important;
+}
+
+/*Weekday Heading*/
+thead tr:nth-child(2) {
+  color: #BDBDBD !important;
+}
+
+tbody tr td {
+  padding: 5px 7px !important;
+}
+
+.month {
+  font-size: 16px !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
+}
+
+.start-date, .end-date {
+  border-radius: 0px !important;
+}
+
+.available:hover {
+  border-radius: 0px !important;
+}
+
+.off {
+  color: #EEEEEE !important;
+}
+
+.off:hover {
+  background-color: #EEEEEE !important;
+  color: #fff !important;
+}
+
+.drp-buttons {
+  display: none !important;
+}
+
+
+.input-daterange {
+  margin-top: 20px;
+}
+
+input#daterange {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
     /* Modal Overlay: Semi-transparent background */
 .modal-overlay {
   position: fixed;
@@ -70,7 +192,7 @@
   display: flex;
   justify-content: center; /* Centers the modal horizontally */
   align-items: center; /* Centers the modal vertically */
-  z-index: 9999; /* Make sure it's on top of other content */
+  z-index: 999; /* Make sure it's on top of other content */
 }
 
 /* Modal Content: The actual modal box */
@@ -78,7 +200,7 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  max-width: 500px;
+  max-width: 800px;
   width: 90%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow to make it pop */
   z-index: 10000; /* Ensure modal is above everything else */

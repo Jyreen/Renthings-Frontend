@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ItemService } from '../_services/item.service';
+import { ItemService, SubscriptionService } from '../_services';
 import { AccountService } from '../_services/account.service';
 import Swal from 'sweetalert2'; // SweetAlert for feedback
 import { Item } from '../_models';
@@ -26,10 +26,20 @@ export class ListItemComponent implements OnInit {
   
   currentItemId: number | null = null;
 
+  showSubscriptionModal = false;
+  showPaymentModal = false;
+
+
+  subscriptionDuration: number = 0;
+  subscriptionAmount: number = 0;
+
+  receiptFile: File | null = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private itemService: ItemService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private subscriptionService: SubscriptionService
   ) {
     // Initialize forms
     this.createItemForm = this.formBuilder.group({
@@ -45,6 +55,98 @@ export class ListItemComponent implements OnInit {
     });
   }
 
+  /**
+   * Open the payment modal for a specific subscription plan.
+   * @param duration Subscription duration in months
+   * @param amount Subscription amount
+   */
+  openPaymentModal(duration: number, amount: number): void {
+    this.subscriptionDuration = duration;
+    this.subscriptionAmount = amount;
+
+    this.showSubscriptionModal = false;
+    this.showPaymentModal = true;
+  }
+
+  /**
+   * Close the payment modal.
+   */
+  closePaymentModal(): void {
+    this.showPaymentModal = false;
+    this.showSubscriptionModal = true;
+  }
+
+  /**
+   * Handle receipt file upload.
+   * @param event File input change event
+   */
+  handleReceiptUpload(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.receiptFile = file;
+      console.log('Receipt uploaded:', file);
+    }
+  }
+
+  /**
+   * Submit the payment receipt.
+   */
+  submitPayment(): void {
+    if (!this.receiptFile) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing Receipt',
+        text: 'Please upload your GCash receipt before submitting.',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+  
+    if (!this.subscriptionDuration || !this.subscriptionAmount || !this.accountId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing Details',
+        text: 'Subscription details are incomplete. Please try again.',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('acc_id', this.accountId); // Add account ID
+    formData.append('subscription_plan', `${this.subscriptionDuration}_months`); // Add subscription plan
+    formData.append('start_date', new Date().toISOString()); // Add current date
+    formData.append('subscription_receipt', this.receiptFile); // Add receipt file
+  
+    this.loading = true;
+  
+    // Use the subscription service to send the form data
+    this.subscriptionService.create(formData).subscribe(
+      (response) => {
+        this.loading = false;
+        this.closePaymentModal();
+  
+        Swal.fire({
+          icon: 'success',
+          title: 'Payment Submitted',
+          text: 'Your payment has been submitted successfully! It will be reviewed by the admin.',
+          confirmButtonText: 'OK',
+        });
+      },
+      (error) => {
+        this.loading = false;
+  
+        Swal.fire({
+          icon: 'error',
+          title: 'Submission Failed',
+          text: error.message || 'An error occurred while submitting your payment. Please try again later.',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
+  }
+  
+  
   ngOnInit(): void {
     // Get the current user's account ID and fetch their listings
     const account = this.accountService.accountValue;
@@ -64,6 +166,11 @@ export class ListItemComponent implements OnInit {
     this.itemService.getByAccountId(Number(this.accountId)).subscribe(
       (response) => {
         this.items = response;
+  
+        // If there are more than 2 items, prompt the user to subscribe
+        if (this.items.length >= 2) {
+          this.showSubscriptionPrompt();
+        }
       },
       (error) => {
         console.error('Error fetching user listings:', error);
@@ -76,6 +183,49 @@ export class ListItemComponent implements OnInit {
       }
     );
   }
+
+  showSubscriptionPrompt(): void {
+    Swal.fire({
+      title: 'Subscription Required',
+      text: 'You have reached the limit of 2 items. Please subscribe to unlock more items.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Subscribe Now',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Open the subscription modal
+        this.openSubscriptionModal();
+      }
+    });
+  }
+
+
+  openSubscriptionModal(): void {
+    this.showSubscriptionModal = true;
+  }
+
+  closeSubscriptionModal(): void {
+    this.showSubscriptionModal = false;
+  }
+
+  subscribe(months: number): void {
+    console.log(`Subscribed for ${months} months`);
+
+    // Perform subscription logic here (e.g., save subscription to database)
+
+    // Close modal after subscription
+    this.closeSubscriptionModal();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Subscription Successful',
+      text: `You have subscribed for ${months} months.`,
+      confirmButtonText: 'OK'
+    });
+  }
+
+
 
   /**
    * Handle file input changes and generate image previews.
@@ -101,7 +251,12 @@ export class ListItemComponent implements OnInit {
    * Open the Create Item modal.
    */
   openCreateModal(): void {
-    this.showCreateModal = true;
+
+    if(this.items.length == 2 && this.accountService.accountValue.acc_subscription == 'disabled'){
+      this.fetchUserListings();
+    } else {
+      this.showCreateModal = true;
+    }
     this.resetForm(this.createItemForm);
   }
 

@@ -1,0 +1,20 @@
+---
+import type { ComponentProps } from "astro/types";
+import Layout from "./Layout.astro";
+
+interface Props extends ComponentProps<typeof Layout> {
+  heading: string;
+}
+const { meta, heading } = Astro.props;
+---
+
+<Layout meta={meta}>
+  <h1 slot="intro"><code>{heading}</code></h1>
+  <slot />
+</Layout>
+
+<style>
+  h1 {
+    margin-block-start: var(--space-m);
+  }
+</style>

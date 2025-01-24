@@ -1,4 +1,4 @@
-<div id="page-top" style="background: linear-gradient(to right, #1a1a50, #bf1a1a); color: white; min-height: 100vh;">
+<div id="page-top" style="">
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -87,72 +87,5 @@
                 </div>
             </div>
         </div>
-
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
     </div>
-
-    <style>
-        /* Page Background */
-        #page-top {
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Modal Overlay (to cover the whole screen) */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1050; /* Ensure it's above other content */
-        }
-
-        /* Modal Content (to make it look like it pops out) */
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%; /* Adjust width as needed */
-            max-width: 600px; /* Set a max width to ensure it doesn't get too large */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Drop shadow to make it pop */
-            z-index: 1060; /* Ensure modal content is above the overlay */
-            animation: modalPop 0.3s ease-out; /* Add a pop animation */
-
-            /* Make the modal content scrollable */
-            max-height: 80vh; /* Set a maximum height for the modal */
-            overflow-y: auto; /* Enable vertical scrolling */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-        }
-
-        /* Animation for modal pop effect */
-        @keyframes modalPop {
-            0% {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Custom Card Header Color */
-        .card-header {
-            background: linear-gradient(to right, #1a1a50, #bf1a1a);
-            color: white;
-        }
-
-        /* Table Header Background */
-        thead {
-            background: linear-gradient(to right, #1a1a50, #bf1a1a);
-            color: white;
-        }
-    </style>
 </div>

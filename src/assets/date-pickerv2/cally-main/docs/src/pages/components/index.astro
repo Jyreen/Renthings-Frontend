@@ -1,0 +1,42 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Link from "../../components/Link.astro";
+---
+
+<Layout
+  meta={{
+    title: "Components",
+    description:
+      "A list of all calendar components offered by Cally, along with links to their respective API docs.",
+  }}
+>
+  <h1 slot="intro">Components</h1>
+
+  <p>
+    Each component's properties/attributes, events, methods, slots, CSS parts
+    and custom properties are documented on the respective pages below.
+  </p>
+
+  <ul>
+    <li>
+      <Link href="/components/calendar-date/"
+        ><code>{`<calendar-date>`}</code></Link
+      >
+    </li>
+    <li>
+      <Link href="/components/calendar-range/"
+        ><code>{`<calendar-range>`}</code></Link
+      >
+    </li>
+    <li>
+      <Link href="/components/calendar-multi/"
+        ><code>{`<calendar-multi>`}</code></Link
+      >
+    </li>
+    <li>
+      <Link href="/components/calendar-month/"
+        ><code>{`<calendar-month>`}</code></Link
+      >
+    </li>
+  </ul>
+</Layout>

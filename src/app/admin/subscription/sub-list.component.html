@@ -1,0 +1,81 @@
+<div id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid col-lg-12">
+                    <h1 class="h3 mb-2 text-gray-800">Items</h1>
+                    <p class="mb-4">Manage items submitted by users. You can approve or reject items below.</p>
+
+                    <!-- Search -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Search</h6>
+                        </div>
+                        <div class="card-body">
+                            <input type="text" class="form-control" placeholder="Search by ID..." [(ngModel)]="searchQuery" />
+                        </div>
+                    </div>
+
+                    <!-- Items List -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Items List</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Receipt</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Subscription Plan</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let subscription of filteredSubscriptions">
+                                            <td>
+                                                <img
+                                                  [src]="'http://localhost:4000/assets/' + subscription.subscription_receipt"
+                                                  alt="Account Image"
+                                                  class="img-thumbnail"
+                                                  style="width: 50px; cursor: pointer;"
+                                                  (click)="showImage(subscription.subscription_receipt)"
+                                                />
+                                              </td>                                              
+                                          <td>{{ subscription.id }}</td>
+                                          <td>{{ subscription.acc_firstName }} {{ subscription.acc_lastName }}</td>
+                                          <td>{{ subscription.subscription_plan}}</td>
+                                          <td>{{ subscription.start_date | date }}</td>                                                                                                                                                 
+                                          <td>{{ subscription.end_date | date }}</td>
+                                          <td>
+                                            <button
+                                              class="btn btn-success btn-sm"
+                                              (click)="approveSubscription(subscription.id)"
+                                            >
+                                              Approve
+                                            </button>
+                                            <button
+                                              class="btn btn-danger btn-sm"
+                                              (click)="rejectSubscription(subscription.id)"
+                                            >
+                                              Reject
+                                            </button>
+                                          </td>
+                                        </tr>
+                                        <tr *ngIf="!filteredSubscriptions.length">
+                                          <td colspan="5" class="text-center">No items found.</td>
+                                        </tr>
+                                      </tbody>                                      
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
