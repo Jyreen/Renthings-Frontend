@@ -1,29 +1,31 @@
-<div class="card mb-4" style="background: linear-gradient(to right, #1a1a50, #bf1a1a); color: white;">
-    <div class="card-header">
-        <h2 class="mt-2">Edit Account</h2>
+<br>
+<br>
+<div class="card mb-4 shadow-sm border-0 rounded">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mt-4">Edit Account</h2>
     </div>
-    <div class="card-body shadow" style="background: rgb(207, 91, 91); border-radius: 8px;">
+    <div class="card-body" style="background-color: #f8f9fa; border-radius: 8px;">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-row">
-                <div class="form-group col">
-                    <label>First Name</label>
-                    <input type="text" formControlName="acc_firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_firstName.errors }" />
+                <div class="form-group col-md-6">
+                    <label for="acc_firstName">First Name</label>
+                    <input id="acc_firstName" type="text" formControlName="acc_firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_firstName.errors }" />
                     <div *ngIf="submitted && f.acc_firstName.errors" class="invalid-feedback">
                         <div *ngIf="f.acc_firstName.errors.required">First Name is required</div>
                     </div>
                 </div>
-                <div class="form-group col">
-                    <label>Last Name</label>
-                    <input type="text" formControlName="acc_lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_lastName.errors }" />
+                <div class="form-group col-md-6">
+                    <label for="acc_lastName">Last Name</label>
+                    <input id="acc_lastName" type="text" formControlName="acc_lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_lastName.errors }" />
                     <div *ngIf="submitted && f.acc_lastName.errors" class="invalid-feedback">
                         <div *ngIf="f.acc_lastName.errors.required">Last Name is required</div>
                     </div>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-7">
-                    <label>Email</label>
-                    <input type="text" formControlName="acc_email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_email.errors }" />
+                <div class="form-group col-md-7">
+                    <label for="acc_email">Email</label>
+                    <input id="acc_email" type="text" formControlName="acc_email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_email.errors }" />
                     <div *ngIf="submitted && f.acc_email.errors" class="invalid-feedback">
                         <div *ngIf="f.acc_email.errors.required">Email is required</div>
                         <div *ngIf="f.acc_email.errors.email">Email must be a valid email address</div>
@@ -31,9 +33,9 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col">
-                    <label>Role</label>
-                    <select formControlName="acc_role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_role.errors }">
+                <div class="form-group col-md-6">
+                    <label for="acc_role">Role</label>
+                    <select id="acc_role" formControlName="acc_role" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_role.errors }">
                         <option value="">Select role</option>
                         <option value="User">User</option>
                         <option value="Admin">Admin</option>
@@ -42,9 +44,9 @@
                         <div *ngIf="f.acc_role.errors.required">Role is required</div>
                     </div>
                 </div>
-                <div class="form-group col">
-                    <label>Account Status</label>
-                    <select formControlName="acc_status" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_status.errors }">
+                <div class="form-group col-md-6">
+                    <label for="acc_status">Account Status</label>
+                    <select id="acc_status" formControlName="acc_status" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_status.errors }">
                         <option value="">Select status</option>
                         <option value="Active">Activate</option>
                         <option value="Inactive">Deactivate</option>
@@ -56,9 +58,9 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col">
-                    <label>Subscription Status</label>
-                    <select formControlName="acc_subscription.status" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_subscription?.status?.errors }">
+                <div class="form-group col-md-6">
+                    <label for="acc_subscription">Subscription Status</label>
+                    <select id="acc_subscription" formControlName="acc_subscription.status" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.acc_subscription?.status?.errors }">
                         <option value="">Select subscription status</option>
                         <option value="active">Active</option>
                         <option value="disabled">Inactive</option>
@@ -67,15 +69,19 @@
                         <div *ngIf="f.acc_subscription?.status?.errors.required">Subscription Status is required</div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <button [disabled]="loading" class="btn btn-primary">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    Save
-                </button>
-                &nbsp;
-                <button type="button" class="btn btn-secondary" (click)="goBack()">Close</button>
+                <div class="form-group col-md-12">
+                    <div class="row justify-content-end">
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-secondary" (click)="goBack()">Close</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button [disabled]="loading" class="btn btn-primary">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

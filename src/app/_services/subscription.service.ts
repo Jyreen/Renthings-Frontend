@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Subscription } from '../_models/subscription';
 import { Observable } from 'rxjs';
+import { Account } from '../_models';
+import { AccountService } from './account.service';
 
 const baseUrl = `${environment.apiUrl}/subscription`;
 

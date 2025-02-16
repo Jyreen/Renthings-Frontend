@@ -64,6 +64,8 @@ export class ListItemComponent implements OnInit {
     this.subscriptionDuration = duration;
     this.subscriptionAmount = amount;
 
+    console.log("Sub Duration: ",this.subscriptionDuration)
+
     this.showSubscriptionModal = false;
     this.showPaymentModal = true;
   }
@@ -92,6 +94,7 @@ export class ListItemComponent implements OnInit {
    * Submit the payment receipt.
    */
   submitPayment(): void {
+
     if (!this.receiptFile) {
       Swal.fire({
         icon: 'error',
@@ -109,23 +112,31 @@ export class ListItemComponent implements OnInit {
         text: 'Subscription details are incomplete. Please try again.',
         confirmButtonText: 'OK',
       });
+      
+
       return;
     }
   
     const formData = new FormData();
     formData.append('acc_id', this.accountId); // Add account ID
-    formData.append('subscription_plan', `${this.subscriptionDuration}_months`); // Add subscription plan
+    if(this.subscriptionDuration == 1){
+      formData.append('subscription_plan', `${this.subscriptionDuration}_month`);
+    } else {
+      formData.append('subscription_plan', `${this.subscriptionDuration}_months`); 
+    }
     formData.append('start_date', new Date().toISOString()); // Add current date
     formData.append('subscription_receipt', this.receiptFile); // Add receipt file
   
     this.loading = true;
-  
+    
     // Use the subscription service to send the form data
     this.subscriptionService.create(formData).subscribe(
       (response) => {
         this.loading = false;
         this.closePaymentModal();
   
+        this.showSubscriptionModal = false;
+
         Swal.fire({
           icon: 'success',
           title: 'Payment Submitted',

@@ -37,7 +37,6 @@
                                 <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th scope="col"><input type="checkbox"></th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Role</th>
@@ -48,7 +47,6 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let account of filteredAccounts">
-                                            <td><input type="checkbox"></td>
                                             <td>{{ account.acc_firstName }} {{ account.acc_lastName }}</td>
                                             <td>{{ account.acc_email }}</td>
                                             <td>{{ account.acc_role }}</td>
@@ -89,3 +87,4 @@
         </div>
     </div>
 </div>
+
