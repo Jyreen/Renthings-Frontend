@@ -38,6 +38,16 @@ export class SubscriptionService {
         return this.http.put<Subscription>(`${baseUrl}/${id}`, formData);
     }
 
+    // Approve a subscription
+    approveSubscription(id: number, remarks: string): Observable<Subscription> {
+        return this.http.put<Subscription>(`${baseUrl}/${id}/approve`, { remarks });
+    }
+
+    // Reject a subscription
+    rejectSubscription(id: number, remarks: string): Observable<Subscription> {
+        return this.http.put<Subscription>(`${baseUrl}/${id}/reject`, { remarks });
+    }
+    
     // Delete a subscription
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${baseUrl}/${id}`);

@@ -29,12 +29,18 @@ export class SubListComponent implements OnInit {
     );
   }
 
-  // Approve a subscription
-  approveSubscription(id: number) {
-    const subscription = this.subscriptions.find((sub) => sub.id === id);
-    if (subscription) {
-      const updatedSubscription = { ...subscription, status: 'approved' }; // Example status update
-      this.subscriptionService.update(id, updatedSubscription).subscribe(
+ // Approve a subscription
+approveSubscription(id: number) {
+  Swal.fire({
+    title: 'Approve Subscription',
+    input: 'text',
+    inputLabel: 'Remarks',
+    inputPlaceholder: 'Enter approval remarks',
+    showCancelButton: true,
+    confirmButtonText: 'Approve',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.subscriptionService.approveSubscription(id, result.value || '').subscribe(
         () => {
           Swal.fire('Success', 'Subscription approved successfully', 'success');
           this.loadSubscriptions(); // Reload subscriptions
@@ -44,14 +50,21 @@ export class SubListComponent implements OnInit {
         }
       );
     }
-  }
+  });
+}
 
-  // Reject a subscription
-  rejectSubscription(id: number) {
-    const subscription = this.subscriptions.find((sub) => sub.id === id);
-    if (subscription) {
-      const updatedSubscription = { ...subscription, status: 'rejected' }; // Example status update
-      this.subscriptionService.update(id, updatedSubscription).subscribe(
+// Reject a subscription
+rejectSubscription(id: number) {
+  Swal.fire({
+    title: 'Reject Subscription',
+    input: 'text',
+    inputLabel: 'Remarks',
+    inputPlaceholder: 'Enter rejection remarks',
+    showCancelButton: true,
+    confirmButtonText: 'Reject',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.subscriptionService.rejectSubscription(id, result.value || '').subscribe(
         () => {
           Swal.fire('Success', 'Subscription rejected successfully', 'success');
           this.loadSubscriptions(); // Reload subscriptions
@@ -61,8 +74,8 @@ export class SubListComponent implements OnInit {
         }
       );
     }
-  }
-
+  });
+}
   // Getter for filtered subscriptions
   get filteredSubscriptions() {
     if (!this.searchQuery.trim()) {

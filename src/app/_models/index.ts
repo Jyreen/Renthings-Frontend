@@ -3,3 +3,4 @@ export * from './role';
 export * from './item';
 export * from './chat';
 export * from './subscription';
+export * from './rent-items';

@@ -1,15 +1,9 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
-
-
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from '../_services/item.service'; // Your service to fetch item details
 import { ChatService } from '../_services/chat.service'; // Chat service for sending messages
+import { RentItemService } from '../_services/rent-items.service';
+import { AccountService } from '../_services/account.service';
 import iziToast from 'izitoast';
 
 @Component({
@@ -19,10 +13,10 @@ import iziToast from 'izitoast';
 export class ItemDetailsComponent implements OnInit{
   item: any; // Store the fetched item
   itemId: number; // Store the item ID from the route
-  loggedInUserId: number = 1; // Assume logged-in user ID. Replace with real logic.
+  loggedInUserId: string; // Assume logged-in user ID. Replace with real logic.
   isModalOpen: boolean = false; // Modal visibility flag
   message: string = ''; // The message the user will send
-
+  verificationImage: File | null = null;
 
   // Rent variables
   isRentModalOpen: boolean = false; // Rent modal visibility flag
@@ -33,13 +27,17 @@ export class ItemDetailsComponent implements OnInit{
   
   constructor(
     private route: ActivatedRoute,
+    private rentItemService: RentItemService,
     private itemService: ItemService,
+    private accountService: AccountService,
     private chatService: ChatService, // Inject ChatService for messaging
     private router: Router // To navigate to the messages component after sending the message
   ) {}
 
   ngOnInit(): void {
     // Get the 'id' parameter from the route
+    this.loggedInUserId = this.accountService.accountValue?.id;
+
     this.route.params.subscribe((params) => {
       this.itemId = +params['id']; // Ensure 'id' is a number
       if (this.itemId) {
@@ -49,8 +47,6 @@ export class ItemDetailsComponent implements OnInit{
       }
     });
   }
-
-  
 
   fetchItem(): void {
     this.itemService.getById(this.itemId).subscribe(
@@ -112,7 +108,12 @@ export class ItemDetailsComponent implements OnInit{
     );
   }
 
-
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.verificationImage = input.files[0];
+    }
+  }
 
   // Open the rent modal
   openRentModal(): void {
@@ -136,7 +137,16 @@ export class ItemDetailsComponent implements OnInit{
       });
       return;
     }
-
+  
+    if (!this.verificationImage) {
+      iziToast.error({
+        title: 'Error',
+        message: 'Please upload a verification image.',
+        position: 'topRight',
+      });
+      return;
+    }
+  
     if (this.startDate > this.endDate) {
       iziToast.error({
         title: 'Error',
@@ -145,20 +155,32 @@ export class ItemDetailsComponent implements OnInit{
       });
       return;
     }
-
-    // Example API call for rent functionality
-    console.log('Rent confirmed', {
-      startDate: this.startDate,
-      endDate: this.endDate,
-    });
-
-    iziToast.success({
-      title: 'Success',
-      message: 'Item rented successfully!',
-      position: 'bottomRight',
-    });
-
-    this.closeRentModal(); // Close the modal after confirmation
+  
+    const formData = new FormData();
+    formData.append('Item_id', this.itemId.toString());
+    formData.append('renter_acc_id', this.loggedInUserId.toString());
+    formData.append('rental_start_date', this.startDate.toISOString());
+    formData.append('rental_end_date', this.endDate.toISOString());
+    formData.append('verification_image', this.verificationImage);
+  
+    this.rentItemService.create(formData).subscribe(
+      (response) => {
+        iziToast.success({
+          title: 'Success',
+          message: 'Item rented successfully!',
+          position: 'bottomRight',
+        });
+        this.closeRentModal();
+      },
+      (error) => {
+        iziToast.error({
+          title: 'Error',
+          message: 'Failed to rent item.',
+          position: 'topRight',
+        });
+        console.error('Error renting item:', error);
+      }
+    );
   }
-
+  
 }

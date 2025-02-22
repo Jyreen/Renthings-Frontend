@@ -75,7 +75,10 @@
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
-          </div>   
+          </div>
+          <label for="verificationImage">Upload Verification Image:</label>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+   
         </div>
       </form>
       <br />
