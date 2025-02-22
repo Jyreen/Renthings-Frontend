@@ -173,13 +173,13 @@ export class ListItemComponent implements OnInit {
       console.error('Account ID is not available.');
       return;
     }
-
+  
     this.itemService.getByAccountId(Number(this.accountId)).subscribe(
       (response) => {
         this.items = response;
   
-        // If there are more than 2 items, prompt the user to subscribe
-        if (this.items.length >= 2) {
+        // Check if user has an active subscription before showing the prompt
+        if (this.items.length >= 2 && this.accountService.accountValue?.acc_subscription !== 'active') {
           this.showSubscriptionPrompt();
         }
       },
@@ -194,6 +194,7 @@ export class ListItemComponent implements OnInit {
       }
     );
   }
+  
 
   showSubscriptionPrompt(): void {
     Swal.fire({
