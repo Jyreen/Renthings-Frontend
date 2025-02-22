@@ -388,7 +388,7 @@
         text-align: center;
         border: 1px solid #ddd;
         border-radius: 8px;
-        width: 250px;
+        width: 350px;
         padding: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         background-color: #fff;
@@ -428,39 +428,58 @@
       </p>
 
       <!-- Buttons -->
-      <div style="display: flex; gap: 10px; margin-top: 10px;">
-        <!-- Edit Button -->
-        <button
-          class="btn btn-warning"
-          (click)="openUpdateModal(item)"
-          style="
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: none;
-            background-color: #ffc107;
-            color: white;
-            cursor: pointer;
-          "
-        >
-          Edit
-        </button>
+      <!-- Buttons -->
+<div style="display: flex; gap: 10px; margin-top: 10px;">
+  <!-- Edit Button -->
+  <button
+    class="btn btn-warning"
+    (click)="openUpdateModal(item)"
+    style="
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: none;
+      background-color: #ffc107;
+      color: white;
+      cursor: pointer;
+    "
+  >
+    Edit
+  </button>
 
-        <!-- Delete Button -->
-        <button
-          class="btn btn-danger"
-          (click)="deleteItem(item.Item_id)"
-          style="
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: none;
-            background-color: #dc3545;
-            color: white;
-            cursor: pointer;
-          "
-        >
-          Delete
-        </button>
-      </div>
+  <!-- Delete Button -->
+  <button
+    class="btn btn-danger"
+    (click)="deleteItem(item.Item_id)"
+    style="
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: none;
+      background-color: #dc3545;
+      color: white;
+      cursor: pointer;
+    "
+  >
+    Delete
+  </button>
+
+  <!-- View Renters Button -->
+  <button 
+  type="button" 
+  class="btn btn-info"
+  [routerLink]="['/view-renters', item.Item_id]"
+  style="
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #17a2b8;
+    color: white;
+    cursor: pointer;
+  ">
+  View Renters
+</button>
+
+</div>
+
     </div>
   </div>
 </div>

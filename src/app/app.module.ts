@@ -19,7 +19,7 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
 import { FilterUsersPipe } from './messaging/filter-users.pipe';
 import { DateRangePickerComponent } from './rent-items/date-range-picker.component';
-
+import { ViewRentersComponent } from './list-item/view-renters.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -50,7 +50,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         ListItemComponent,
         MessageComponent,
         FilterUsersPipe,
-        DateRangePickerComponent
+        DateRangePickerComponent, 
+        ViewRentersComponent
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },

@@ -11,6 +11,7 @@ import { RentItemsComponent } from './rent-items/rent-items.component';
 import { ItemDetailsComponent } from './rent-items/item-details.component';
 import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
+import { ViewRentersComponent } from './list-item/view-renters.component';
 
 
 
@@ -26,7 +27,7 @@ const routes: Routes = [
     { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
     { path: 'rent', component: RentItemsComponent },
     { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
-
+    { path: 'view-renters/:itemId', component: ViewRentersComponent },
     { path: 'item/:id', component: ItemDetailsComponent },
     { path: 'list', component: ListItemComponent},
     { path: 'message', component: MessageComponent},

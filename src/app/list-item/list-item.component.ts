@@ -4,6 +4,7 @@ import { ItemService, SubscriptionService } from '../_services';
 import { AccountService } from '../_services/account.service';
 import Swal from 'sweetalert2'; // SweetAlert for feedback
 import { Item } from '../_models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-item',
@@ -18,7 +19,7 @@ export class ListItemComponent implements OnInit {
   loading = false;
   items: any[] = [];
   accountId: string | null = null;
-
+  
   // Modal states
   showCreateModal = false;
   showUpdateModal = false;
@@ -39,7 +40,8 @@ export class ListItemComponent implements OnInit {
     private formBuilder: FormBuilder,
     private itemService: ItemService,
     private accountService: AccountService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private router: Router
   ) {
     // Initialize forms
     this.createItemForm = this.formBuilder.group({
@@ -237,6 +239,10 @@ export class ListItemComponent implements OnInit {
     });
   }
 
+
+  viewRenters(itemId: number): void {
+    this.router.navigate(['/view-renters', itemId]);
+  }
 
 
   /**

@@ -17,6 +17,10 @@ export class RentItemService {
     return this.http.get<RentItem[]>(`${baseUrl}`);
   }
 
+  getRentersByItemId(itemId: number): Observable<RentItem[]> {
+    return this.http.get<RentItem[]>(`${baseUrl}/item/${itemId}`);
+  }
+
   // Get rental item by ID
   getById(id: number): Observable<RentItem> {
     return this.http.get<RentItem>(`${baseUrl}/${id}`);

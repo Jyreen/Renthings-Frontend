@@ -1,0 +1,33 @@
+<div class="renters-container">
+  <h2>Renters for This Item</h2>
+
+  <div *ngIf="renters.length === 0" class="no-renters">
+    No renters found for this item.
+  </div>
+
+  <table *ngIf="renters.length > 0" class="renters-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Rental Period</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let renter of renters">
+        <td>{{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}</td>
+        <td>{{ renter.rental_start_date | date }} - {{ renter.rental_end_date | date }}</td>
+        <td>
+          <span [style.color]="renter.rental_status === 'Pending' ? 'orange' : 'green'">
+            {{ renter.rental_status }}
+          </span>
+        </td>
+        <td>
+          <button class="message-btn" (click)="sendMessage(renter.renter_acc_id)">Send Message</button>
+          <button class="approve-btn" *ngIf="renter.rental_status === 'Pending'" (click)="approveRental(renter.RentItem_id)">Approve</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
