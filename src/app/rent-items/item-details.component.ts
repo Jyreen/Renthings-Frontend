@@ -17,6 +17,7 @@ export class ItemDetailsComponent implements OnInit{
   isModalOpen: boolean = false; // Modal visibility flag
   message: string = ''; // The message the user will send
   verificationImage: File | null = null;
+  totalPrice: number = 0;
 
   // Rent variables
   isRentModalOpen: boolean = false; // Rent modal visibility flag
@@ -62,6 +63,24 @@ export class ItemDetailsComponent implements OnInit{
   openMessageModal(): void {
     console.log('Opening message modal');  // This will appear in the console when the button is clicked
     this.isModalOpen = true;
+  }
+  
+  calculateTotalPrice(): void {
+    if (this.startDate && this.endDate) {
+      const start = new Date(this.startDate);
+      const end = new Date(this.endDate);
+      
+      const timeDiff = end.getTime() - start.getTime();
+      const dayCount = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  
+      if (dayCount > 0) {
+        this.totalPrice = dayCount * this.item.Item_price;
+      } else {
+        this.totalPrice = 0;
+      }
+    } else {
+      this.totalPrice = 0;
+    }
   }
   
 

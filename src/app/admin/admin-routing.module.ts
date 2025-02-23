@@ -7,7 +7,8 @@ import { SubModule } from './subscription/sub.module';
 // Lazy load 
 const accountsModule = () => import('./accounts/accounts.module').then(x => x.AccountsModule);
 const itemsModule = () => import('./items/items.module').then(x => x.ItemsModule);
-const subscriptionsModule = () => import('./subscription/sub.module').then(x => x.SubModule)
+const subscriptionsModule = () => import('./subscription/sub.module').then(x => x.SubModule);
+const revenueModule = () => import('./revenue/revenue.module').then(x => x.RevenueModule);
 const routes: Routes = [
     {
         path: '', component: LayoutComponent,
@@ -15,7 +16,8 @@ const routes: Routes = [
             { path: '', component: OverviewComponent },
             { path: 'accounts', loadChildren: accountsModule },
             { path: 'items', loadChildren: itemsModule },
-            { path: 'subscription', loadChildren: subscriptionsModule}
+            { path: 'subscription', loadChildren: subscriptionsModule},
+            { path: 'revenue', loadChildren: revenueModule}
         ]
     }
 ];

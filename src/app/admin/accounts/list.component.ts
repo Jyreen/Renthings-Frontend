@@ -3,6 +3,8 @@ import { first } from 'rxjs/operators';
 import { AccountService } from '../../_services/account.service'
 import { Account } from '../../_models'
 import Swal from 'sweetalert2'; // Import SweetAlert
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
@@ -94,5 +96,39 @@ export class ListComponent implements OnInit {
                     });
             }
         });
+    }
+
+    // Function to export table as PDF
+    exportToPDF() {
+        const doc = new jsPDF();
+        const currentDate = new Date().toLocaleDateString();
+
+        // Title
+        doc.setFontSize(18);
+        doc.text('RENTHINGS - Account List', 15, 15);
+        doc.setFontSize(12);
+        doc.text(`Exported on: ${currentDate}`, 15, 25);
+
+        // Table Headers
+        const headers = [['Name', 'Email', 'Role', 'Status', 'Subscription']];
+        
+        // Table Data
+        const data = this.filteredAccounts.map(account => [
+            `${account.acc_firstName} ${account.acc_lastName}`,
+            account.acc_email,
+            account.acc_role,
+            account.acc_status,
+            account.acc_subscription
+        ]);
+
+        // Generate Table
+        autoTable(doc, {
+            startY: 30,
+            head: headers,
+            body: data
+        });
+
+        // Save PDF
+        doc.save(`Account_List.pdf`);
     }
 }

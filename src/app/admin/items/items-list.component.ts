@@ -3,6 +3,8 @@ import { first } from 'rxjs/operators';
 import { ItemService } from '../../_services/item.service';
 import Swal from 'sweetalert2'; // Import SweetAlert
 import { Item } from '../../_models';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({ templateUrl: 'items-list.component.html' })
 export class ItemsListComponent implements OnInit {
@@ -80,5 +82,39 @@ export class ItemsListComponent implements OnInit {
                     Swal.fire('Error', 'Failed to update item status. Please try again later.', 'error');
                 }
             );
+    }
+
+    // Function to export table as PDF
+    exportToPDF() {
+        const doc = new jsPDF();
+        const currentDate = new Date().toLocaleDateString();
+
+        // Title
+        doc.setFontSize(18);
+        doc.text('RENTHINGS - Items List', 15, 15);
+        doc.setFontSize(12);
+        doc.text(`Exported on: ${currentDate}`, 15, 25);
+
+        // Table Headers
+        const headers = [['Name', 'Price', 'Status', 'Approval Status']];
+        
+        // Table Data
+        const data = this.filteredItems.map(item => [
+            item.Item_name,
+            `$${item.Item_price.toFixed(2)}`,
+            item.Item_status,
+            item.Item_approvalstatus
+        ]);
+        
+
+        // Generate Table
+        autoTable(doc, {
+            startY: 30,
+            head: headers,
+            body: data
+        });
+
+        // Save PDF
+        doc.save(`Items_List.pdf`);
     }
 }

@@ -52,4 +52,8 @@ export class SubscriptionService {
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${baseUrl}/${id}`);
     }
+
+    getApproved(): Observable<Subscription[]> {
+        return this.http.get<Subscription[]>(`${baseUrl}/approved`);
+    }
 }

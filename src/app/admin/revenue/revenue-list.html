@@ -1,0 +1,66 @@
+<div id="page-top">
+    <div id="wrapper">
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid col-lg-12">
+                    <h1 class="h3 mb-2 text-gray-800">Revenue</h1>
+                    <p class="mb-4">View all approved subscriptions and track total revenue.</p>
+
+                    <!-- Filter by Date -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Filter by Date</h6>
+                        </div>
+                        <div class="card-body d-flex">
+                            <input type="date" class="form-control mr-2" [(ngModel)]="startDate" />
+                            <input type="date" class="form-control mr-2" [(ngModel)]="endDate" />
+                            <button class="btn btn-primary" (click)="filterByDate()">Filter</button>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Table -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Approved Subscriptions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Subscription Plan</th>
+                                            <th>Price</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let sub of filteredSubscriptions">
+                                            <td>{{ sub.id }}</td>
+                                            <td>name</td>
+                                            <td>{{ sub.subscription_plan }}</td>
+                                            <td>₱{{ sub.price }}</td>
+                                            <td>{{ sub.start_date | date }}</td>
+                                            <td>{{ sub.end_date | date }}</td>
+                                        </tr>
+                                        <tr *ngIf="!filteredSubscriptions.length">
+                                            <td colspan="6" class="text-center">No subscriptions found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Revenue & Export -->
+                    <div class="d-flex justify-content-between">
+                        <h4 class="font-weight-bold">Total Revenue: ₱{{ totalRevenue }}</h4>
+                        <button class="btn btn-success" (click)="exportToPDF()">Export to PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
