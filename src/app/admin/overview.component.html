@@ -1,35 +1,41 @@
 <div class="dashboard-container">
-    <main>
-      <div class="ag-format-container">
-        <br><br>
-  
-        <!-- Welcome Section -->
-        <div class="welcome-section">
-          <h1>Welcome, <span id="acc_name">Admin</span>!</h1>
-          <p>Here's an overview of the platform's activity. Keep up the great work!</p>
-        </div>
-  
-        <br>
-  
-  
-        <br>
-  
-        <!-- Charts Section -->
-        <div class="charts-section">
-          <h2><ion-icon name="bar-chart-outline"></ion-icon> Monthly Progress</h2>
-          <div class="charts-wrapper">
-            <div class="chart-container">
-              <canvas id="donationsChart"></canvas>
-            </div>
-            <div class="chart-container">
-              <canvas id="usersChart"></canvas>
-            </div>
+  <main>
+    <div class="ag-format-container">
+      <br><br>
+
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <h1>Welcome, <span id="acc_name">Admin</span>!</h1>
+        <p>Here's an overview of the platform's activity. Keep up the great work!</p>
+      </div>
+
+      <br>
+
+      <!-- Charts Section -->
+      <div class="charts-section">
+        <h2><ion-icon name="bar-chart-outline"></ion-icon> Monthly Progress</h2>
+        <div class="charts-wrapper">
+          <div class="chart-container">
+            <canvas id="accountsChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="subscriptionsChart"></canvas>
           </div>
         </div>
-  
-        <br>
 
-  </div>
+        <div class="charts-wrapper">
+          <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="itemsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
   
   <style>
   .ag-format-container {

@@ -6,8 +6,6 @@ export class Subscription {
     subscription_plan: '1_month' | '3_months' | '6_months';
     plan_duration: number;
     subscription_receipt: string;
-    acc_firstName: string;
-    acc_lastName: string;
     durationMonths?: number;
     price?: number; 
 

@@ -4,6 +4,7 @@
             <div id="content">
                 <div class="container-fluid col-lg-12">
                     <h1 class="h3 mb-2 text-gray-800">Revenue</h1>
+                    <button class="btn btn-danger" (click)="exportToPDF()">Export to PDF</button>
                     <p class="mb-4">View all approved subscriptions and track total revenue.</p>
 
                     <!-- Filter by Date -->
@@ -39,7 +40,7 @@
                                     <tbody>
                                         <tr *ngFor="let sub of filteredSubscriptions">
                                             <td>{{ sub.id }}</td>
-                                            <td>name</td>
+                                            <td>{{ sub.acc_firstName }}</td>
                                             <td>{{ sub.subscription_plan }}</td>
                                             <td>₱{{ sub.price }}</td>
                                             <td>{{ sub.start_date | date }}</td>
@@ -57,7 +58,6 @@
                     <!-- Total Revenue & Export -->
                     <div class="d-flex justify-content-between">
                         <h4 class="font-weight-bold">Total Revenue: ₱{{ totalRevenue }}</h4>
-                        <button class="btn btn-success" (click)="exportToPDF()">Export to PDF</button>
                     </div>
                 </div>
             </div>
