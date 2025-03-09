@@ -4,7 +4,7 @@
             <div id="content">
                 <div class="container-fluid col-lg-12">
                     <h1 class="h3 mb-2 text-gray-800">Revenue</h1>
-                    <button class="btn btn-danger" (click)="exportToPDF()">Export to PDF</button>
+                    <button class="btn btn-info" (click)="exportToPDF()">Export to PDF</button>
                     <p class="mb-4">View all approved subscriptions and track total revenue.</p>
 
                     <!-- Filter by Date -->
@@ -13,9 +13,12 @@
                             <h6 class="m-0 font-weight-bold text-primary">Filter by Date</h6>
                         </div>
                         <div class="card-body d-flex">
-                            <input type="date" class="form-control mr-2" [(ngModel)]="startDate" />
-                            <input type="date" class="form-control mr-2" [(ngModel)]="endDate" />
-                            <button class="btn btn-primary" (click)="filterByDate()">Filter</button>
+                            <div class="row p-3 justify-content-between">
+                                <input type="date" class="input input-bordered flex items-center gap-2 col-md-6" [(ngModel)]="startDate" />
+                                <input type="date" class="input input-bordered flex items-center gap-2 col-md-6" [(ngModel)]="endDate" />
+                                <button class="btn btn-primary col-md-12 mt-3" (click)="filterByDate()">Filter</button>
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -47,7 +50,7 @@
                                             <td>{{ sub.end_date | date }}</td>
                                         </tr>
                                         <tr *ngIf="!filteredSubscriptions.length">
-                                            <td colspan="6" class="text-center">No subscriptions found.</td>
+                                            <td class="text-center" colspan="6">No subscriptions found.</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -1,41 +1,182 @@
-<div class="app-container" [ngClass]="{ 'bg-light': account }">
-    
-    
-    <header id="header" *ngIf="account" style="background-color: #ffffff; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);">
-      <div id="header-wrap" *ngIf="account.acc_role === Role.User">
-        <nav class="primary-nav padding-small">
-          <div class="container">
-            <div class="row d-flex align-items-center">
-              <div class="col-lg-2 col-md-2">
-                <div class="main-logo">
-                  <a href="index.html">
-                    <img src="assets/Images/Renthings logo.png" style="height: 150px; width: 100%; object-fit: cover; border-radius: 10px;" alt="logo">
-                  </a>
-                </div>
-              </div>
-              <div class="col-lg-10 col-md-10">
-                <div class="navbar">
-  
-                  <div id="main-nav" class="stellarnav d-flex justify-content-end right">
-                    <ul class="menu-list">
-                      <li><a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="item-anchor" style="font-size: large;">Home</a></li>
-                      <li><a routerLink="/rent" class="item-anchor" data-effect="Contact">Rent items</a></li>
-                      <li><a routerLink="/about" class="item-anchor" data-effect="Contact">About</a></li>
-                      <li><a routerLink="/message" class="item-anchor" data-effect="Contact">Chats</a></li>
+<div *ngIf="account">
+  <div *ngIf="account.acc_role === Role.User" class="navbar bg-base-100 shadow-xl rounded-2xl mx-auto mt-6" style="max-width: 1300px; position: sticky; top: 0; z-index: 1000;">
+    <div class="flex items-center justify-between w-full">
+      <!-- Logo Section -->
+      <div class="main-logo">
+        <a routerLink="/home">
+          <img src="assets/Images/Renthings logo.png" alt="logo" class="h-20 w-auto object-cover rounded-lg" />
+        </a>
+      </div>
 
-                      <a *ngIf="account.role === Role.Admin" routerLink="/admin" routerLinkActive="active" class="nav-item nav-link">Admin</a>
-                      <li><a routerLink="/profile" routerLinkActive="active" class="item-anchor">Profile</a></li>
-                      <li><a (click)="logout()" class="item-anchor" data-effect="Contact" style="cursor: pointer;">Logout</a></li>
-                    </ul>
+
+      <div>
+        <ul class="menu menu-horizontal px-3">
+          <li><a routerLink="/home" [routerLinkActiveOptions]="{exact: true}" class="item-anchor no-underline text-gray-800 hover:text-primary">Home</a></li>
+          <li><a routerLink="/rent" class="item-anchor no-underline text-gray-800 hover:text-primary" data-effect="Contact">Rent items</a></li>
+          <li><a routerLink="/about" class="item-anchor no-underline text-gray-800 hover:text-primary" data-effect="Contact">About</a></li>
+          <li><a routerLink="/message" class="item-anchor no-underline text-gray-800 hover:text-primary" data-effect="Contact">Chats</a></li>
+          <!--
+          <li>
+            <details>
+              <summary class="no-underline text-gray-800">Parent</summary>
+              <ul class="bg-base-100 rounded-t-none p-2">
+                <li><a class="no-underline text-gray-800 hover:text-primary">Link 1</a></li>
+                <li><a class="no-underline text-gray-800 hover:text-primary">Link 2</a></li>
+              </ul>
+            </details>
+          </li>-->
+        </ul>
+      </div>
+      
+  
+
+      <!-- Navbar Right Section (Dropdowns) -->
+      <div class="flex items-center space-x-6">
+        <!-- Cart Dropdown -->
+        <div class="dropdown dropdown-end">
+          <button tabindex="0" class="btn btn-ghost btn-circle relative">
+            <div class="indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span class="badge badge-sm indicator-item">8</span>
+            </div>
+          </button>
+          <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow-xl rounded-2xl">
+            <div class="card-body">
+              <span class="text-lg font-bold">8 Items</span>
+              <span class="text-info">Subtotal: Php.999</span>
+              <div class="card-actions">
+                <button class="btn btn-primary btn-block">View cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="flex items-center space-x-6">
+          <!-- Message Notification Dropdown -->
+          <div class="dropdown dropdown-end">
+            <button tabindex="0" class="btn btn-ghost btn-circle relative">
+              <div class="indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span class="badge badge-sm indicator-item">5</span> <!-- Change the number to show unread message count -->
+              </div>
+            </button>
+            <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-64 shadow-xl rounded-2xl">
+              <div class="card-body">
+                <span class="text-lg font-bold">Messages</span>
+                <div class="space-y-2 mt-2">
+                  <!-- Each message item -->
+                  <div class="flex items-center space-x-2">
+                    <div class="avatar">
+                      <div class="w-8 h-8 rounded-full bg-gray-400"></div> <!-- Placeholder for user avatar -->
+                    </div>
+                    <div class="flex-1 text-sm">
+                      <span class="font-semibold">John Doe</span>
+                      <p class="text-xs text-gray-500">Hey, are you available for a meeting tomorrow?</p>
+                    </div>
                   </div>
+                  <div class="flex items-center space-x-2">
+                    <div class="avatar">
+                      <div class="w-8 h-8 rounded-full bg-gray-400"></div>
+                    </div>
+                    <div class="flex-1 text-sm">
+                      <span class="font-semibold">Jane Smith</span>
+                      <p class="text-xs text-gray-500">Don't forget the project deadline!</p>
+                    </div>
+                  </div>
+                  <!-- Additional messages can be added here -->
+                </div>
+                <div class="card-actions mt-3">
+                  <button class="btn btn-primary btn-block">View All</button>
                 </div>
               </div>
             </div>
           </div>
-        </nav>
+        </div>
+
+
+        <!-- User Avatar Dropdown -->
+        <div class="dropdown dropdown-end">
+          <button tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <!-- Profile Image with Custom CSS -->
+            <div class="user-avatar">
+              <img alt="User Avatar" class="avatar-img" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            </div>
+          </button>
+          <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-2xl z-[1] mt-3 w-52 p-2 shadow-xl">
+            <li>
+              <a routerLink="/profile" routerLinkActive="active">
+                Profile
+              </a>
+            </li>
+            <li><a>Settings</a></li>
+            <li><a (click)="logout()" data-effect="Contact" style="cursor: pointer;">Logout</a></li>
+          </ul>
+        </div>
       </div>
-    </header>
-	<!-- End Header Area -->
-    <!-- main router outlet -->
-    <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
+<!-- Main Router Outlet -->
+<router-outlet class="main-container"></router-outlet>
+
+<style>
+
+/* Fix for making the profile image circular */
+.user-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 50% !important;  /* Makes the image inside the circle */
+}
+
+.avatar-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* Makes sure the image fits within the circle */
+}
+
+/* Optional: increase the button size if necessary */
+.btn-circle {
+  width: 40px !important;   /* Adjust width to fit avatar */
+  height: 40px !important;  /* Adjust height to fit avatar */
+  padding: 0 !important;    /* Remove padding so image fits properly */
+}
+
+/* Ensure btn-circle has enough size */
+.btn-circle {
+  width: 40px !important;  /* Set the size of the circle */
+  height: 40px !important; /* Set the size of the circle */
+  display: flex !important;
+  justify-content: center !important;  /* Center horizontally */
+  align-items: center !important;      /* Center vertically */
+  padding: 0 !important;    /* Remove padding */
+}
+
+/* Indicator container: make sure it's centered */
+.indicator {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative; /* Needed for badge position */
+}
+
+/* Optional: To center the badge if necessary */
+.indicator-item {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}
+
+</style>

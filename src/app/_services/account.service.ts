@@ -57,6 +57,10 @@ export class AccountService {
             );
     }
     
+    isLoggedIn(): boolean {
+        // Check if there's a valid account value or access token
+        return !!localStorage.getItem('accessToken');
+    }
     
 
     logout() {

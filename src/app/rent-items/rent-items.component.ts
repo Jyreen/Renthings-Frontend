@@ -17,10 +17,12 @@ export class RentItemsComponent implements OnInit {
 
   loadApprovedItems(): void {
     this.itemService.getApprovedItems().subscribe(
-      (items) => (this.approvedItems = items),
-      (error) => console.error('Failed to fetch approved items', error)
+      (items) => {
+        console.log("Approved Items:", items);  // Debugging: Check if data is received
+        this.approvedItems = items;
+      },
+      (error) => console.error("Failed to fetch approved items", error)
     );
-
-    
   }
+  
 }

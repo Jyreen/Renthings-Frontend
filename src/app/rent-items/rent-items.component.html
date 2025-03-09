@@ -1,158 +1,108 @@
-<section class="site-banner jarallax min-height300 padding-large" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(assets/ultras-1.0.0/images/banner2.jpg) no-repeat; background-position: center;">
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 class="page-title text-white">Rent the Best Items</h1>
-          <div class="breadcrumbs text-white">
-            <span class="item"><a routerLink="/home" class="text-white">Home /</a></span>
-            <span class="item">Rent Items</span>
-          </div>
-        </div>
+<!-- Banner -->
+<section class="relative hero min-h-[300px]" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(assets/ultras-1.0.0/images/banner2.jpg) no-repeat center/cover;">
+  <div class="hero-overlay bg-opacity-50"></div>
+  <div class="hero-content text-center text-white">
+      <div>
+          <h1 class="text-4xl font-bold">Rent the Best Items</h1>
+          <p class="breadcrumbs">
+              <a href="/home" class="text-white">Home</a> / <span>Rent Items</span>
+          </p>
       </div>
-    </div>
+  </div>
 </section>
 
-  <div class="shopify-grid padding-large">
-    <div class="container">
-      <div class="row">
+<!-- Rental Section -->
+<div class="container mx-auto p-6">
+  <div class="flex flex-col lg:flex-row gap-6">
 
-        <section id="selling-products" class="col-md-9 product-store">
-          <div class="container">
-            <ul class="tabs list-unstyled">
-              <li data-tab-target="#all" class="active tab">All</li>
-              <li data-tab-target="#shoes" class="tab">Electronics</li>
-              <li data-tab-target="#tshirts" class="tab">Furniture</li>
-              <li data-tab-target="#pants" class="tab">Tools & Equipment</li>
-              <li data-tab-target="#hoodie" class="tab">Vehicles</li>
-              <li data-tab-target="#outer" class="tab">Sports & Fitness Equipment</li>
-              <li data-tab-target="#jackets" class="tab">Musical Instruments</li>
-              <li data-tab-target="#accessories" class="tab">Party & Event Supplies</li>
-            </ul>
+      <!-- Product List -->
+      <section class="flex-1">
+          <div class="tabs mb-6">
+              <a class="tab tab-bordered tab-active">All</a>
+              <a class="tab tab-bordered">Electronics</a>
+              <a class="tab tab-bordered">Furniture</a>
+              <a class="tab tab-bordered">Tools & Equipment</a>
+              <a class="tab tab-bordered">Vehicles</a>
+              <a class="tab tab-bordered">Sports & Fitness</a>
+              <a class="tab tab-bordered">Musical Instruments</a>
+              <a class="tab tab-bordered">Party & Events</a>
+          </div>
 
-            <div class="tab-content">
-              <div id="all" data-tab-content class="active">
-                <div class="row d-flex flex-wrap">
-                  <div
-                    *ngFor="let item of approvedItems"
-                    class="product-item col-lg-4 col-md-6 col-sm-6"
-                  >
-                    <div class="image-holder">
-                      <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" class="product-image"
-                      [routerLink]="['/item', item.Item_id]" />
-                    </div>
-                    <div class="cart-concern">
-                      <div class="cart-button d-flex justify-content-between align-items-center">
-                        <button type="button" class="btn-wrap cart-link d-flex align-items-center" [routerLink]="['/item', item.Item_id]">
-                          View Item <i class="icon icon-arrow-io"></i>
-                        </button>
-                        <button type="button" class="view-btn tooltip d-flex" [routerLink]="['/item', item.Item_id]">
-                          <i class="icon icon-screen-full"></i>
-                          <span class="tooltip-text">Quick view</span>
-                        </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div class="card bg-base-100 shadow-xl" *ngFor="let item of approvedItems">
+                  <figure>
+                      <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" class="w-full">
+                  </figure>
+                  <div class="card-body">
+                      <h2 class="card-title">
+                          <a [routerLink]="['/item', item.Item_id]">{{ item.Item_name }}</a>
+                      </h2>
+                      <p class="text-primary font-semibold">₱{{ item.Item_price }}</p>
+                      <div class="card-actions justify-end">
+                          <a class="btn btn-outline btn-primary" [routerLink]="['/item', item.Item_id]">View Item</a>
                       </div>
-                    </div>
-                    <div class="product-detail">
-                      <h3 class="product-title">
-                        <a [routerLink]="['/item', item.Item_id]">{{ item.Item_name }}</a>
-                      </h3>
-                      <div class="item-price text-primary">₱{{ item.Item_price }}</div>
-                    </div>
                   </div>
-                </div>
               </div>
-            </div>
           </div>
-        </section>
-        
-        <aside class="col-md-3">
-          <div class="sidebar">
-            <div class="widgets widget-menu">
-              <div class="widget-search-bar">
-                <form role="search" method="get" class="d-flex">
-                  <input class="search-field" placeholder="Search" type="text">
-                  <button class="btn btn-dark"><i class="icon icon-search"></i></button>
-                </form>
-              </div> 
-            </div>
-            <div class="widgets widget-product-tags">
-              <h5 class="widget-title">Tags</h5>
-              <ul class="product-tags sidebar-list list-unstyled">
-                <li class="tags-item">
-                  <a href="">RentAndSave</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">RentTech</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">RentGear</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">ShortTermRentals</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">RentTools</a>
-                </li>
-              </ul>
-            </div>
-            <div class="widgets widget-product-brands">
-              <h5 class="widget-title">Brands</h5>
-              <ul class="product-tags sidebar-list list-unstyled">
-                <li class="tags-item">
-                  <a href="">DJI</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">Adidas</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">Tesla</a>
-                </li>
-                <li class="tags-item">
-                  <a href="">North Face</a>
-                </li>
-              </ul>
-            </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="w-full lg:w-1/4">
+          <div class="bg-base-100 p-4 rounded-lg shadow-md">
+              <h3 class="text-lg font-bold mb-3">Search</h3>
+              <div class="join w-full">
+                  <input type="text" class="input input-bordered w-full" placeholder="Search...">
+                  <button class="btn btn-dark join-item"><i class="icon icon-search"></i></button>
+              </div>
           </div>
-        </aside>
-      </div>        
-    </div>      
+
+          <div class="bg-base-100 p-4 mt-6 rounded-lg shadow-md">
+              <h3 class="text-lg font-bold mb-3">Tags</h3>
+              <div class="flex flex-wrap gap-2">
+                  <a class="badge badge-outline">RentAndSave</a>
+                  <a class="badge badge-outline">RentTech</a>
+                  <a class="badge badge-outline">RentGear</a>
+                  <a class="badge badge-outline">ShortTermRentals</a>
+                  <a class="badge badge-outline">RentTools</a>
+              </div>
+          </div>
+
+          <div class="bg-base-100 p-4 mt-6 rounded-lg shadow-md">
+              <h3 class="text-lg font-bold mb-3">Brands</h3>
+              <div class="flex flex-wrap gap-2">
+                  <a class="badge badge-outline">DJI</a>
+                  <a class="badge badge-outline">Adidas</a>
+                  <a class="badge badge-outline">Tesla</a>
+                  <a class="badge badge-outline">North Face</a>
+              </div>
+          </div>
+      </aside>
+
   </div>
-  <section id="shipping-information">
-    <hr>
-    <div class="container">
-      <div class="row d-flex flex-wrap align-items-center justify-content-between">
-        <div class="col-md-3 col-sm-6">
-          <div class="icon-box">
-            <i class="icon icon-truck"></i>
-            <h4 class="block-title">
-              <strong>Free shipping</strong> Over ₱100
-            </h4>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="icon-box">
-            <i class="icon icon-return"></i>
-            <h4 class="block-title">
-              <strong>Money back</strong> Return within 7 days
-            </h4>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="icon-box">
-            <i class="icon icon-tags1"></i>
-            <h4 class="block-title">
-              <strong>Buy 4 get 5th</strong> 50% off
-            </h4>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="icon-box">
-            <i class="icon icon-help_outline"></i>
-            <h4 class="block-title">
-              <strong>Any questions?</strong> experts are ready
-            </h4>
-          </div>
-        </div>
+</div>
+
+<!-- Shipping Information -->
+<section class="bg-base-100 p-6 mt-6">
+  <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+      <div class="flex flex-col items-center">
+          <i class="icon icon-truck text-4xl"></i>
+          <h4 class="font-bold mt-2">Free shipping</h4>
+          <p>Over ₱100</p>
       </div>
-    </div>
-    <hr>
-  </section>
+      <div class="flex flex-col items-center">
+          <i class="icon icon-return text-4xl"></i>
+          <h4 class="font-bold mt-2">Money back</h4>
+          <p>Return within 7 days</p>
+      </div>
+      <div class="flex flex-col items-center">
+          <i class="icon icon-tags1 text-4xl"></i>
+          <h4 class="font-bold mt-2">Buy 4 get 5th</h4>
+          <p>50% off</p>
+      </div>
+      <div class="flex flex-col items-center">
+          <i class="icon icon-help_outline text-4xl"></i>
+          <h4 class="font-bold mt-2">Any questions?</h4>
+          <p>Experts are ready</p>
+      </div>
+  </div>
+</section>

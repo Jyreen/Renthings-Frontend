@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { OnInit, Renderer2 } from '@angular/core';
 import { AccountService } from './_services';
 import { Account, Role } from './_models';
 
@@ -8,11 +8,23 @@ export class AppComponent {
     Role = Role;
     account: Account;
 
-    constructor(private accountService: AccountService) {
+    constructor(
+        private accountService: AccountService,
+    ) {
         this.accountService.account.subscribe(x => this.account = x);
     }
 
     logout() {
         this.accountService.logout();
     }
+
+    
+    isLoggedIn(){
+        this.accountService.isLoggedIn();
+    }
+
+    ngOnInit() {
+    
+    }
+
 }

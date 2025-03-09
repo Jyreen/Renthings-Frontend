@@ -1,32 +1,42 @@
+.renters-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .renters-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 
 .renters-table th, .renters-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-.renters-table th {
-  background-color: #f4f4f4;
+.renters-table tr:hover {
+  background-color: #f9f9f9;
 }
 
-.message-btn {
-  background-color: #007bff;
+.badge-warning {
+  background-color: orange;
   color: white;
   padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-  margin-right: 5px;
+  border-radius: 5px;
 }
 
-.approve-btn {
-  background-color: #28a745;
+.badge-success {
+  background-color: green;
   color: white;
   padding: 5px 10px;
-  border: none;
-  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
 }

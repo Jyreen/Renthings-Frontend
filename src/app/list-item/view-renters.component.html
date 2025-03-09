@@ -1,33 +1,46 @@
-<div class="renters-container">
-  <h2>Renters for This Item</h2>
+<div class="renters-container p-4 bg-white shadow-sm rounded">
+  <h2 class="text-primary mb-3">Renters for This Item</h2>
 
-  <div *ngIf="renters.length === 0" class="no-renters">
+  <div *ngIf="!renters || renters.length === 0" class="alert alert-warning text-center">
     No renters found for this item.
   </div>
 
-  <table *ngIf="renters.length > 0" class="renters-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Rental Period</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let renter of renters">
-        <td>{{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}</td>
-        <td>{{ renter.rental_start_date | date }} - {{ renter.rental_end_date | date }}</td>
-        <td>
-          <span [style.color]="renter.rental_status === 'Pending' ? 'orange' : 'green'">
-            {{ renter.rental_status }}
-          </span>
-        </td>
-        <td>
-          <button class="message-btn" (click)="sendMessage(renter.renter_acc_id)">Send Message</button>
-          <button class="approve-btn" *ngIf="renter.rental_status === 'Pending'" (click)="approveRental(renter.RentItem_id)">Approve</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="renters.length > 0" class="table-responsive">
+    <table class="table table-hover renters-table">
+      <thead class="bg-primary text-white">
+        <tr>
+          <th>Name</th>
+          <th>Rental Period</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let renter of renters" class="align-middle">
+          <td class="fw-bold">
+            {{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}
+          </td>
+          <td>{{ renter.rental_start_date | date }} - {{ renter.rental_end_date | date }}</td>
+          <td>
+            <span class="badge"
+              [ngClass]="{
+                'badge-warning': renter.rental_status === 'Pending',
+                'badge-success': renter.rental_status === 'Approved'
+              }">
+              {{ renter.rental_status }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-outline-primary btn-sm me-2" (click)="sendMessage(renter.renter_acc_id)">
+              <i class="icon icon-message"></i> Message
+            </button>
+            <button class="btn btn-success btn-sm" *ngIf="renter.rental_status === 'Pending'" 
+              (click)="approveRental(renter.RentItem_id)">
+              <i class="icon icon-check"></i> Approve
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

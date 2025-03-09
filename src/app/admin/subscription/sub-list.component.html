@@ -3,9 +3,10 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <div class="container-fluid col-lg-12">
-                    <h1 class="h3 mb-2 text-gray-800">Items</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Revenue Items</h1>
                     <p class="mb-4">Manage items submitted by users. You can approve or reject items below.</p>
 
+                    
                     <!-- Search -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -26,13 +27,13 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Receipt</th>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Subscription Plan</th>
-                                            <th>Start Date</th>
-                                            <th>End Date</th>
-                                            <th>Actions</th>
+                                            <th class="text-gray-600">Receipt</th>
+                                            <th class="text-gray-600">ID</th>
+                                            <th class="text-gray-600">Name</th>
+                                            <th class="text-gray-600">Subscription Plan</th>
+                                            <th class="text-gray-600">Start Date</th>
+                                            <th class="text-gray-600">End Date</th>
+                                            <th class="text-gray-600">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,7 +69,7 @@
                                           </td>
                                         </tr>
                                         <tr *ngIf="!filteredSubscriptions.length">
-                                          <td colspan="5" class="text-center">No items found.</td>
+                                          <td colspan="7" class="text-center">No items found.</td>
                                         </tr>
                                       </tbody>                                      
                                 </table>

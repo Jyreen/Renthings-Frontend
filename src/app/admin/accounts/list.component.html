@@ -1,91 +1,53 @@
-<div id="page-top" style="">
-    <div id="wrapper">
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div class="container-fluid col-lg-12">
-                    <h1 class="h3 mb-2 text-gray-100">Accounts</h1>
-                    <button class="btn btn-danger btn-sm" (click)="exportToPDF()">Export to PDF</button>
-                    <p class="mb-4">This account list is designed to streamline the review process. Use the tools below to manage and track submissions, making efficient decisions in one centralized location.</p>
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-                    <!-- Collapsible Card Example -->
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Accordion -->
-                        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                            <h6 class="m-0 font-weight-bold text-primary">Search</h6>
-                        </a>
-                        <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseCardExample">
-                            <div class="card-body">
-                                <!-- Page Heading -->
-                                <div class="py-3 d-flex justify-content-between align-items-center navbar-search">
-                                    <input 
-                                        type="text" 
-                                        class="form-control form-control-sm input-group-append" 
-                                        placeholder="Search..." 
-                                        [(ngModel)]="searchQuery" aria-label="Search" inputmode="fas fa-search fa-sm">
-                                </div>
-                            </div>
-                        </div>
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Account Users</h1>
+                <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                    For more information about DataTables, please visit the <a target="_blank"
+                        href="https://datatables.net">official DataTables documentation</a>.</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                     </div>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Account List</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Role</th>
-                                            <th scope="col">Account Status</th>
-                                            <th scope="col">Subscription Status</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let account of filteredAccounts">
-                                            <td>{{ account.acc_firstName }} {{ account.acc_lastName }}</td>
-                                            <td>{{ account.acc_email }}</td>
-                                            <td>{{ account.acc_role }}</td>
-                                            <td>{{ account.acc_status }}</td>
-                                            <td>{{ account.acc_subscription }}</td>
-                                            <td>
-                                                <!-- Edit button to open the modal for editing the account -->
-                                                <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary mr-1">Edit</a> &nbsp;
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="card-body">
+                        <div class="table-responsive overflow-x-auto">
+                            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-gray-600">Name</th>
+                                        <th class="text-gray-600">Email</th>
+                                        <th class="text-gray-600">Role</th>
+                                        <th class="text-gray-600">Account Status</th>
+                                        <th class="text-gray-600">Subscription Status</th>
+                                        <th class="text-gray-600">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let account of filteredAccounts">
+                                        <td>{{ account.acc_firstName }} {{ account.acc_lastName }}</td>
+                                        <td>{{ account.acc_email }}</td>
+                                        <td>{{ account.acc_role }}</td>
+                                        <td>{{ account.acc_status }}</td>
+                                        <td>{{ account.acc_subscription }}</td>
+                                        <td>
+                                            <!-- Edit button to open the modal for editing the account -->
+                                            <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary">Edit</a> &nbsp;
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Details Modal -->
-        <div *ngIf="showDetailsModal" class="modal-overlay" (click)="closeDetailsModal()">
-            <div class="modal-content" (click)="$event.stopPropagation()">
-                <div class="modal-header">
-                    <h5 class="card-title">Account Details</h5>
-                    <button type="button" class="btn-close" (click)="closeDetailsModal()"></button>
-                </div>
-                <div class="modal-body">
-                    <img [src]="'http://localhost:4000/assets/' + account.acc_image" 
-                        alt="account.acc_image" 
-                        style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
-
-                    <p><strong>Name:</strong> {{ account.acc_firstName }} {{ account.acc_lastName }}</p>
-                    <p><strong>Email:</strong> {{ account.acc_email }}</p>
-                    <p><strong>Role:</strong> {{ account.acc_role }}</p>
-                    <p><strong>Date Registered:</strong> {{ account.acc_created | date:'yyyy-MM-dd' }}</p>
-                </div>
             </div>
+            <!-- /.container-fluid -->
         </div>
     </div>
 </div>
-

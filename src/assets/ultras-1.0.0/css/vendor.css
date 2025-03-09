@@ -651,7 +651,7 @@
 #cboxPrevious:active, #cboxNext:active, #cboxSlideshow:active, #cboxClose:active {outline:0;}
 
 #cboxSlideshow{position:absolute; top:-20px; right:90px; color:#fff;}
-#cboxPrevious{position:absolute; top:50%; left:5px; margin-top:-32px; background:url(/src/assets/ultras-1.0.0/images/colorbox/controls.png) no-repeat top left; width:28px; height:65px; text-indent:-9999px;}
+#cboxPrevious{position:absolute; top:50%; left:5px; margin-top:-32px; background:url(/src/assets/rent_header.png) no-repeat top left; width:28px; height:65px; text-indent:-9999px;}
 #cboxPrevious:hover{background-position:bottom left;}
 #cboxNext{position:absolute; top:50%; right:5px; margin-top:-32px; background:url(/src/assets/ultras-1.0.0/images/colorbox/controls.png) no-repeat top right; width:28px; height:65px; text-indent:-9999px;}
 #cboxNext:hover{background-position:bottom right;}
