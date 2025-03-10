@@ -5,8 +5,8 @@
 >
   <div class="create-item-container">
     <!-- Button to open the modal -->
-    <button class="btn btn-primary" (click)="openCreateModal()" style="margin: 20px; padding: 10px 20px; margin-top: 70px;">
-      Create New Item
+    <button class="btn btn-info" (click)="openCreateModal()" style="margin: 20px; padding: 10px 20px; margin-top: 70px;">
+      <span class="padding-4">Create New Item</span>
     </button>
   
     <!-- Subscription modal -->
@@ -14,14 +14,13 @@
       
   <!-- Subscription Modal -->
   <div
-  class="background overlay"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
   *ngIf="showSubscriptionModal"
   style="
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 1500px;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -31,11 +30,9 @@
   >
   <div class="container">
     <div class="panel pricing-table">
-      <button
-        (click)="closeSubscriptionModal()"
-        style="position: absolute; top: 10px; right: 10px;"
-      >
-        &times;
+      <!-- Close Button -->
+      <button (click)="closeSubscriptionModal()" class="absolute top-3 right-3 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg">
+        ✕
       </button>
   
       <!-- 3 Months Plan -->
@@ -101,36 +98,44 @@
   </div>
 
 <!-- QR Code Payment Modal -->
-<div class="payment-modal" *ngIf="showPaymentModal">
-  <div class="modal-content">
-    <button class="close-button" (click)="closePaymentModal()">
-      &times;
+<div *ngIf="showPaymentModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+    <!-- Close Button -->
+    <button (click)="closePaymentModal()" class="absolute top-3 right-3 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg">
+      ✕
     </button>
-    <h3 class="modal-title">PAYMENT FOR {{ subscriptionDuration }} MONTHS</h3>
-    <div class="modal-body">
-      <div class="qr-section">
-        <img
-          src="assets/QR.png"
-          alt="QR Code"
-          class="qr-image"
-        />
-        <p class="amount-text">Amount: ₱{{ subscriptionAmount }}</p>
+
+    <!-- Modal Title -->
+    <h3 class="text-lg font-bold text-center mb-4">PAYMENT FOR {{ subscriptionDuration }} MONTHS</h3>
+
+    <div class="space-y-6">
+      <!-- QR Code Section -->
+      <div class="flex flex-col items-center">
+        <img src="assets/QR.png" alt="QR Code" class="w-40 h-40 rounded-lg shadow-md" />
+        <p class="mt-3 text-lg font-semibold">Amount: ₱{{ subscriptionAmount }}</p>
       </div>
-      <div class="upload-section">
-        <label for="receipt" class="upload-label">
-          Upload GCash Receipt:
-        </label>
-        <input type="file" id="receipt" (change)="handleReceiptUpload($event)" />
-        <p class="verification-note">
-          Note: Your payment will be subject to admin verification. Any jokes will result in a ban.
-        </p>
-        <button class="submit-button" (click)="submitPayment()">
+
+      <!-- Upload Receipt Section -->
+      <div class="flex flex-col space-y-2">
+        <label for="receipt" class="font-medium">Upload GCash Receipt:</label>
+        <input type="file" id="receipt" (change)="handleReceiptUpload($event)" class="file-input file-input-bordered w-full" />
+      </div>
+
+      <!-- Verification Note -->
+      <p class="text-sm text-gray-500 italic text-center">
+        Note: Your payment will be subject to admin verification. Any jokes will result in a ban.
+      </p>
+
+      <!-- Submit Button -->
+      <div class="flex justify-center pt-4">
+        <button (click)="submitPayment()" class="btn btn-primary w-full">
           Submit Receipt
         </button>
       </div>
     </div>
   </div>
-  </div>
+</div>
+
 
 
 
@@ -269,101 +274,80 @@
   </div>
   
   <!-- Update Item Modal -->
-  <div
-    *ngIf="showUpdateModal"
-    class="overlay"
-    style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    "
+<div
+*ngIf="showUpdateModal"
+class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+<div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+  <!-- Close Button -->
+  <button
+    (click)="closeUpdateModal()"
+    class="absolute top-3 right-3 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg"
   >
-    <div
-      class="overlay-content"
-      style="
-        width: 80%;
-        max-width: 500px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        position: relative;
-      "
-    >
-      <button
-        (click)="closeUpdateModal()"
-        style="
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background-color: #ff5c5c;
-          color: white;
-          border: none;
-          border-radius: 50%;
-          width: 30px;
-          height: 30px;
-          cursor: pointer;
-          font-size: 16px;
-        "
-      >
-        &times;
-      </button>
-  
-      <h3 style="text-align: center;">Update Item</h3>
-  
-      <form [formGroup]="updateItemForm" (ngSubmit)="updateItem()">
-        <label for="updateItemName">Item Name</label>
-        <input
-          type="text"
-          id="updateItemName"
-          formControlName="Item_name"
-          class="form-control"
-          placeholder="Enter Item Name"
-          style="width: 100%; padding: 8px; margin: 8px 0;"
-        />
-        
-        <label for="updateItemDescription">Item Description</label>
-        <textarea
-          id="updateItemDescription"
-          formControlName="Item_Description"
-          class="form-control"
-          placeholder="Enter Item Description"
-          style="width: 100%; padding: 8px; margin: 8px 0;"
-        ></textarea>
-      
-        <label for="updateItemPrice">Item Price</label>
-        <input
-          type="number"
-          id="updateItemPrice"
-          formControlName="Item_price"
-          class="form-control"
-          placeholder="Enter Item Price"
-          style="width: 100%; padding: 8px; margin: 8px 0;"
-        />
-      
-        <label for="updateItemImage">Upload Image</label>
-        <input type="file" id="updateItemImage" (change)="handleFileInput($event)" />
-      
-        <div style="text-align: center; margin-top: 20px;">
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="updateItemForm.invalid"
-          >
-            Update Item
-          </button>
-        </div>
-      </form>
-      
+    ✕
+  </button>
+
+  <h3 class="text-lg font-bold text-center mb-4">Update Item</h3>
+
+  <form [formGroup]="updateItemForm" (ngSubmit)="updateItem()" class="space-y-4">
+    <!-- Item Name -->
+    <div class="flex flex-col">
+      <label for="updateItemName" class="font-medium">Item Name</label>
+      <input
+        type="text"
+        id="updateItemName"
+        formControlName="Item_name"
+        class="input input-bordered w-full"
+        placeholder="Enter Item Name"
+      />
     </div>
-  </div>
+
+    <!-- Item Description -->
+    <div class="flex flex-col">
+      <label for="updateItemDescription" class="font-medium">Item Description</label>
+      <textarea
+        id="updateItemDescription"
+        formControlName="Item_Description"
+        class="textarea textarea-bordered w-full"
+        placeholder="Enter Item Description"
+      ></textarea>
+    </div>
+
+    <!-- Item Price -->
+    <div class="flex flex-col">
+      <label for="updateItemPrice" class="font-medium">Item Price</label>
+      <input
+        type="number"
+        id="updateItemPrice"
+        formControlName="Item_price"
+        class="input input-bordered w-full"
+        placeholder="Enter Item Price"
+      />
+    </div>
+
+    <!-- Upload Image -->
+    <div class="flex flex-col">
+      <label for="updateItemImage" class="font-medium">Upload Image</label>
+      <input
+        type="file"
+        id="updateItemImage"
+        (change)="handleFileInput($event)"
+        class="file-input file-input-bordered w-full"
+      />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-center pt-4">
+      <button type="submit" class="btn btn-primary w-full" [disabled]="updateItemForm.invalid">
+        Update Item
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+
+
+  
   
 <!-- Your Listings -->
 <div class="your-listings" style="margin-top: 40px;">
