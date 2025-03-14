@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { OverviewComponent } from './overview.component';
 import { SubModule } from './subscription/sub.module';
+import { AccountsReportComponent } from './accounts-report/accounts-report.component';
+import { FeatureGuard } from '../_helpers/feature.guard';
 
 // Lazy load 
 const accountsModule = () => import('./accounts/accounts.module').then(x => x.AccountsModule);
@@ -13,13 +15,21 @@ const routes: Routes = [
     {
         path: '', component: LayoutComponent,
         children: [
-            { path: '', component: OverviewComponent },
-            { path: 'accounts', loadChildren: accountsModule },
-            { path: 'items', loadChildren: itemsModule },
-            { path: 'subscription', loadChildren: subscriptionsModule},
-            { path: 'revenue', loadChildren: revenueModule}
-        ]
-    }
+            { path: '', component: OverviewComponent, canActivate: [FeatureGuard] },
+            { path: 'accounts', loadChildren: accountsModule, canActivate: [FeatureGuard] },
+            { path: 'items', loadChildren: itemsModule, canActivate: [FeatureGuard] },
+            { path: 'subscription', loadChildren: subscriptionsModule, canActivate: [FeatureGuard] },
+            { path: 'revenue', loadChildren: revenueModule, canActivate: [FeatureGuard] },
+        ],
+
+        
+    },
+
+    // admin reports
+    {path: 'admin/accounts-report', component: AccountsReportComponent, canActivate: [FeatureGuard]},
+    {path: 'admin/items-report', component: AccountsReportComponent, canActivate: [FeatureGuard]},
+    {path: 'admin/subscriptions-report', component: AccountsReportComponent, canActivate: [FeatureGuard]}
+
 ];
 
 @NgModule({

@@ -1,306 +1,90 @@
-<div class="container">
-  <div class="screen">
-    <div class="screen__content">
-      <h1>Register</h1>
-      <form class="register" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <!-- First Name -->
-        <div class="login__field">
-          <i class="login__icon fas fa-user"></i>
-          <input
-            type="text"
-            class="login__input"
-            placeholder="First Name"
-            formControlName="acc_firstName"
-            [ngClass]="{ 'is-invalid': submitted && f.acc_firstName.errors }"
-          />
-          <div *ngIf="submitted && f.acc_firstName.errors" class="invalid-feedback">
-            <div *ngIf="f.acc_firstName.errors.required">First Name is required</div>
-          </div>
-        </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-        <!-- Last Name -->
-        <div class="login__field">
-          <i class="login__icon fas fa-user"></i>
-          <input
-            type="text"
-            class="login__input"
-            placeholder="Last Name"
-            formControlName="acc_lastName"
-            [ngClass]="{ 'is-invalid': submitted && f.acc_lastName.errors }"
-          />
-          <div *ngIf="submitted && f.acc_lastName.errors" class="invalid-feedback">
-            <div *ngIf="f.acc_lastName.errors.required">Last Name is required</div>
-          </div>
-        </div>
+<div class="flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-lg rounded-2xl w-96 p-8">
+    <h1 class="text-2xl font-bold text-center text-gray-800">Register</h1>
+    <form class="space-y-4 mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <!-- First Name -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-user text-gray-500"></i>
+        <input type="text" placeholder="First Name" class="grow" formControlName="acc_firstName" 
+        [ngClass]="{ 'input-error': submitted && f.acc_firstName.errors }">
+      </label>
+      <div *ngIf="submitted && f.acc_firstName.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.acc_firstName.errors.required">First Name is required</div>
+      </div>
 
-        <!-- Email -->
-        <div class="login__field">
-          <i class="login__icon fas fa-envelope"></i>
-          <input
-            type="email"
-            class="login__input"
-            placeholder="Email"
-            formControlName="acc_email"
-            [ngClass]="{ 'is-invalid': submitted && f.acc_email.errors }"
-          />
-          <div *ngIf="submitted && f.acc_email.errors" class="invalid-feedback">
-            <div *ngIf="f.acc_email.errors.required">Email is required</div>
-            <div *ngIf="f.acc_email.errors.email">Email is invalid</div>
-          </div>
-        </div>
+      <!-- Last Name -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-user text-gray-500"></i>
+        <input type="text" placeholder="Last Name" class="grow" formControlName="acc_lastName" 
+        [ngClass]="{ 'input-error': submitted && f.acc_lastName.errors }">
+      </label>
+      <div *ngIf="submitted && f.acc_lastName.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.acc_lastName.errors.required">Last Name is required</div>
+      </div>
 
-        <!-- Password -->
-        <div class="login__field">
-          <i class="login__icon fas fa-lock"></i>
-          <input
-            type="password"
-            class="login__input"
-            placeholder="Password"
-            formControlName="acc_passwordHash"
-            [ngClass]="{ 'is-invalid': submitted && f.acc_passwordHash.errors }"
-          />
-          <div *ngIf="submitted && f.acc_passwordHash.errors" class="invalid-feedback">
-            <div *ngIf="f.acc_passwordHash.errors.required">Password is required</div>
-            <div *ngIf="f.acc_passwordHash.errors.minlength">Password must be at least 6 characters</div>
-          </div>
-        </div>
+      <!-- Email -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-envelope text-gray-500"></i>
+        <input type="email" placeholder="Email" class="grow" formControlName="acc_email" 
+        [ngClass]="{ 'input-error': submitted && f.acc_email.errors }">
+      </label>
+      <div *ngIf="submitted && f.acc_email.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.acc_email.errors.required">Email is required</div>
+        <div *ngIf="f.acc_email.errors.email">Email is invalid</div>
+      </div>
 
-        <!-- Confirm Password -->
-        <div class="login__field">
-          <i class="login__icon fas fa-lock"></i>
-          <input
-            type="password"
-            class="login__input"
-            placeholder="Confirm Password"
-            formControlName="confirmPassword"
-            [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }"
-          />
-          <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
-            <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
-            <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
-        </div>
-        </div>
+      <!-- Password -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-lock text-gray-500"></i>
+        <input type="password" placeholder="Password" class="grow" formControlName="acc_passwordHash" 
+        [ngClass]="{ 'input-error': submitted && f.acc_passwordHash.errors }">
+      </label>
+      <div *ngIf="submitted && f.acc_passwordHash.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.acc_passwordHash.errors.required">Password is required</div>
+        <div *ngIf="f.acc_passwordHash.errors.minlength">Password must be at least 6 characters</div>
+      </div>
 
-        <!-- Address -->
-        <div class="login__field">
-          <i class="login__icon fas fa-home"></i>
-          <input
-            type="text"
-            class="login__input"
-            placeholder="Address"
-            formControlName="acc_address"
-          />
-        </div>
+      <!-- Confirm Password -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-lock text-gray-500"></i>
+        <input type="password" placeholder="Confirm Password" class="grow" formControlName="confirmPassword" 
+        [ngClass]="{ 'input-error': submitted && f.confirmPassword.errors }">
+      </label>
+      <div *ngIf="submitted && f.confirmPassword.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+        <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+      </div>
 
-        <!-- Phone Number 
-        <div class="login__field">
-          <i class="login__icon fas fa-phone"></i>
-          <input
-            type="text"
-            class="login__input"
-            placeholder="Phone Number"
-            formControlName="acc_pnumber"
-          />
-        </div> -->
+      <!-- Address -->
+      <label class="input input-bordered flex items-center gap-2">
+        <i class="fas fa-home text-gray-500"></i>
+        <input type="text" placeholder="Address" class="grow" formControlName="acc_address">
+      </label>
 
-        <!-- Accept Terms -->
-        <div class="form-check">
-          <input
-            type="checkbox"
-            id="acceptTerms"
-            formControlName="acc_acceptTerms"
-            class="form-check-input"
-            [ngClass]="{ 'is-invalid': submitted && f.acc_acceptTerms.errors }"
-          />
-          <label for="acceptTerms" class="form-check-label">
-            Accept Terms and Conditions
-          </label>
-          <div *ngIf="submitted && f.acc_acceptTerms.errors" class="invalid-feedback">
-            <div *ngIf="f.acc_acceptTerms.errors.required">You must accept the terms</div>
-          </div>
-        </div>
+      <!-- Accept Terms -->
+      <label class="flex items-center gap-2">
+        <input type="checkbox" formControlName="acc_acceptTerms" 
+        class="checkbox checkbox-md" [ngClass]="{ 'input-error': submitted && f.acc_acceptTerms.errors }">
+        <span class="text-gray-600">Accept Terms and Conditions</span>
+      </label>
+      <div *ngIf="submitted && f.acc_acceptTerms.errors" class="text-red-500 text-sm">
+        <div *ngIf="f.acc_acceptTerms.errors.required">You must accept the terms</div>
+      </div>
 
-        <!-- Submit Button -->
-        <button class="button login__submit" [disabled]="loading">
-          <span class="button__text">Register Now</span>
-          <i class="button__icon fas fa-chevron-right"></i>
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        </button>
+      <!-- Submit Button -->
+      <button class="btn btn-dark w-full" [disabled]="loading">
+        <span>Register Now</span>
+        <i class="fas fa-chevron-right ml-2"></i>
+        <span *ngIf="loading" class="loading loading-spinner ml-2"></span>
+      </button>
 
-        <!-- Forgot Password and Sign Up Links -->
-        <div class="login__links">
-          <a routerLink="/account/login" class="sign-up">Sign In</a>
-        </div>
-      </form>
-    </div>
+      <!-- Sign In Link -->
+      <div class="text-center mt-4">
+        <a routerLink="../login" class="text-red-500 hover:text-red-600">Already have an account? Sign In</a>
+      </div>
+    </form>
   </div>
 </div>
-
-
-<style>
-  /* Fonts and Icon Import */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-
-/* General Styles */
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to right, #1a1a50, #bf1a1a);
-  font-family: 'Raleway', sans-serif;
-}
-
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-.screen {
-  background: #ffffff;
-  position: relative;
-  height: 1050px;
-  width: 480px;
-  border-radius: 20px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 80px;
-  margin-bottom: 80px;
-}
-
-.screen__content {
-  position: relative;
-  padding: 40px 30px;
-}
-
-.login__field {
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.login__icon {
-  position: absolute;
-  top: 12px;
-  left: 10px;
-  color: #bf1a1a;
-  font-size: 20px;
-}
-
-.error {
-  color: red;
-  font-size: 0.9em;
-}
-
-.login__input {
-  border: 1px solid #dcdcdc;
-  background: none;
-  padding: 12px 12px 12px 40px;
-  font-weight: 400;
-  font-size: 16px;
-  width: 100%;
-  color: #333333;
-  border-radius: 8px;
-  transition: 0.2s;
-}
-
-.login__input:focus {
-  outline: none;
-  border-color: #1a1a50;
-  box-shadow: 0 0 5px #1a1a50;
-}
-
-.login__submit {
-  background: #bf1a1a;
-  font-size: 14px;
-  margin-top: 20px;
-  padding: 16px 20px;
-  border-radius: 26px;
-  border: none;
-  text-transform: uppercase;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  color: #ffffff;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.login__submit:hover {
-  background: #a31515;
-}
-
-.login__links {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.forgot-password,
-.sign-up {
-  color: #bf1a1a;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: color 0.2s;
-}
-
-.forgot-password:hover,
-.sign-up:hover {
-  color: #a31515;
-}
-
-.login__links span {
-  color: #666666;
-  margin: 0 8px;
-}
-
-.social-login {
-  margin-top: 30px;
-  text-align: center;
-  color: #666666;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.social-login__icon {
-  margin: 0 10px;
-  color: #bf1a1a;
-  font-size: 20px;
-  transition: transform 0.3s;
-}
-
-.social-login__icon:hover {
-  transform: scale(1.2);
-  color: #a31515;
-}
-  /* Additional styling for checkboxes and labels */
-  .form-check {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.form-check-input {
-  margin-right: 10px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.form-check-label {
-  color: #666;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-</style>

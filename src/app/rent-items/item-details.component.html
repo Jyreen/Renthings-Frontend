@@ -1,51 +1,85 @@
-<div class="backdrop">
-  <div *ngIf="item">
-    <div class="card-wrapper">
-      <div class="card">
-        <!-- card left -->
-        <div class="product-imgs">
-          <div class="img-display">
-            <div class="img-showcase">
-              <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" style="height: 450px; width: auto;"/>
+<div class="container mx-auto p-6">
+  <!-- Breadcrumb Navigation -->
+  <div class="text-sm breadcrumbs mb-4">
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/rent">Rent Items</a></li>
+      <li class="text-gray-500">{{ item.Item_name }}</li>
+    </ul>
+  </div>
+
+  <div class="card lg:card-side bg-base-100 shadow-xl">
+    <div class="row">
+      <div class="col-md-6">
+        <img [src]="'http://localhost:4000/assets/' + item.Item_image" 
+                   alt="{{ item.Item_name }}" 
+                   class="rounded-lg w-full object-cover" style="height: 650px;"/>
+      </div>
+      <div class="col-md-6">
+        
+        <div class="card-body justify-center">
+          <div class="row">
+            <div class="col-md-6">
+              <h1 class="">{{ item.Item_name }}</h1>
+              <div class="badge badge-success gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                  <path fill-rule="evenodd" d="M15 8c0 .982-.472 1.854-1.202 2.402a2.995 2.995 0 0 1-.848 2.547 2.995 2.995 0 0 1-2.548.849A2.996 2.996 0 0 1 8 15a2.996 2.996 0 0 1-2.402-1.202 2.995 2.995 0 0 1-2.547-.848 2.995 2.995 0 0 1-.849-2.548A2.996 2.996 0 0 1 1 8c0-.982.472-1.854 1.202-2.402a2.995 2.995 0 0 1 .848-2.547 2.995 2.995 0 0 1 2.548-.849A2.995 2.995 0 0 1 8 1c.982 0 1.854.472 2.402 1.202a2.995 2.995 0 0 1 2.547.848c.695.695.978 1.645.849 2.548A2.996 2.996 0 0 1 15 8Zm-3.291-2.843a.75.75 0 0 1 .135 1.052l-4.25 5.5a.75.75 0 0 1-1.151.043l-2.25-2.5a.75.75 0 1 1 1.114-1.004l1.65 1.832 3.7-4.789a.75.75 0 0 1 1.052-.134Z" clip-rule="evenodd" />
+                </svg>            
+                <span> Available</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row justify-center items-center mt-2"> 
+                <h3>Rate:</h3>
+                <div class="rating">
+                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+                  <input
+                    type="radio"
+                    name="rating-2"
+                    class="mask mask-star-2 bg-orange-400"/>
+                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- card right -->
-        <div class="product-content">
-          <h2 class="product-title">{{ item.Item_name }}</h2>
-          <div class="product-price">
-            <p class="new-price">₱{{ item.Item_price }}</p>
+          <div class="row">
+            <div class="col-md-12">
+              <p>Description:</p>
+              <p class=""> {{ item.Item_Description }} </p>
+            </div>
           </div>
-          <div class="product-detail">
-            <h2>About this item:</h2>
-            <p>{{ item.Item_Description }}</p>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="text-gray-500">Category: {{ item.Item_category }}</p>
+              <p class="text-gray-500">Location: {{ item.Item_location }}</p>
+              <p class="text-gray-500">Price: ₱{{ item.Item_price }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="text-gray-500">Owner: {{ item.Item_owner }}</p>
+              <p class="text-gray-500">Contact: {{ item.Item_contact }}</p>
+              <p class="text-gray-500">Email: {{ item.Item_email }}</p>
+            </div>
           </div>
-          <div class="purchase-info">
-            <button type="button" class="btn btn-primary" (click)="openRentModal()">
-              Rent Item
+          <div class="card-actions justify-start">
+            <!-- Call to Action Buttons -->
+            <button class="btn btn-primary" (click)="openRentModal()">
+              Rent Now
             </button>
-            <button type="button" class="btn btn-dark" (click)="openMessageModal()">
+            <button class="btn btn-outline btn-secondary" (click)="openMessageModal()">
               Send Message
             </button>
-          </div>          
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </div>  
 </div>
 
-<!-- Message Modal -->
-<div *ngIf="isModalOpen" class="modal-overlay">
-  <div class="modal-content">
-    <h2>Send Message</h2>
-    <textarea [(ngModel)]="message" placeholder="Type your message here..."></textarea>
-    <div class="modal-actions">
-      <button (click)="sendMessage()" class="btn btn-dark">Send</button>
-      <button (click)="closeMessageModal()" class="btn">Cancel</button>
-    </div>
-  </div>
-</div>
+
+
+
 
 
 <!-- Rent Modal -->
@@ -100,7 +134,6 @@
 
 
 
-
 <!-- Message Modal -->
 <div *ngIf="isModalOpen" class="modal-overlay">
   <div class="modal-content">
@@ -113,108 +146,8 @@
   </div>
 </div>
 
-
-  <style>
-.modal-body .row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-body .col-md-6 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.container {
-  padding-top: 120px;
-  padding-bottom: 120px;
-}
-
-label {
-  font-size: 18px;
-}
-
-input {
-    padding: 10px 15px !important;
-    border: 1px solid #CFD8DC !important;
-    border-radius: 4px !important;
-    box-sizing: border-box;
-    background-color: #fff !important;
-    color: #000 !important;
-    font-size: 16px !important;
-    letter-spacing: 1px;
-    position: relative;
-    width: 100%;
-}
-
-input:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border: 1px solid #FFA000 !important;
-    outline-width: 0;
-}
-
-.daterangepicker {
-  background-color: #fff;
-  border-radius: 0 !important;
-  align-content: center !important;
-  padding: 0 !important;
-}
-
-/*Weekday Heading*/
-thead tr:nth-child(2) {
-  color: #BDBDBD !important;
-}
-
-tbody tr td {
-  padding: 5px 7px !important;
-}
-
-.month {
-  font-size: 16px !important;
-  padding-bottom: 10px !important;
-  padding-top: 10px !important;
-}
-
-.start-date, .end-date {
-  border-radius: 0px !important;
-}
-
-.available:hover {
-  border-radius: 0px !important;
-}
-
-.off {
-  color: #EEEEEE !important;
-}
-
-.off:hover {
-  background-color: #EEEEEE !important;
-  color: #fff !important;
-}
-
-.drp-buttons {
-  display: none !important;
-}
-
-
-.input-daterange {
-  margin-top: 20px;
-}
-
-input#daterange {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-    /* Modal Overlay: Semi-transparent background */
-.modal-overlay {
+<style>
+  .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -239,283 +172,4 @@ input#daterange {
   animation: slideIn 0.3s ease-out; /* Optional: smooth animation for modal popup */
 }
 
-/* Textarea styling */
-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  resize: none;
-  min-height: 100px;
-}
-
-/* Modal Actions: Align buttons */
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  transition: background-color 0.3s ease;
-}
-
-.btn-dark {
-  background-color: #343a40; /* Dark button color */
-}
-
-.btn:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-}
-
-.btn-dark:hover {
-  background-color: #23272b;
-}
-
-/* Optional: Animation for modal appearance */
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    .backdrop{
-      background: linear-gradient(to right, #1a1a50, #bf1a1a);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .card-wrapper {
-      max-width: 1200px;
-      margin: 2rem auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-    
-    .card {
-      margin-top: 50px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
-      background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    
-    .product-imgs {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .img-display {
-      overflow: hidden;
-      border-radius: 10px;
-    }
-    
-    .img-showcase {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-    
-    .img-showcase img {
-      min-width: 100%;
-      border-radius: 10px;
-    }
-    
-    .img-select {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-    }
-    
-    .img-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border: 2px solid transparent;
-      border-radius: 8px;
-      transition: transform 0.3s ease, border 0.3s ease;
-      cursor: pointer;
-    }
-    
-    .img-item img:hover {
-      border-color: #007bff;
-      transform: scale(1.1);
-    }
-    
-    .product-content {
-      padding: 1.5rem;
-    }
-    
-    .product-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #343a40;
-      margin-bottom: 1rem;
-    }
-    
-    .product-link {
-      display: inline-block;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #007bff;
-      text-decoration: none;
-      margin-bottom: 1rem;
-    }
-    
-    .product-link:hover {
-      text-decoration: underline;
-    }
-    
-    .product-rating {
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-      font-size: 1rem;
-      color: #ffc107;
-    }
-    
-    .product-rating span {
-      color: #6c757d;
-      font-weight: 500;
-    }
-    
-    .product-price {
-      margin: 1rem 0;
-      font-size: 1.2rem;
-    }
-    
-    .last-price span {
-      text-decoration: line-through;
-      color: #dc3545;
-    }
-    
-    .new-price span {
-      color: #28a745;
-      font-weight: 700;
-    }
-    
-    .product-detail {
-      margin: 1.5rem 0;
-    }
-    
-    .product-detail h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #343a40;
-    }
-    
-    .product-detail p {
-      font-size: 1rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-    
-    .product-detail ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    
-    .product-detail ul li {
-      margin: 0.5rem 0;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-    
-    .product-detail ul li::before {
-      content: '\2713';
-      position: absolute;
-      left: 0;
-      color: #28a745;
-    }
-    
-    .purchase-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-    
-    .purchase-info input {
-      width: 60px;
-      padding: 0.5rem;
-      text-align: center;
-      border: 1px solid #ced4da;
-      border-radius: 5px;
-    }
-    
-    .purchase-info .btn {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    
-    .purchase-info .btn:hover {
-      background-color: #0056b3;
-    }
-    
-    .social-links {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background-color: #e9ecef;
-      color: #343a40;
-      text-decoration: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    
-    .social-links a:hover {
-      background-color: #007bff;
-      color: #fff;
-    }
-    
-    @media screen and (max-width: 768px) {
-      .card {
-        grid-template-columns: 1fr;
-      }
-      .product-content {
-        padding: 1rem;
-      }
-    }
-    </style>
-    
+</style>

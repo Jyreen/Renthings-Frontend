@@ -10,7 +10,9 @@ export class AuthGuard {
         private accountService: AccountService
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot) {
         const account = this.accountService.accountValue;
         if (account) {
             // check if route is restricted by role

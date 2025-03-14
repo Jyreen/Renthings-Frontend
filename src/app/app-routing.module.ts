@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './_helpers';
+import { FeatureGuard } from './_helpers/feature.guard';
 import { Role } from './_models';
 
 import { LandingPageComponent } from './landing-page/landing-page.component';
@@ -12,29 +13,27 @@ import { ItemDetailsComponent } from './rent-items/item-details.component';
 import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
 import { ViewRentersComponent } from './list-item/view-renters.component';
-
-
+import { WorkingComponent } from './progress-page/working.component';
 
 const accountModule = () => import('./accounts/account.module').then(x => x.AccountModule);
 const profileModule = () => import('./profile/profile.module').then(x => x.ProfileModule);
-const adminModule   = () => import('./admin/admin.module').then(x => x.AdminModule);
+const adminModule = () => import('./admin/admin.module').then(x => x.AdminModule);
 
 const routes: Routes = [
-    { path: 'account', loadChildren: accountModule },
+    { path: 'account', loadChildren: accountModule, canLoad: [FeatureGuard] },
     { path: '', component: LandingPageComponent }, 
-    { path: 'about', component: AboutUsComponent },
-    { path: 'home', component: HomeComponent},
-    { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
-    { path: 'rent', component: RentItemsComponent },
-    { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
-    { path: 'view-renters/:itemId', component: ViewRentersComponent },
-    { path: 'item/:id', component: ItemDetailsComponent },
-    { path: 'list', component: ListItemComponent},
-    { path: 'message', component: MessageComponent},
-
-
-    { path: '**', redirectTo: '' },
+    { path: 'about', component: AboutUsComponent, canActivate: [FeatureGuard] },
+    { path: 'home', component: HomeComponent, canActivate: [FeatureGuard] },
+    { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard, FeatureGuard], canLoad: [FeatureGuard] },
+    { path: 'rent', component: RentItemsComponent, canActivate: [FeatureGuard] },
+    { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard, FeatureGuard], canLoad: [FeatureGuard], data: { roles: [Role.Admin] }},
+    { path: 'view-renters/:itemId', component: ViewRentersComponent, canActivate: [FeatureGuard] },
+    { path: 'item/:id', component: ItemDetailsComponent, canActivate: [FeatureGuard] },
+    { path: 'list', component: ListItemComponent, canActivate: [FeatureGuard] },
+    { path: 'message', component: MessageComponent, canActivate: [FeatureGuard] },
     
+    { path: 'progress', component: WorkingComponent },
+    { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

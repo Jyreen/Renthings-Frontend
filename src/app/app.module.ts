@@ -26,6 +26,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { WorkingComponent } from './progress-page/working.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -51,7 +52,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         MessageComponent,
         FilterUsersPipe,
         DateRangePickerComponent, 
-        ViewRentersComponent
+        ViewRentersComponent,
+        WorkingComponent
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
