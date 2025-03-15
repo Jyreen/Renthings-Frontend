@@ -67,7 +67,7 @@
             <button class="btn btn-primary" (click)="openRentModal()">
               Rent Now
             </button>
-            <button class="btn btn-outline btn-secondary" (click)="openMessageModal()">
+            <button class="btn btn-outline btn-success" (click)="openMessageModal()">
               Send Message
             </button>
           </div>
@@ -95,7 +95,7 @@
           <div class="col-md-6">
             <mat-form-field appearance="fill" class="date-picker">
               <mat-label>Start Date</mat-label>
-              <br>
+              <br />
               <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" name="startDate" 
                      (ngModelChange)="calculateTotalPrice()" />
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -105,28 +105,40 @@
           <div class="col-md-6">
             <mat-form-field appearance="fill" class="date-picker">
               <mat-label>End Date</mat-label>
-              <br>
+              <br />
               <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" name="endDate" 
                      (ngModelChange)="calculateTotalPrice()" />
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
           </div>
-          <label for="verificationImage">Upload Verification Image:</label>
-          <input type="file" (change)="onFileSelected($event)" accept="image/*">
         </div>
-      </form>
+        <div class="divider"></div>
+        <!-- Display total price -->
+        <div class="total-price">
+          <h3>Total Price: ₱{{ totalPrice }}</h3>
+        </div>
+        <div class="divider"></div>
+        
+        <label class="mb-3">
+          <div>
+            <span class="label-text">Upload Verification Image:</span>
+            <span class="label-text-alt"></span>
+          </div>
+          <input type="file" id="verificationImage" name="verificationImage" (change)="onFileSelected($event)"
+          class="file-input file-input-bordered w-full max-w-xs" />
+          <div class="label">
+            <!--<span class="label-text-alt">Alt label</span>
+            <span class="label-text-alt">Alt label</span>-->
+          </div>
+        </label>
 
-      <!-- Display total price -->
-      <div class="total-price">
-        <h3>Total Price: ₱{{ totalPrice }}</h3>
-      </div>
-
-      <br />
-      <div class="modal-actions" style="display: flex; justify-content: space-between;">
-        <button class="btn btn-success" (click)="confirmRent()">Confirm</button>
-        <button class="btn btn-secondary" (click)="closeRentModal()">Cancel</button>
-      </div>
+        <br />
+        <div class="modal-actions modal-footer" style="display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-success" (click)="confirmRent()">Confirm</button>
+          <button type="button" class="btn btn-secondary" (click)="closeRentModal()">Cancel</button>
+        </div>
+      </form> 
     </div>
   </div>
 </div>
@@ -134,14 +146,30 @@
 
 
 
+
 <!-- Message Modal -->
 <div *ngIf="isModalOpen" class="modal-overlay">
   <div class="modal-content">
-    <h2>Send Message</h2>
-    <textarea [(ngModel)]="message" placeholder="Type your message here..." value="Is this available?"></textarea>
+    <div class="modal-header">
+      <h2>Send Message</h2>
+    </div>
+    <br />
+    <div class="modal-body">
+      <p>Send a message to the owner of {{ item.Item_name }}</p>
+      <textarea [(ngModel)]="message" placeholder="Type your message here..."
+      class="textarea textarea-bordered" value="Is this available?">
+
+      </textarea>
+    </div>
     <div class="modal-actions">
-      <button (click)="sendMessage()" class="btn btn-dark">Send</button>
-      <button (click)="closeMessageModal()" class="btn">Cancel</button>
+      <div class="row justify-content-center ml-1">
+        <div class="col-md-2">
+          <button (click)="sendMessage()" class="btn btn-primary">Send</button>
+        </div>
+        <div class="col-md-10">
+          <button (click)="closeMessageModal()" class="btn btn-dark">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
