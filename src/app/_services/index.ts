@@ -3,3 +3,4 @@ export * from './item.service';
 export * from './chat.service';
 export * from './subscription.service';
 export * from './rent-items.service';
+export * from './report.service';

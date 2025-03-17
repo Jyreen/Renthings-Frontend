@@ -1,0 +1,129 @@
+
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">Reported Accounts</h1>
+            <p class="mb-4">Below is a list of accounts that have been reported for violations.</p>
+
+            <!-- Reports Table -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Reported Accounts</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="text-gray-600">Name</th>
+                                    <th class="text-gray-600">Email</th>
+                                    <th class="text-gray-600">Reason</th>
+                                    <th class="text-gray-600">Description</th>
+                                    <th class="text-gray-600">Evidence</th>
+                                    <th class="text-gray-600">Status</th>
+                                    <th class="text-gray-600">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let report of reports">
+                                    <td>{{ report.reportedUser?.fullName }}</td>
+                                    <td>{{ report.reportedUser?.email }}</td>
+                                    <td>{{ report.reason_display }}</td>
+                                    <td>{{ report.description }}</td>
+                                    <td>
+                                        <a *ngIf="report.evidence" (click)="openEvidenceModal(report.evidence)" class="btn btn-sm btn-info">View</a>
+                                        <span *ngIf="!report.evidence">No Evidence</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" [ngClass]="getStatusClass(report.status)">
+                                            {{ report.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <!--
+                                        <button class="btn btn-success btn-sm" (click)="approveReport(report.id)">Approve</button> | 
+                                        <button class="btn btn-danger btn-sm" (click)="rejectReport(report.id)">Reject</button>
+                                        -->
+                                        <select class="select w-full max-w-xs" (change)="updateStatusReport(report.id, $event.target.value)">
+                                            <option disabled selected>Flag as:</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="reviewed">Reviewed</option>
+                                            <option value="resolved">Resolved</option>
+                                            <option value="dismissed">Dismissed</option>
+                                        </select>
+                                                                           
+                                        <!--
+                                        <ul class="menu lg:menu-horizontal bg-base-200 rounded-box lg:mb-64">
+                                            <li>
+                                              <details open>
+                                                <summary >Edit</summary>
+                                                <ul>
+                                                  <li><a (click)="updateStatusReport(report.id)">pending</a></li>
+                                                  <li><a (click)="updateStatusReport(report.id)">reviewed</a></li>
+                                                  <li><a (click)="updateStatusReport(report.id)">resolved</a></li>
+                                                  <li><a (click)="updateStatusReport(report.id)">dismissed</a></li>
+                                                </ul>
+                                              </details>
+                                            </li>
+                                        </ul>
+                                        -->
+                                    </td>
+                                </tr>                                
+                                <tr *ngIf="reports.length === 0">
+                                    <td colspan="7" class="text-center text-gray-500">No reports found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Custom Modal -->
+<div *ngIf="modalVisible" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Evidence Preview</h5>
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost" (click)="closeEvidenceModal()">✖</button>
+            </form>
+        </div>
+        <div class="modal-body text-center">
+            <img [src]="selectedEvidence" alt="Evidence" class="img-fluid rounded shadow" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly dark background */
+    display: flex;
+    justify-content: center; /* Centers the modal horizontally */
+    align-items: center; /* Centers the modal vertically */
+    z-index: 999; /* Make sure it's on top of other content */
+  }
+  
+  /* Modal Content: The actual modal box */
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow to make it pop */
+    z-index: 10000; /* Ensure modal is above everything else */
+    animation: slideIn 0.3s ease-out; /* Optional: smooth animation for modal popup */
+  }
+  
+  </style>

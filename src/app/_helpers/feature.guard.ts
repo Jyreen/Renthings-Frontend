@@ -19,7 +19,7 @@ export class FeatureGuard implements CanActivate, CanLoad {
         message: true,
 
         // Admin pages
-        "admin/accounts-report": false,
+        "admin/accounts-report": true,
         "admin/items-report": false,
         "admin/subscriptions-report": false,
     };

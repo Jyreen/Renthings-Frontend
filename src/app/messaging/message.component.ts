@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChatService, AccountService } from '../_services';
+import { ChatService, AccountService, UserReportService } from '../_services';
 import { Chat } from '../_models/chat';
 import iziToast from 'izitoast';
-
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html'
@@ -17,8 +16,29 @@ export class MessageComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   loadingUsers: boolean = false;
   loadingMessages: boolean = false;
+  isReportModalOpen = false;
 
-  constructor(private chatService: ChatService, private accountService: AccountService) {}
+  reportReasons = [
+    { value: 'inappropriate_content', label: 'Inappropriate Content' },
+    { value: 'harassment', label: 'Harassment or Bullying' },
+    { value: 'spam', label: 'Spam or Misleading' },
+    { value: 'fraud', label: 'Fraud or Scam' },
+    { value: 'fake_account', label: 'Fake Account' },
+    { value: 'hate_speech', label: 'Hate Speech' },
+    { value: 'violence', label: 'Violence or Threats' },
+    { value: 'impersonation', label: 'Impersonation' },
+    { value: 'intellectual_property', label: 'Intellectual Property Violation' },
+    { value: 'other', label: 'Other' }
+];
+
+
+  reportData = {
+    reason_type: '',
+    description: '',
+    evidence: null as File | null,
+  };
+
+  constructor(private chatService: ChatService, private accountService: AccountService, private reportService : UserReportService) {}
 
   ngOnInit(): void {
     const account = this.accountService.accountValue;
@@ -54,6 +74,8 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.handleIncomingMessage(message);
     });
   }
+
+
 
   ngOnDestroy(): void {
     if (this.selectedChatUserId) {
@@ -239,4 +261,42 @@ export class MessageComponent implements OnInit, OnDestroy {
       });
     }
   }  
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.reportData.evidence = file;
+    }
+  }
+
+  openReportModal(): void {
+    this.isReportModalOpen = true;
+  }
+
+  closeReportModal(): void {
+    this.isReportModalOpen = false;
+    this.reportData = { reason_type: '', description: '', evidence: null };
+  }
+
+  submitReport(): void {
+
+    const formData = new FormData();
+    formData.append('reporter_id', this.userId.toString());
+    formData.append('reported_id', this.selectedChatUserId?.toString() || '');
+    formData.append('reason_type', this.reportData.reason_type);
+    formData.append('description', this.reportData.description);
+    if (this.reportData.evidence) {
+      formData.append('evidence', this.reportData.evidence);
+    }
+
+    this.reportService.create(formData).subscribe({
+      next: () => {
+        iziToast.success({ title: 'Success', message: 'Report submitted successfully.', position: 'topRight' });
+        this.closeReportModal();
+      },
+      error: () => {
+        iziToast.error({ title: 'Error', message: 'Failed to submit report.', position: 'topRight' });
+      }
+    });
+  }
 }
