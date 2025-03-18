@@ -18,40 +18,26 @@
   </div>
 </section>
 
+
  <!-- Featured Rentals -->
  <section id="rent" class="container mx-auto px-6 py-12">
   <h2 class="text-3xl font-bold text-center mb-6">Featured Rentals</h2>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="card bg-base-100 shadow-xl">
-          <figure><img src="https://via.placeholder.com/300" alt="Item 1"></figure>
+      <div class="card bg-base-100 shadow-xl" *ngFor="let item of approvedItems">
+          <figure>
+            <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" class="w-full">
+          </figure>
           <div class="card-body">
-              <h2 class="card-title">Camera</h2>
-              <p>High-quality DSLR for your photography needs.</p>
+              <h2 class="card-title">
+                <a [routerLink]="['/item', item.Item_id]">{{ item.Item_name }}</a>
+              </h2>
+              <p>{{ item.Item_Description | slice:0:50 }}{{ item.Item_Description.length > 50 ? ' See more...' : '' }}</p>
               <div class="card-actions justify-end">
-                  <button class="btn btn-primary">Rent Now</button>
+                  <button class="btn btn-primary" [routerLink]="['/item', item.Item_id]">Rent Now</button>
               </div>
           </div>
       </div>
-      <div class="card bg-base-100 shadow-xl">
-          <figure><img src="https://via.placeholder.com/300" alt="Item 2"></figure>
-          <div class="card-body">
-              <h2 class="card-title">Laptop</h2>
-              <p>Powerful laptop for work and gaming.</p>
-              <div class="card-actions justify-end">
-                  <button class="btn btn-primary">Rent Now</button>
-              </div>
-          </div>
-      </div>
-      <div class="card bg-base-100 shadow-xl">
-          <figure><img src="https://via.placeholder.com/300" alt="Item 3"></figure>
-          <div class="card-body">
-              <h2 class="card-title">Projector</h2>
-              <p>Perfect for presentations and movie nights.</p>
-              <div class="card-actions justify-end">
-                  <button class="btn btn-primary">Rent Now</button>
-              </div>
-          </div>
-      </div>
+
   </div>
 </section>
 
@@ -77,24 +63,32 @@
 </section>
 
 <!-- Testimonials -->
+<!-- Testimonials Section -->
 <section class="container mx-auto px-6 py-12">
-  <h2 class="text-3xl font-bold text-center mb-6">What Our Customers Say</h2>
-  <div class="carousel w-full">
-      <div class="carousel-item w-full flex justify-center">
-          <div class="max-w-md p-6 bg-white rounded-lg shadow-md">
-              <p class="text-gray-600">“Amazing service! The process was smooth, and the items were in great condition.”</p>
-              <h4 class="font-semibold mt-4">- John Doe</h4>
-          </div>
+    <h2 class="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Testimonial 1 -->
+      <div class="card bg-white shadow-lg p-6 rounded-lg">
+        <p class="text-gray-600">“Amazing service! The process was smooth, and the items were in great condition.”</p>
+        <h4 class="font-semibold mt-4 text-lg text-gray-800">- John Doe</h4>
       </div>
-      <div class="carousel-item w-full flex justify-center">
-          <div class="max-w-md p-6 bg-white rounded-lg shadow-md">
-              <p class="text-gray-600">“Highly recommend! Renting has never been easier.”</p>
-              <h4 class="font-semibold mt-4">- Jane Smith</h4>
-          </div>
+  
+      <!-- Testimonial 2 -->
+      <div class="card bg-white shadow-lg p-6 rounded-lg">
+        <p class="text-gray-600">“Highly recommend! Renting has never been easier.”</p>
+        <h4 class="font-semibold mt-4 text-lg text-gray-800">- Jane Smith</h4>
       </div>
-  </div>
-</section>
-
+  
+      <!-- Testimonial 3 -->
+      <div class="card bg-white shadow-lg p-6 rounded-lg">
+        <p class="text-gray-600">“Great experience! Customer support was very helpful.”</p>
+        <h4 class="font-semibold mt-4 text-lg text-gray-800">- Alex Brown</h4>
+      </div>
+    </div>
+  </section>
+  
+  
 <!-- Newsletter -->
 <section class="bg-primary py-12 text-white text-center">
   <h2 class="text-3xl font-bold">Stay Updated</h2>

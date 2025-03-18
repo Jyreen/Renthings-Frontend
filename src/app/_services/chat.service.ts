@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Chat } from '../_models/chat';
 import { io, Socket } from 'socket.io-client';
+import { AccountService } from './account.service';
 
 const baseUrl = `${environment.apiUrl}/chat`;
 
@@ -12,10 +13,14 @@ const baseUrl = `${environment.apiUrl}/chat`;
 })
 export class ChatService {
   private socket: Socket;
-  private messageSubject = new Subject<Chat>();
   private activeRooms: Set<string> = new Set();
 
-  constructor(private http: HttpClient) {
+  private unreadMessages: Chat[] = []; // Store unread messages
+  private unreadCountSubject = new Subject<number>();
+  // Expose Subject as Observable to avoid multiple subscriptions
+  messageSubject = new Subject<Chat>();
+
+  constructor(private http: HttpClient, private accountService: AccountService) {
     // Initialize the Socket.IO connection
     this.socket = io(environment.apiUrl, {
       transports: ['websocket'],
@@ -109,9 +114,44 @@ export class ChatService {
    * Real-time listener for new messages.
    * @param callback - A function to handle new message events.
    */
+  
+
   onNewMessage(callback: (message: Chat) => void): void {
-    this.messageSubject.subscribe(callback);
-  }
+    this.messageSubject.subscribe((message) => {
+        const currentUserId = this.getCurrentUserId();
+
+
+        // Ignore messages sent by the current user (No self-notifications)
+        if (message.sender_id === currentUserId) {
+            return;
+        }
+
+        
+
+        // Add to unread messages list
+        this.unreadMessages.unshift(message);
+        this.unreadCountSubject.next(this.unreadMessages.length);
+
+        callback(message);
+    });
+}
+
+getCurrentUserId(): number | null {
+  return Number(this.accountService.accountValue?.id || null);
+}
+
+
+
+// Getter for unread message count as observable
+getUnreadCount(): Observable<number> {
+    return this.unreadCountSubject.asObservable();
+}
+
+// Getter for unread messages
+getUnreadMessagesList(): Chat[] {
+    return this.unreadMessages;
+}
+
 
   /**
    * Join a specific chat room.
@@ -164,4 +204,8 @@ export class ChatService {
       this.messageSubject.complete();
     }
   }
+  
+  
 }
+
+
