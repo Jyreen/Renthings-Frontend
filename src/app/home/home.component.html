@@ -62,7 +62,6 @@
   </div>
 </section>
 
-<!-- Testimonials -->
 <!-- Testimonials Section -->
 <section class="container mx-auto px-6 py-12">
     <h2 class="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
@@ -93,8 +92,10 @@
 <section class="bg-primary py-12 text-white text-center">
   <h2 class="text-3xl font-bold">Stay Updated</h2>
   <p class="mb-4">Subscribe to our newsletter for the latest offers.</p>
-  <input type="email" placeholder="Enter your email" class="input input-bordered w-1/3">
-  <button class="btn btn-secondary ml-2">Subscribe</button>
+  <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+    <input type="email" formControlName="email" placeholder="Enter your email" class="input input-bordered w-1/3">
+    <button type="submit" class="btn btn-secondary ml-2" [disabled]="subscribeForm.invalid">Subscribe</button>
+  </form>  
 </section>
 
 <!-- Footer -->
@@ -106,3 +107,20 @@
       <a href="#" class="text-gray-600">Instagram</a>
   </div>
 </footer>
+
+<!--
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwPSYZHcXowC7YM1E0k-Zj_ke26OImJjT7EVeMhbq7SbrpWiTIh5GxCKERqdE1tVbN1/exec'
+  const form = document.forms['contact-form']
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, {method: 'POST', body: new FormData(form)})
+    .then(response => Swal.fire({
+      icon: 'success',
+      title: 'Thank you! Stay tuned for the updates!'
+    })).then(() => { window.location.reload(); })
+    .catch(error => console.error('Error!', error.message))
+  })
+</script>
+-->
