@@ -3,6 +3,24 @@
     <div class="update-profile-card">
       <h1 class="text-center">Update Profile</h1>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Profile Image Section -->
+        <div class="text-center mb-4">
+          <label for="profileImageInput" class="cursor-pointer">
+            <img
+              [src]="previewImage"
+              alt="Profile Picture"
+              class="w-28 h-28 rounded-full object-cover border-4 border-gray-300 mx-auto"
+            />
+            <input
+              type="file"
+              id="profileImageInput"
+              class="hidden"
+              (change)="onImageChange($event)"
+              accept="image/*"
+            />
+          </label>
+          <p class="text-sm text-gray-500">Click the image to change</p>
+        </div>
         <div class="form-section">
           <h3>Personal Information</h3>
           <div class="form-row">
@@ -78,10 +96,10 @@
   
         <div class="form-actions text-center align-items center">
   
-          <a type="submit" class="btn btn-primary w-100">
+          <button type="submit" class="btn btn-primary w-100">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Update Profile
-          </a>
+          </button>          
           <a routerLink="../" class="btn btn-link w-100">Cancel</a>
         </div>
       </form>

@@ -21,62 +21,96 @@
           <div class="row">
             <div class="col-md-6">
               <h1 class="">{{ item.Item_name }}</h1>
-              <div class="badge badge-success gap-2">
+              <div [ngClass]="item.Item_status !== 'Available' ? 'badge badge-error' : 'badge badge-success'" class="gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
                   <path fill-rule="evenodd" d="M15 8c0 .982-.472 1.854-1.202 2.402a2.995 2.995 0 0 1-.848 2.547 2.995 2.995 0 0 1-2.548.849A2.996 2.996 0 0 1 8 15a2.996 2.996 0 0 1-2.402-1.202 2.995 2.995 0 0 1-2.547-.848 2.995 2.995 0 0 1-.849-2.548A2.996 2.996 0 0 1 1 8c0-.982.472-1.854 1.202-2.402a2.995 2.995 0 0 1 .848-2.547 2.995 2.995 0 0 1 2.548-.849A2.995 2.995 0 0 1 8 1c.982 0 1.854.472 2.402 1.202a2.995 2.995 0 0 1 2.547.848c.695.695.978 1.645.849 2.548A2.996 2.996 0 0 1 15 8Zm-3.291-2.843a.75.75 0 0 1 .135 1.052l-4.25 5.5a.75.75 0 0 1-1.151.043l-2.25-2.5a.75.75 0 1 1 1.114-1.004l1.65 1.832 3.7-4.789a.75.75 0 0 1 1.052-.134Z" clip-rule="evenodd" />
                 </svg>            
-                <span> Available</span>
-              </div>
+                <span>{{ item.Item_status !== 'Available' ? 'Rented' : 'Available' }}</span>
+              </div>              
             </div>
             <div class="col-md-6">
-              <div class="row justify-center items-center mt-2"> 
-                <h3>Rate:</h3>
-                <div class="rating">
-                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
-                  <input
-                    type="radio"
-                    name="rating-2"
-                    class="mask mask-star-2 bg-orange-400"/>
-                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
-                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
-                  <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+              <div class="row justify-center items-center"> 
+                <h3>Rating: </h3>
+                <span class="color-dark"><span class="badge badge-info">{{ feedbacks.length }} reviews</span></span>
+                <div class="flex space-x-1">
+                  <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                    <i 
+                      class="mask mask-star-2 w-6 h-6 transition-all duration-300"
+                      [ngClass]="i + 1 <= averageRating? 'bg-yellow-400' : 'bg-gray-300'"
+                    ></i>
+                  </ng-container>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
+              <h4 class="text-gray-500">Price: ₱{{ item.Item_price }}</h4>
               <p>Description:</p>
-              <p class=""> {{ item.Item_Description }} </p>
+              <p> {{ item.Item_Description }} </p>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="text-gray-500">Category: {{ item.Item_category }}</p>
-              <p class="text-gray-500">Location: {{ item.Item_location }}</p>
-              <p class="text-gray-500">Price: ₱{{ item.Item_price }}</p>
+          <div class="card shadow-md p-4 rounded-lg bg-white">
+            <div class="flex items-center space-x-4">
+              <!-- Profile Picture -->
+              <img 
+                [src]="'http://localhost:4000/assets/' + item.account?.acc_image"
+                alt="Profile Picture"
+                class="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+              />
+          
+              <!-- Owner Details -->
+              <div>
+                <p class="text-lg font-semibold text-gray-700">{{ item.account?.acc_firstName }} {{ item.account?.acc_lastName }}</p>
+                <p class="text-sm text-gray-500"><strong>Address:</strong> {{ item.account?.acc_address }}</p>
+                <p class="text-sm text-gray-500"><strong>Email:</strong> {{ item.account?.acc_email }}</p>
+              </div>
             </div>
-            <div class="col-md-6">
-              <p class="text-gray-500">Owner: {{ item.Item_owner }}</p>
-              <p class="text-gray-500">Contact: {{ item.Item_contact }}</p>
-              <p class="text-gray-500">Email: {{ item.Item_email }}</p>
+          
+            <!-- Buttons Section -->
+            <div class="mt-4 flex space-x-2">
+              <button class="btn btn-primary flex-1" (click)="openRentModal()">
+                Rent Now
+              </button>
+              <button class="btn btn-outline btn-success flex-1" (click)="openMessageModal()">
+                Send Message
+              </button>
             </div>
-          </div>
-          <div class="card-actions justify-start">
-            <!-- Call to Action Buttons -->
-            <button class="btn btn-primary" (click)="openRentModal()">
-              Rent Now
-            </button>
-            <button class="btn btn-outline btn-success" (click)="openMessageModal()">
-              Send Message
-            </button>
+          </div>          
+          <div class="divider"></div>
+
+         <!-- Feedback Section -->
+          <div class="mt-1">
+            <h2 class="text-lg font-semibold">Reviews:</h2>
+
+            <div *ngIf="feedbacks.length === 0" class="text-gray-500">No feedback yet.</div>
+
+            <!-- Scrollable Container -->
+            <div class="max-h-64 overflow-y-auto border rounded-md p-2">
+              <div *ngFor="let feedback of feedbacks" class="border-b py-2">
+                <p><strong>{{ feedback.account?.acc_firstName }} {{ feedback.account?.acc_lastName }}</strong></p>
+
+                <!-- Star Rating -->
+                <div class="flex space-x-1">
+                  <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                    <div 
+                      class="mask mask-star-2 w-6 h-6 transition-all duration-300"
+                      [ngClass]="i + 1 <= feedback.rating ? 'bg-yellow-400' : 'bg-gray-300'">
+                    </div>
+                  </ng-container>
+                </div>
+
+
+                <!-- Comment -->
+                <p class="text-gray-600">{{ feedback.comment }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>  
 </div>
-
 
 
 
@@ -127,25 +161,21 @@
           </div>
           <input type="file" id="verificationImage" name="verificationImage" (change)="onFileSelected($event)"
           class="file-input file-input-bordered w-full max-w-xs" />
-          <div class="label">
-            <!--<span class="label-text-alt">Alt label</span>
-            <span class="label-text-alt">Alt label</span>-->
-          </div>
+          <div class="label"></div>
         </label>
 
         <br />
         <div class="modal-actions modal-footer" style="display: flex; justify-content: space-between;">
-          <button type="button" class="btn btn-success" (click)="confirmRent()">Confirm</button>
+          <button type="button" class="btn btn-success" (click)="confirmRent()" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Confirm
+          </button>
           <button type="button" class="btn btn-secondary" (click)="closeRentModal()">Cancel</button>
         </div>
       </form> 
     </div>
   </div>
 </div>
-
-
-
-
 
 <!-- Message Modal -->
 <div *ngIf="isModalOpen" class="modal-overlay">
@@ -157,14 +187,16 @@
     <div class="modal-body">
       <p>Send a message to the owner of {{ item.Item_name }}</p>
       <textarea [(ngModel)]="message" placeholder="Type your message here..."
-      class="textarea textarea-bordered" cols="1" value="Is this available?">
-
+      class="textarea textarea-bordered w-full" cols="1" value="Is this available?">
       </textarea>
     </div>
     <div class="modal-actions">
       <div class="row justify-content-center ml-1">
         <div class="col-md-2">
-          <button (click)="sendMessage()" class="btn btn-primary">Send</button>
+          <button (click)="sendMessage()" class="btn btn-primary" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Send
+          </button>
         </div>
         <div class="col-md-10">
           <button (click)="closeMessageModal()" class="btn btn-dark">Cancel</button>
@@ -173,6 +205,8 @@
     </div>
   </div>
 </div>
+
+
 
 <style>
   .modal-overlay {

@@ -27,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { WorkingComponent } from './progress-page/working.component';
+import { ItemHistoryComponent } from './item-history/item-history.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -53,7 +54,8 @@ import { WorkingComponent } from './progress-page/working.component';
         FilterUsersPipe,
         DateRangePickerComponent, 
         ViewRentersComponent,
-        WorkingComponent
+        WorkingComponent,
+        ItemHistoryComponent,
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },

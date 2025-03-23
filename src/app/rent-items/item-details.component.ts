@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from '../_services/item.service'; // Your service to fetch item details
 import { ChatService } from '../_services/chat.service'; // Chat service for sending messages
 import { RentItemService } from '../_services/rent-items.service';
-import { AccountService } from '../_services/account.service';
+import { AccountService, FeedbackService } from '../_services';
+import { Feedback } from '../_models';
 import iziToast from 'izitoast';
 
 @Component({
@@ -18,12 +19,17 @@ export class ItemDetailsComponent implements OnInit{
   message: string = ''; // The message the user will send
   verificationImage: File | null = null;
   totalPrice: number = 0;
+  feedbacks: Feedback[] = [];
+  averageRating: number = 0;
 
   // Rent variables
   isRentModalOpen: boolean = false; // Rent modal visibility flag
   startDate: Date | null = null; // Start date for rent
   endDate: Date | null = null; // End date for rent
 
+  // Spinner
+  isSendingMessage: boolean = false;
+  isRenting: boolean = false;
 
   
   constructor(
@@ -32,7 +38,8 @@ export class ItemDetailsComponent implements OnInit{
     private itemService: ItemService,
     private accountService: AccountService,
     private chatService: ChatService, // Inject ChatService for messaging
-    private router: Router // To navigate to the messages component after sending the message
+    private router: Router, 
+    private feedbackService: FeedbackService // To navigate to the messages component after sending the message
   ) {}
 
   ngOnInit(): void {
@@ -49,10 +56,25 @@ export class ItemDetailsComponent implements OnInit{
     });
   }
 
+  getFeedbacks(): void {
+    this.feedbackService.getByItemId(this.itemId).subscribe((data) => {
+      this.feedbacks = data;
+      this.calculateAverageRating();
+    });
+  }
+
+  calculateAverageRating(): void {
+    if (this.feedbacks.length > 0) {
+      const totalStars = this.feedbacks.reduce((sum, feedback) => sum + feedback.rating, 0);
+      this.averageRating = totalStars / this.feedbacks.length;
+    }
+  }
+
   fetchItem(): void {
     this.itemService.getById(this.itemId).subscribe(
       (item) => {
         this.item = item; // Assign the fetched item to the component variable
+        this.getFeedbacks();
       },
       (error) => {
         console.error('Error fetching item:', error);
@@ -101,6 +123,7 @@ export class ItemDetailsComponent implements OnInit{
       return;
     }
   
+    this.isSendingMessage = true; // Start loading
     const receiverId = this.item.acc_id; // Get owner's acc_id from item details
   
     // Send the message using the ChatService
@@ -124,7 +147,9 @@ export class ItemDetailsComponent implements OnInit{
         });
         console.error('Error sending message:', err);
       }
-    );
+    ).add(() => {
+      this.isSendingMessage = false; // Stop loading
+    });
   }
 
   onFileSelected(event: Event): void {
@@ -175,6 +200,8 @@ export class ItemDetailsComponent implements OnInit{
       return;
     }
   
+    this.isRenting = true; // Start loading
+
     const formData = new FormData();
     formData.append('Item_id', this.itemId.toString());
     formData.append('renter_acc_id', this.loggedInUserId.toString());
@@ -199,7 +226,9 @@ export class ItemDetailsComponent implements OnInit{
         });
         console.error('Error renting item:', error);
       }
-    );
+    ).add(() => {
+      this.isRenting = false; // Stop loading
+    });
   }
   
 }

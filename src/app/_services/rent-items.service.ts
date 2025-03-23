@@ -62,4 +62,10 @@ export class RentItemService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${baseUrl}/${id}`);
   }
+
+  // Mark a rental as completed (reusing the 'return' route)
+  markAsCompleted(id: number): Observable<RentItem> {
+    return this.http.put<RentItem>(`${baseUrl}/${id}/return`, {});
+  }
+
 }

@@ -5,3 +5,4 @@ export * from './chat';
 export * from './subscription';
 export * from './rent-items';
 export * from './report';
+export * from './feedback';

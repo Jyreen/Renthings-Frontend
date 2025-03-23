@@ -5,3 +5,4 @@ export * from './subscription.service';
 export * from './rent-items.service';
 export * from './report.service';
 export * from './email.service';
+export * from './feedback.service'

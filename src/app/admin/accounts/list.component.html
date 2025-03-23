@@ -34,7 +34,7 @@
                                         <td>{{ account.acc_email }}</td>
                                         <td>{{ account.acc_role }}</td>
                                         <td>{{ account.acc_status }}</td>
-                                        <td>{{ account.acc_subscription }}</td>
+                                        <td>{{ account.acc_subscription === 'active' ? 'Active' : 'Inactive' }}</td>
                                         <td>
                                             <!-- Edit button to open the modal for editing the account -->
                                             <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary">Edit</a> &nbsp;

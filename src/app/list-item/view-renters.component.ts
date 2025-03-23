@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RentItemService } from '../_services/rent-items.service';
 import { ChatService } from '../_services/chat.service';
 import iziToast from 'izitoast';
@@ -9,10 +9,14 @@ import { RentItem } from '../_models';
     selector: 'app-view-renters',
     templateUrl: './view-renters.component.html',
     styleUrls: ['./view-renters.component.css']
-  })  
+})  
 export class ViewRentersComponent implements OnInit {
-  itemId: number; // Item ID passed from the parent component
+  itemId: number;
   renters: RentItem[] = [];
+  loadingId: number | null = null; // Track which button is loading
+
+  isSendingMessage: { [key: number]: boolean } = {}; // Tracks loading state per renter
+  isApprovingRental: { [key: number]: boolean } = {}; // Tracks loading state per rental
 
   constructor(
     private rentItemService: RentItemService,
@@ -22,43 +26,24 @@ export class ViewRentersComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      console.log('Route parameters:', params); // Debugging log
-  
-      if (params['itemId']) {  // Use 'itemId' instead of 'id'
-        this.itemId = Number(params['itemId']); // Convert to number safely
-  
+      if (params['itemId']) {
+        this.itemId = Number(params['itemId']);
         if (!isNaN(this.itemId)) {
-          console.log('Extracted itemId from route:', this.itemId);
           this.fetchRenters();
-        } else {
-          console.error('Invalid itemId: Not a number', params['itemId']);
         }
-      } else {
-        console.warn('itemId is missing from route parameters.');
       }
     });
   }
   
   fetchRenters(): void {
-    console.log('Fetching renters for itemId:', this.itemId);
-  
     this.rentItemService.getRentersByItemId(this.itemId).subscribe(
       (response: any[]) => {
-        console.log('API Response:', response);
-  
-        if (Array.isArray(response)) {
-          this.renters = response.map(rent => ({
-            ...rent,
-            renter: rent.renter || {} // Ensure renter is always an object
-          }));
-        } else {
-          this.renters = [];
-        }
-  
-        console.log('Final Renters List:', this.renters);
+        this.renters = response.map(rent => ({
+          ...rent,
+          renter: rent.renter || {}
+        }));
       },
       (error) => {
-        console.error('Error fetching renters:', error);
         iziToast.error({
           title: 'Error',
           message: 'Failed to load renters.',
@@ -67,14 +52,13 @@ export class ViewRentersComponent implements OnInit {
       }
     );
   }
-  
-  
 
-  // Send message to renter
   sendMessage(renterId: number): void {
     const message = prompt('Enter your message:');
     if (!message) return;
 
+    this.isSendingMessage[renterId] = true; // Start loading
+    
     this.chatService.sendMessage(renterId, message).subscribe(
       () => {
         iziToast.success({
@@ -83,19 +67,21 @@ export class ViewRentersComponent implements OnInit {
           position: 'bottomRight',
         });
       },
-      (error) => {
-        console.error('Error sending message:', error);
+      () => {
         iziToast.error({
           title: 'Error',
           message: 'Failed to send message.',
           position: 'topRight',
         });
       }
-    );
+    ).add(() => {
+      this.isSendingMessage[renterId] = false; // Stop loading
+    });
   }
 
-  // Approve rental request
   approveRental(rentalId: number): void {
+    this.isApprovingRental[rentalId] = true; // Start loading
+    
     this.rentItemService.approveRental(rentalId).subscribe(
       () => {
         iziToast.success({
@@ -103,16 +89,41 @@ export class ViewRentersComponent implements OnInit {
           message: 'Rental request approved!',
           position: 'bottomRight',
         });
-        this.fetchRenters(); // Refresh list after approval
+        this.fetchRenters();
       },
-      (error) => {
-        console.error('Error approving rental:', error);
+      () => {
         iziToast.error({
           title: 'Error',
           message: 'Failed to approve rental.',
           position: 'topRight',
         });
       }
-    );
+    ).add(() => {
+      this.isApprovingRental[rentalId] = false; // Stop loading
+    });
+  }
+
+  markAsCompleted(rentItemId: number): void {
+    this.loadingId = rentItemId; // Set loading state
+    
+    this.rentItemService.markAsCompleted(rentItemId).subscribe(
+      () => {
+        iziToast.success({ 
+          title: 'Success', 
+          message: 'Rental marked as completed!', 
+          position: 'bottomRight' 
+        });
+        this.fetchRenters(); // Refresh the list
+      },
+      (error) => {
+        iziToast.error({ 
+          title: 'Error', 
+          message: error.error?.message || 'Failed to mark as completed.', 
+          position: 'topRight' 
+        });
+      }
+    ).add(() => {
+      this.loadingId = null; // Reset loading state
+    });
   }
 }

@@ -1,3 +1,4 @@
+<!-- Updated HTML Template -->
 <div class="renters-container p-4 bg-white shadow-sm rounded">
   <h2 class="text-primary mb-3">Renters for This Item</h2>
 
@@ -37,6 +38,15 @@
             <button class="btn btn-success btn-sm" *ngIf="renter.rental_status === 'Pending'" 
               (click)="approveRental(renter.RentItem_id)">
               <i class="icon icon-check"></i> Approve
+            </button>
+            <button class="btn btn-secondary btn-sm" *ngIf="renter.rental_status === 'Approved'" 
+              (click)="markAsCompleted(renter.RentItem_id)" [disabled]="loadingId === renter.RentItem_id">
+              <span *ngIf="loadingId === renter.RentItem_id">
+                <i class="spinner-border spinner-border-sm"></i> Processing...
+              </span>
+              <span *ngIf="loadingId !== renter.RentItem_id">
+                <i class="icon icon-check-circle"></i> Returned
+              </span>
             </button>
           </td>
         </tr>

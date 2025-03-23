@@ -14,6 +14,7 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { MessageComponent } from './messaging/message.component';
 import { ViewRentersComponent } from './list-item/view-renters.component';
 import { WorkingComponent } from './progress-page/working.component';
+import { ItemHistoryComponent } from './item-history/item-history.component';
 
 const accountModule = () => import('./accounts/account.module').then(x => x.AccountModule);
 const profileModule = () => import('./profile/profile.module').then(x => x.ProfileModule);
@@ -31,7 +32,7 @@ const routes: Routes = [
     { path: 'item/:id', component: ItemDetailsComponent, canActivate: [FeatureGuard] },
     { path: 'list', component: ListItemComponent, canActivate: [FeatureGuard] },
     { path: 'message', component: MessageComponent, canActivate: [FeatureGuard] },
-    
+    { path: 'item-history', component: ItemHistoryComponent},
     { path: 'progress', component: WorkingComponent },
     { path: '**', redirectTo: '' },
 ];

@@ -22,20 +22,22 @@ export class EditComponent implements OnInit {
 
     ngOnInit() {
         this.id = this.route.snapshot.params['id'];
-
+    
         this.form = this.formBuilder.group({
             acc_firstName: ['', Validators.required],
             acc_lastName: ['', Validators.required],
             acc_email: ['', [Validators.required, Validators.email]],
-            acc_role: ['', Validators.required]
+            acc_role: ['', Validators.required],
+            acc_status: ['', Validators.required], // Add this line
         });
-
+    
         // Fetch existing account data to populate the form
         this.accountService.getById(this.id).pipe(first()).subscribe(account => {
             this.form.patchValue(account);
             this.originalFormValues = this.form.getRawValue(); // Save original form values
         });
     }
+    
 
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
@@ -47,6 +49,8 @@ export class EditComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
+
+        console.log("Form Values Before Update:", this.form.value);
 
         // Check if the form values have changed
         if (this.hasChanges()) {

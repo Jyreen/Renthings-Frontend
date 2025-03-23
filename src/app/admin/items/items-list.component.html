@@ -44,9 +44,16 @@
                                         <td>{{ item.Item_status }}</td>
                                         <td>{{ item.Item_approvalstatus }}</td>
                                         <td>
-                                            <button class="btn btn-success btn-sm" (click)="approveItem(item.Item_id)">Approve</button> | 
-                                            <button class="btn btn-danger btn-sm" (click)="rejectItem(item.Item_id)">Reject</button>
-                                        </td>
+                                            <button class="btn btn-success btn-sm" (click)="approveItem(item.Item_id)" [disabled]="loadingItemId === item.Item_id">
+                                                <span *ngIf="loadingItemId === item.Item_id" class="spinner-border spinner-border-sm"></span>
+                                                Approve
+                                            </button> 
+                                            |
+                                            <button class="btn btn-danger btn-sm" (click)="rejectItem(item.Item_id)" [disabled]="loadingItemId === item.Item_id">
+                                                <span *ngIf="loadingItemId === item.Item_id" class="spinner-border spinner-border-sm"></span>
+                                                Reject
+                                            </button>
+                                        </td>                                        
                                     </tr>
                                 </tbody>
                             </table>

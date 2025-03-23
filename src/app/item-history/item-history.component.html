@@ -1,0 +1,117 @@
+<div class="flex justify-center items-center">
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-6" style="width: 900px !important;">
+        <div class="overflow-x-auto">
+            <table class="table">
+                <!-- head -->
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Date Rented</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of itemHistories">
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <img [src]="'http://localhost:4000/assets/' + item.item?.Item_image" alt="Item Image" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">{{ item.item?.Item_name }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-success badge-sm">{{ item.total_rental_price | currency:'PHP' }}</span>
+                        </td>
+                        <td>
+                            Start Date : <span class="badge">{{ item.rental_start_date | date:'medium' }}</span>
+                            <br />
+                            End Date : <span class="badge">{{ item.rental_end_date | date:'medium' }}</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline btn-primary" (click)="openFeedbackModal(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mb-1">
+                                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                                </svg>
+                                Rate
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Feedback Modal -->
+<div *ngIf="isFeedbackModalOpen" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Rate & Give Feedback</h2>
+      </div>
+      <br />
+      <div class="modal-body">
+        <form>
+          <!-- Rating Section -->
+          <div class="rating-section">
+            <label class="label-text">Rating:</label>
+            <div class="rating">
+              <input type="radio" name="rating" class="mask mask-star" value="1" [(ngModel)]="feedback.rating" />
+              <input type="radio" name="rating" class="mask mask-star" value="2" [(ngModel)]="feedback.rating" />
+              <input type="radio" name="rating" class="mask mask-star" value="3" [(ngModel)]="feedback.rating" />
+              <input type="radio" name="rating" class="mask mask-star" value="4" [(ngModel)]="feedback.rating" />
+              <input type="radio" name="rating" class="mask mask-star" value="5" [(ngModel)]="feedback.rating" />
+            </div>
+          </div>
+  
+          <div class="divider"></div>
+  
+          <!-- Comment Section -->
+          <div class="comment-section">
+            <label class="label-text">Comment:</label>
+            <textarea class="textarea textarea-bordered w-full" name="comment" [(ngModel)]="feedback.comment"
+              placeholder="Write your feedback..."></textarea>
+          </div>
+  
+          <br />
+          <div class="modal-actions modal-footer" style="display: flex; justify-content: space-between;">
+            <button type="button" class="btn btn-success" (click)="submitFeedback()">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="closeFeedbackModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly dark background */
+    display: flex;
+    justify-content: center; /* Centers the modal horizontally */
+    align-items: center; /* Centers the modal vertically */
+    z-index: 999; /* Make sure it's on top of other content */
+  }
+  
+  /* Modal Content: The actual modal box */
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow to make it pop */
+    z-index: 10000; /* Ensure modal is above everything else */
+    animation: slideIn 0.3s ease-out; /* Optional: smooth animation for modal popup */
+  }
+  
+  </style>

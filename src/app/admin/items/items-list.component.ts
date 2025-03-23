@@ -10,7 +10,8 @@ import autoTable from 'jspdf-autotable';
 export class ItemsListComponent implements OnInit {
     items: Item[] = [];
     searchQuery: string = '';
-
+    loadingItemId: number | null = null;
+    
     constructor(private itemService: ItemService) {}
 
     ngOnInit() {
@@ -35,13 +36,16 @@ export class ItemsListComponent implements OnInit {
     }
 
     approveItem(itemId: number) {
+        this.loadingItemId = itemId;
         this.itemService.approve(itemId)
             .pipe(first())
             .subscribe(() => {
                 Swal.fire('Approved!', 'The item has been approved.', 'success');
+                this.loadingItemId = null;
                 this.loadItems(); // Reload the item list
             }, error => {
                 Swal.fire('Error', 'There was an issue approving the item.', 'error');
+                this.loadingItemId = null;
             });
     }
 
@@ -58,14 +62,17 @@ export class ItemsListComponent implements OnInit {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed && result.value) {
+                this.loadingItemId = itemId;
                 const rejectionReason = result.value;
                 this.itemService.reject(itemId, rejectionReason)
                     .pipe(first())
                     .subscribe(() => {
                         Swal.fire('Rejected!', 'The item has been rejected.', 'success');
+                        this.loadingItemId = null;
                         this.loadItems(); // Reload the item list
                     }, error => {
                         Swal.fire('Error', 'There was an issue rejecting the item.', 'error');
+                        this.loadingItemId = null;
                     });
             }
         });
