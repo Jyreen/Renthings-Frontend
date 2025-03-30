@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from '../../_models/subscription';
 import { SubscriptionService } from '../../_services/subscription.service';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-sub-list',
@@ -98,5 +100,42 @@ rejectSubscription(id: number) {
       imageHeight: 'auto',
     });
   }
+
+  exportToPDF() {
+    const doc = new jsPDF();
+    const currentDate = new Date().toLocaleDateString();
+
+    // Title and Date
+    doc.setFontSize(18);
+    doc.text('RENTHINGS - Subscription Accounts', 15, 15);
+    doc.setFontSize(12);
+    doc.text(`Exported on: ${currentDate}`, 15, 25);
+
+    // Table Headers
+    const headers = [
+        ['ID', 'Name', 'Subscription Plan', 'Start Date', 'End Date']
+    ];
+
+    // Table Data
+    const data = this.filteredSubscriptions.map((sub: any) => [
+      sub.id,
+      `${sub?.subscriber?.acc_firstName || ''} ${sub?.subscriber?.acc_lastName || ''}`,  // Using optional chaining and type assertion
+      sub.subscription_plan || '',
+      new Date(sub.start_date).toLocaleDateString(),
+      new Date(sub.end_date).toLocaleDateString(),
+      sub.status  // Use optional chaining for undefined status
+  ]);
+
+    // Generate Table
+    autoTable(doc, {
+        startY: 30,
+        head: headers,
+        body: data
+    });
+
+    // Save PDF
+    doc.save(`Subscription_Accounts_${currentDate}.pdf`);
+}
+
   
 }

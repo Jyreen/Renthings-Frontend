@@ -3,7 +3,8 @@ import { UserReportService } from '../../_services/report.service';
 import { Account } from '../../_models/account';
 import { UserReport } from '../../_models/report';
 import Swal from 'sweetalert2';
-
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 @Component({
     selector: 'app-accounts-report',
     templateUrl: './accounts-report.component.html',
@@ -80,6 +81,39 @@ export class AccountsReportComponent implements OnInit {
     closeEvidenceModal() {
         this.modalVisible = false;
         this.selectedEvidence = null;
+    }
+    
+    exportToPDF() {
+        const doc = new jsPDF();
+        const currentDate = new Date().toLocaleDateString();
+    
+        // Title and Date
+        doc.setFontSize(18);
+        doc.text('RENTHINGS - Reported Violations', 15, 15);
+        doc.setFontSize(12);
+        doc.text(`Exported on: ${currentDate}`, 15, 25);
+    
+        // Table Headers
+        const headers = [['Name', 'Email', 'Reason', 'Description', 'Status']];
+    
+        // Table Data
+        const data = this.reports.map((report: any) => [
+            report?.reportedUser?.fullName || '',  // Type assertion allows access
+            report?.reportedUser?.email || '',
+            report.reason_display || '',
+            report.description || '',
+            report.status || ''
+        ]);
+    
+        // Generate Table
+        autoTable(doc, {
+            startY: 30,
+            head: headers,
+            body: data
+        });
+    
+        // Save PDF
+        doc.save(`Reported_Violations_${currentDate}.pdf`);
     }
     
 

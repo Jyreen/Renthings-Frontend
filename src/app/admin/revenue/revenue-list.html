@@ -43,7 +43,7 @@
                                     <tbody>
                                         <tr *ngFor="let sub of filteredSubscriptions">
                                             <td>{{ sub.id }}</td>
-                                            <td>{{ sub.acc_firstName }}</td>
+                                            <td>{{ sub.subscriber?.acc_firstName }} {{ sub.subscriber?.acc_lastName }}</td>
                                             <td>{{ sub.subscription_plan }}</td>
                                             <td>₱{{ sub.price }}</td>
                                             <td>{{ sub.start_date | date }}</td>

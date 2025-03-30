@@ -29,7 +29,7 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              <div class="card bg-base-100 shadow-xl" *ngFor="let item of approvedItems">
+              <div class="card bg-base-100 shadow-xl" *ngFor="let item of filteredItems">
                   <figure>
                       <img [src]="'http://localhost:4000/assets/' + item.Item_image" alt="{{ item.Item_name }}" class="w-full">
                   </figure>
@@ -51,8 +51,16 @@
           <div class="bg-base-100 p-4 rounded-lg shadow-md">
               <h3 class="text-lg font-bold mb-3">Search</h3>
               <div class="join w-full">
-                  <input type="text" class="input input-bordered w-full" placeholder="Search...">
-                  <button class="btn btn-dark join-item"><i class="icon icon-search"></i></button>
+                <input 
+                type="text" 
+                class="input input-bordered w-full" 
+                placeholder="Search..."
+                [(ngModel)]="searchQuery"
+                (ngModelChange)="onSearchChange($event)"
+            >
+            <button class="btn btn-dark join-item" (click)="performSearch(searchQuery)">
+                <i class="icon icon-search"></i>
+            </button>
               </div>
           </div>
 
