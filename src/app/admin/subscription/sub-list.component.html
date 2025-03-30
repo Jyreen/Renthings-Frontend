@@ -48,7 +48,7 @@
                                                 />
                                               </td>                                              
                                           <td>{{ subscription.id }}</td>
-                                          <td>{{ subscription.acc_firstName }} {{ subscription.acc_lastName }}</td>
+                                          <td>{{ subscription.subscriber?.acc_firstName }} {{ subscription.subscriber?.acc_lastName }}</td>
                                           <td>{{ subscription.subscription_plan}}</td>
                                           <td>{{ subscription.start_date | date }}</td>                                                                                                                                                 
                                           <td>{{ subscription.end_date | date }}</td>

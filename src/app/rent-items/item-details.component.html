@@ -74,8 +74,8 @@
           
               <!-- Owner Details -->
               <div>
+                <img *ngIf="item.account?.acc_image" >
                 <p class="text-lg font-semibold text-gray-700">{{ item.account?.acc_firstName }} {{ item.account?.acc_lastName }}</p>
-                <p class="text-sm text-gray-500"><strong>Address:</strong> {{ item.account?.acc_address }}</p>
                 <p class="text-sm text-gray-500"><strong>Email:</strong> {{ item.account?.acc_email }}</p>
               </div>
             </div>
