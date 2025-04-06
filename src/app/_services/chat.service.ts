@@ -140,6 +140,18 @@ getCurrentUserId(): number | null {
   return Number(this.accountService.accountValue?.id || null);
 }
 
+sendMessageWithImage(receiver_id: number, message: string, imageFile: File): Observable<Chat> {
+  const formData = new FormData();
+  formData.append('receiver_id', receiver_id.toString());
+  formData.append('message', message);
+  formData.append('image', imageFile);
+  
+  return this.http.post<Chat>(`${baseUrl}/send`, formData);
+}
+
+sendMessageWithFile(formData: FormData) {
+  return this.http.post<any>(`${baseUrl}/send`, formData);
+}
 
 
 // Getter for unread message count as observable

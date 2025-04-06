@@ -6,3 +6,4 @@ export * from './rent-items.service';
 export * from './report.service';
 export * from './email.service';
 export * from './feedback.service'
+export * from './activitylog.service';

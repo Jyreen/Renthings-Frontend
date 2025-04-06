@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Activity Logs</h1>
+    <p class="mb-4">View all user actions across the platform.</p>
+  
+    <!-- Filter + Export -->
+    <div class="mb-4 d-flex align-items-center gap-3">
+      <input type="date" [(ngModel)]="startDate" class="form-control w-auto" />
+      <input type="date" [(ngModel)]="endDate" class="form-control w-auto" />
+      <button class="btn btn-primary" (click)="filterByDate()">Filter</button>
+      <button class="btn btn-success ml-auto" (click)="exportToPDF()">Export to PDF</button>
+    </div>
+  
+    <!-- Table -->
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Username</th>
+                <th>Action</th>
+                <th>IP Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of filteredLogs">
+                <td>{{ log.username }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.ipAddress || 'N/A' }}</td>
+                <td>{{ log.createdAt | date: 'short' }}</td>
+              </tr>
+              <tr *ngIf="filteredLogs.length === 0">
+                <td colspan="4" class="text-center text-muted">No activity logs found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <nav *ngIf="totalPages > 1" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+              </li>
+          
+              <li
+                class="page-item"
+                *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="i + 1 === currentPage"
+              >
+                <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+              </li>
+          
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+          
+      </div>
+    </div>
+  </div>
+  

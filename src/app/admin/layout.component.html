@@ -42,6 +42,8 @@
                         <h6 class="collapse-header">Functions:</h6>
                         <a class="collapse-item" routerLink="/admin/accounts">Account users</a>
                         <a class="collapse-item" routerLink="/admin/subscription">User subscriptions</a>
+                        <a class="collapse-item" routerLink="/admin/activitylogs">Activity Logs</a>
+
                     </div>
                 </div>
             </li>
@@ -288,7 +290,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ account.acc_firstName }} {{ account.acc_lastName }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                [src]="'http://localhost:4000/assets/' + account.acc_image">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

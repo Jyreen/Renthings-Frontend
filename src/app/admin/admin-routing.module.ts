@@ -11,6 +11,7 @@ const itemsModule = () => import('./items/items.module').then(x => x.ItemsModule
 const subscriptionsModule = () => import('./subscription/sub.module').then(x => x.SubModule);
 const revenueModule = () => import('./revenue/revenue.module').then(x => x.RevenueModule);
 const reportModule = () => import('./accounts-report/acc-report.module').then(x => x.ReportModule);
+const activityModule = () => import('./activitylogs/activitylog.module').then(x => x.ActivityLogModule);
 
 const routes: Routes = [
     {
@@ -22,6 +23,7 @@ const routes: Routes = [
             { path: 'subscription', loadChildren: subscriptionsModule, canActivate: [FeatureGuard] },
             { path: 'revenue', loadChildren: revenueModule, canActivate: [FeatureGuard] },
             { path: 'report', loadChildren: reportModule, canActivate: [FeatureGuard]},
+            { path: 'activitylogs', loadChildren: activityModule, canActivate: [FeatureGuard]},
 
         ],
 
