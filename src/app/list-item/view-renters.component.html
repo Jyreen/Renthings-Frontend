@@ -2,7 +2,10 @@
 <div class="renters-container p-4 bg-white shadow-sm rounded">
   <h2 class="text-primary mb-3">Renters for This Item</h2>
 
-  <div *ngIf="!renters || renters.length === 0" class="alert alert-warning text-center">
+  <div
+    *ngIf="!renters || renters.length === 0"
+    class="alert alert-warning text-center"
+  >
     No renters found for this item.
   </div>
 
@@ -13,6 +16,7 @@
           <th>Name</th>
           <th>Rental Period</th>
           <th>Status</th>
+          <th>Verification</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -21,26 +25,52 @@
           <td class="fw-bold">
             {{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}
           </td>
-          <td>{{ renter.rental_start_date | date }} - {{ renter.rental_end_date | date }}</td>
           <td>
-            <span class="badge"
+            {{ renter.rental_start_date | date }} -
+            {{ renter.rental_end_date | date }}
+          </td>
+          <td>
+            <span
+              class="badge"
               [ngClass]="{
                 'badge-warning': renter.rental_status === 'Pending',
                 'badge-success': renter.rental_status === 'Approved'
-              }">
+              }"
+            >
               {{ renter.rental_status }}
             </span>
           </td>
           <td>
-            <button class="btn btn-outline-primary btn-sm me-2" (click)="sendMessage(renter.renter_acc_id)">
+            <img
+              [src]="
+                'http://localhost:4000/assets/' + renter.verification_image
+              "
+              alt="verification"
+              class="thumbnail"
+              (click)="openImageModal(renter.verification_image)"
+            />
+          </td>
+
+          <td>
+            <button
+              class="btn btn-outline-primary btn-sm me-2"
+              (click)="sendMessage(renter.renter_acc_id)"
+            >
               <i class="icon icon-message"></i> Message
             </button>
-            <button class="btn btn-success btn-sm" *ngIf="renter.rental_status === 'Pending'" 
-              (click)="approveRental(renter.RentItem_id)">
+            <button
+              class="btn btn-success btn-sm"
+              *ngIf="renter.rental_status === 'Pending'"
+              (click)="approveRental(renter.RentItem_id)"
+            >
               <i class="icon icon-check"></i> Approve
             </button>
-            <button class="btn btn-secondary btn-sm" *ngIf="renter.rental_status === 'Approved'" 
-              (click)="markAsCompleted(renter.RentItem_id)" [disabled]="loadingId === renter.RentItem_id">
+            <button
+              class="btn btn-secondary btn-sm"
+              *ngIf="renter.rental_status === 'Approved'"
+              (click)="markAsCompleted(renter.RentItem_id)"
+              [disabled]="loadingId === renter.RentItem_id"
+            >
               <span *ngIf="loadingId === renter.RentItem_id">
                 <i class="spinner-border spinner-border-sm"></i> Processing...
               </span>
@@ -53,4 +83,13 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="selectedImage" (click)="closeImageModal()">
+  <img
+    [src]="'http://localhost:4000/assets/' + selectedImage"
+    alt="Full Size"
+    class="full-image"
+  />
 </div>

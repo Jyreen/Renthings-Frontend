@@ -14,6 +14,7 @@ export class ViewRentersComponent implements OnInit {
   itemId: number;
   renters: RentItem[] = [];
   loadingId: number | null = null; // Track which button is loading
+  selectedImage: string | null = null;
 
   isSendingMessage: { [key: number]: boolean } = {}; // Tracks loading state per renter
   isApprovingRental: { [key: number]: boolean } = {}; // Tracks loading state per rental
@@ -101,6 +102,14 @@ export class ViewRentersComponent implements OnInit {
     ).add(() => {
       this.isApprovingRental[rentalId] = false; // Stop loading
     });
+  }
+  openImageModal(image: string) {
+    console.log('Opening modal for image:', image);
+    this.selectedImage = image;
+  }
+  
+  closeImageModal() {
+    this.selectedImage = null;
   }
 
   markAsCompleted(rentItemId: number): void {
