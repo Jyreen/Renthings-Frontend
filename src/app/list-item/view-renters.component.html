@@ -1,37 +1,32 @@
-<!-- Updated HTML Template -->
-<div class="renters-container p-4 bg-white shadow-sm rounded">
-  <h2 class="text-primary mb-3">Renters for This Item</h2>
+<div class="p-6 bg-white shadow-md rounded-2xl">
+  <h2 class="text-2xl font-bold text-primary mb-6 text-center">Renters for This Item</h2>
 
-  <div
-    *ngIf="!renters || renters.length === 0"
-    class="alert alert-warning text-center"
-  >
+  <div *ngIf="!renters || renters.length === 0" class="alert alert-warning text-center py-6">
     No renters found for this item.
   </div>
 
-  <div *ngIf="renters.length > 0" class="table-responsive">
-    <table class="table table-hover renters-table">
+  <div *ngIf="renters.length > 0" class="overflow-x-auto">
+    <table class="table table-zebra w-full">
       <thead class="bg-primary text-white">
         <tr>
-          <th>Name</th>
-          <th>Rental Period</th>
-          <th>Status</th>
-          <th>Verification</th>
-          <th>Actions</th>
+          <th class="text-center">Name</th>
+          <th class="text-center">Rental Period</th>
+          <th class="text-center">Status</th>
+          <th class="text-center">Verification</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let renter of renters" class="align-middle">
-          <td class="fw-bold">
+        <tr *ngFor="let renter of renters" class="hover">
+          <td class="text-center font-semibold">
             {{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}
           </td>
-          <td>
-            {{ renter.rental_start_date | date }} -
-            {{ renter.rental_end_date | date }}
+          <td class="text-center">
+            {{ renter.rental_start_date | date }} - {{ renter.rental_end_date | date }}
           </td>
-          <td>
+          <td class="text-center">
             <span
-              class="badge"
+              class="badge badge-md"
               [ngClass]="{
                 'badge-warning': renter.rental_status === 'Pending',
                 'badge-success': renter.rental_status === 'Approved'
@@ -40,30 +35,24 @@
               {{ renter.rental_status }}
             </span>
           </td>
-          <td>
+          <td class="text-center">
             <img
-              [src]="
-                'http://localhost:4000/assets/' + renter.verification_image
-              "
-              alt="verification"
-              class="thumbnail"
+              [src]="'http://localhost:4000/assets/' + renter.verification_image"
+              alt="Verification"
+              class="w-12 h-12 rounded cursor-pointer object-cover hover:scale-110 transition-transform"
               (click)="openImageModal(renter.verification_image)"
             />
           </td>
-
-          <td>
-            <button
-              class="btn btn-outline-primary btn-sm me-2"
-              (click)="sendMessage(renter.renter_acc_id)"
-            >
-              <i class="icon icon-message"></i> Message
+          <td class="flex justify-center gap-2">
+            <button class="btn btn-sm btn-primary" (click)="sendMessage(renter.renter_acc_id)">
+              <i class="fa fa-envelope mr-1"></i> Message
             </button>
             <button
               class="btn btn-success btn-sm"
               *ngIf="renter.rental_status === 'Pending'"
               (click)="approveRental(renter.RentItem_id)"
             >
-              <i class="icon icon-check"></i> Approve
+              <i class="fa fa-check mr-1"></i> Approve
             </button>
             <button
               class="btn btn-secondary btn-sm"
@@ -72,10 +61,10 @@
               [disabled]="loadingId === renter.RentItem_id"
             >
               <span *ngIf="loadingId === renter.RentItem_id">
-                <i class="spinner-border spinner-border-sm"></i> Processing...
+                <i class="fa fa-spinner fa-spin"></i> Processing...
               </span>
               <span *ngIf="loadingId !== renter.RentItem_id">
-                <i class="icon icon-check-circle"></i> Returned
+                <i class="fa fa-check-circle mr-1"></i> Returned
               </span>
             </button>
           </td>
@@ -86,10 +75,8 @@
 </div>
 
 <!-- Modal -->
-<div class="modal" *ngIf="selectedImage" (click)="closeImageModal()">
-  <img
-    [src]="'http://localhost:4000/assets/' + selectedImage"
-    alt="Full Size"
-    class="full-image"
-  />
+<div class="modal modal-open" *ngIf="selectedImage" (click)="closeImageModal()">
+  <div class="modal-box p-0 max-w-3xl">
+    <img [src]="'http://localhost:4000/assets/' + selectedImage" alt="Full Size" class="w-full rounded" />
+  </div>
 </div>

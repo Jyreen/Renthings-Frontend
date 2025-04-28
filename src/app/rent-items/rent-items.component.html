@@ -18,14 +18,14 @@
       <!-- Product List -->
       <section class="flex-1">
           <div class="tabs mb-6">
-              <a class="tab tab-bordered tab-active">All</a>
-              <a class="tab tab-bordered">Electronics</a>
-              <a class="tab tab-bordered">Furniture</a>
-              <a class="tab tab-bordered">Tools & Equipment</a>
-              <a class="tab tab-bordered">Vehicles</a>
-              <a class="tab tab-bordered">Sports & Fitness</a>
-              <a class="tab tab-bordered">Musical Instruments</a>
-              <a class="tab tab-bordered">Party & Events</a>
+              <a class="tab  tab-active">All</a>
+              <a class="tab ">Electronics</a>
+              <a class="tab ">Furniture</a>
+              <a class="tab ">Tools & Equipment</a>
+              <a class="tab ">Vehicles</a>
+              <a class="tab ">Sports & Fitness</a>
+              <a class="tab ">Musical Instruments</a>
+              <a class="tab ">Party & Events</a>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -39,7 +39,7 @@
                       </h2>
                       <p class="text-primary font-semibold">₱{{ item.Item_price }}</p>
                       <div class="card-actions justify-end">
-                          <a class="btn btn-outline btn-primary" [routerLink]="['/item', item.Item_id]">View Item</a>
+                          <button class="btn btn-primary" [routerLink]="['/item', item.Item_id]">View Item</button>                     
                       </div>
                   </div>
               </div>

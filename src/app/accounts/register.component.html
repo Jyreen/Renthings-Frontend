@@ -6,63 +6,104 @@
     <form class="space-y-4 mt-6" [formGroup]="form" (ngSubmit)="onSubmit()">
       
       <!-- First Name -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-user text-gray-500"></i>
-        <input type="text" placeholder="First Name" class="grow" formControlName="acc_firstName" 
-        [ngClass]="{ 'input-error': submitted && f.acc_firstName.errors }">
-      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="text" 
+          placeholder="First Name" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="acc_firstName" 
+          [ngClass]="{ 'input-error': submitted && f.acc_firstName.errors }">
+      </div>
       <div *ngIf="submitted && f.acc_firstName.errors" class="text-red-500 text-sm">
         <div *ngIf="f.acc_firstName.errors.required">First Name is required</div>
       </div>
 
       <!-- Last Name -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-user text-gray-500"></i>
-        <input type="text" placeholder="Last Name" class="grow" formControlName="acc_lastName" 
-        [ngClass]="{ 'input-error': submitted && f.acc_lastName.errors }">
-      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="text" 
+          placeholder="Last Name" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="acc_lastName" 
+          [ngClass]="{ 'input-error': submitted && f.acc_lastName.errors }">
+      </div>
       <div *ngIf="submitted && f.acc_lastName.errors" class="text-red-500 text-sm">
         <div *ngIf="f.acc_lastName.errors.required">Last Name is required</div>
       </div>
 
       <!-- Email -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-envelope text-gray-500"></i>
-        <input type="email" placeholder="Email" class="grow" formControlName="acc_email" 
-        [ngClass]="{ 'input-error': submitted && f.acc_email.errors }">
-      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="email" 
+          placeholder="Email" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="acc_email" 
+          [ngClass]="{ 'input-error': submitted && f.acc_email.errors }">
+      </div>
       <div *ngIf="submitted && f.acc_email.errors" class="text-red-500 text-sm">
         <div *ngIf="f.acc_email.errors.required">Email is required</div>
         <div *ngIf="f.acc_email.errors.email">Email is invalid</div>
       </div>
 
       <!-- Password -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-lock text-gray-500"></i>
-        <input type="password" placeholder="Password" class="grow" formControlName="acc_passwordHash" 
-        [ngClass]="{ 'input-error': submitted && f.acc_passwordHash.errors }">
-      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="password" 
+          placeholder="Password" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="acc_passwordHash" 
+          [ngClass]="{ 'input-error': submitted && f.acc_passwordHash.errors }">
+      </div>
       <div *ngIf="submitted && f.acc_passwordHash.errors" class="text-red-500 text-sm">
         <div *ngIf="f.acc_passwordHash.errors.required">Password is required</div>
         <div *ngIf="f.acc_passwordHash.errors.minlength">Password must be at least 6 characters</div>
       </div>
 
       <!-- Confirm Password -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-lock text-gray-500"></i>
-        <input type="password" placeholder="Confirm Password" class="grow" formControlName="confirmPassword" 
-        [ngClass]="{ 'input-error': submitted && f.confirmPassword.errors }">
-      </label>
+
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="password" 
+          placeholder="Confirm Password" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="confirmPassword" 
+          [ngClass]="{ 'input-error': submitted && f.confirmPassword.errors }">
+      </div>
       <div *ngIf="submitted && f.confirmPassword.errors" class="text-red-500 text-sm">
         <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
         <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
       </div>
 
       <!-- Address -->
-      <label class="input input-bordered flex items-center gap-2">
-        <i class="fas fa-home text-gray-500"></i>
-        <input type="text" placeholder="Address" class="grow" formControlName="acc_address">
-      </label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <i class="fas fa-user text-gray-500"></i>
+        </span>
+        <input 
+          type="text" 
+          placeholder="Address" 
+          class="input input-bordered w-full pl-10" 
+          formControlName="acc_address" 
+          [ngClass]="{ 'input-error': submitted && f.acc_address.errors }">
+      </div>
+      <div *ngIf="submitted && f.acc_address.errors " class="text-red-500 text-sm">
+        <div *ngIf="f.acc_address.errors .required">Address is required</div>
+      </div>
 
       <!-- Accept Terms -->
       <label class="flex items-center gap-2">
