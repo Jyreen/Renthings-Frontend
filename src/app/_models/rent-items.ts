@@ -7,6 +7,7 @@ export class RentItem {
     total_rental_price: number;
     rental_status: 'Pending' | 'Approved' | 'Rejected' | 'Active' | 'Completed' | 'Cancelled';
     verification_image: string;
+    acc_address?: string; 
     created_at: Date;
     updated_at?: Date;
   }

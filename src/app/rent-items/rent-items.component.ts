@@ -29,42 +29,40 @@ export class RentItemsComponent implements OnInit {
   }
 
   loadApprovedItems(): void {
-    this.itemService.getApprovedItems().subscribe(
-      (items) => {
+    this.itemService.getApprovedItems().subscribe({
+      next: (items) => {
+        console.log('Approved items:', items);
         this.approvedItems = items;
         this.filteredItems = items;
-    
-        // For each item, fetch the account info
-        items.forEach(item => {
-          this.accountService.getById(item.acc_id.toString()).subscribe(account => {
-            item.acc_address = account.acc_address; // attach it
-          });
-        });
+        const missingAddresses = items.filter(item => !item.account?.acc_address);
+        if (missingAddresses.length > 0) {
+          console.warn('Items with missing acc_address:', missingAddresses);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading approved items:', error);
       }
-    );
+    });
   }
 
   onSearchChange(query: string): void {
-    this.searchSubject.next(query);   // Emit query with debounce
+    this.searchSubject.next(query); // Emit query with debounce
   }
-
 
   performSearch(query: string): void {
     console.log('Searching for:', query);
-
-    if (!query) {
-        this.filteredItems = this.approvedItems;  // Reset to all items when the query is empty
-        return;
+    if (!query.trim()) {
+      this.filteredItems = this.approvedItems;
+      return;
     }
-
-    console.log('First item:', this.approvedItems[0]);
-
-    // Filter by name or address
-    this.filteredItems = this.approvedItems.filter(item =>
-        item.Item_name.toLowerCase().includes(query.toLowerCase()) ||
-        item.acc_address?.toLowerCase().includes(query.toLowerCase())
-    );
-}
-
-  
+    const queryLower = query.toLowerCase().trim();
+    this.filteredItems = this.approvedItems.filter(item => {
+      const nameMatch = item.Item_name?.toLowerCase().includes(queryLower) || false;
+      const addressMatch = item.account?.acc_address
+        ? item.account.acc_address.toLowerCase().includes(queryLower)
+        : false;
+      console.log(`Item: ${item.Item_name}, acc_address: ${item.account?.acc_address}, Name match: ${nameMatch}, Address match: ${addressMatch}`);
+      return nameMatch || addressMatch;
+    });
+  }
 }

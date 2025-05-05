@@ -38,6 +38,9 @@
                           <a [routerLink]="['/item', item.Item_id]">{{ item.Item_name }}</a>
                       </h2>
                       <p class="text-primary font-semibold">₱{{ item.Item_price }}</p>
+                      <p class="text-gray-600">
+                        {{ item.account?.acc_address || 'Address unavailable' }}
+                    </p>
                       <div class="card-actions justify-end">
                           <button class="btn btn-primary" [routerLink]="['/item', item.Item_id]">View Item</button>                     
                       </div>

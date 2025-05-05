@@ -10,5 +10,7 @@ export class Item {
     Item_approvalstatus: string;
     Item_status: string;
 
-    acc_address?: string; 
+    account?: {
+        acc_address?: string;
+      };
 }
