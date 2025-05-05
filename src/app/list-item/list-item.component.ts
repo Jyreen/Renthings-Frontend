@@ -115,6 +115,7 @@ export class ListItemComponent implements OnInit {
         confirmButtonText: 'OK',
       });
       
+      
 
       return;
     }

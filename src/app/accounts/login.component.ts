@@ -53,11 +53,54 @@ export class LoginComponent implements OnInit {
           timerProgressBar: true,
           showConfirmButton: false,
         }).then(() => {
-          if(this.accountService.accountValue.acc_role == "Admin"){
-            this.router.navigate(['/admin']); 
-          } else {
-            this.router.navigate(['/home']); // Redirect to the home page
-          }
+          // Display full business rules
+          Swal.fire({
+            icon: 'info',
+            title: '📜 Platform Business Rules & Guidelines',
+            html: `
+              <div style="text-align:left; max-height:400px; overflow-y:auto; padding-right:10px;">
+                <p><b> 1. Only List What You Own</b><br>
+                You must be the rightful owner of any item you list for rent.</p>
+  
+                <p><b> 2. Provide Accurate Item Details</b><br>
+                Include honest and complete descriptions, clear photos, and set fair pricing.</p>
+  
+                <p><b> 3. Keep Your Listings Updated</b><br>
+                Mark items as unavailable if they are no longer for rent.</p>
+  
+                <p><b> 4. Rent Responsibly</b><br>
+                Return items on or before the due date, in the condition they were received.</p>
+  
+                <p><b> 5. Inspect Before You Rent</b><br>
+                We recommend checking the item’s condition before confirming any rental.</p>
+  
+                <p><b> 6. Handle Items with Care</b><br>
+                Damages caused during the rental period may be subject to penalties.</p>
+  
+                <p><b> 7. Report Any Issues Immediately</b><br>
+                Contact support if something goes wrong with your rental.</p>
+  
+                <p><b> 8. No Illegal or Restricted Items</b><br>
+                Listings must follow our content policy. Banned items will be removed.</p>
+  
+                <p><b> 9. Respect User Privacy</b><br>
+                Use contact information only for rental purposes.</p>
+  
+                <p><b> 10. Payments & Refunds</b><br>
+                Follow platform payment procedures. Refunds may vary depending on item owner policies.</p>
+              </div>
+            `,
+            confirmButtonText: 'Got it!',
+            width: 600,
+            allowOutsideClick: false,
+          }).then(() => {
+            // Redirect based on role
+            if (this.accountService.accountValue.acc_role === 'Admin') {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/home']);
+            }
+          });
         });
       },
       error: (error) => {

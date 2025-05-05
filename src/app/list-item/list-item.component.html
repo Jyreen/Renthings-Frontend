@@ -11,91 +11,62 @@
   
     <!-- Subscription modal -->
 
-      
-  <!-- Subscription Modal -->
-  <div
+<!-- Subscription Modal -->
+<div
   class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
   *ngIf="showSubscriptionModal"
-  style="
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000000;
-  "
-  >
-  <div class="container">
-    <div class="panel pricing-table">
-      <!-- Close Button -->
-      <button (click)="closeSubscriptionModal()" class="absolute top-3 right-3 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg">
-        ✕
-      </button>
-  
+>
+  <div class="bg-white rounded-xl p-8 shadow-lg w-full max-w-5xl relative">
+    
+    <!-- Close Button -->
+    <button 
+      (click)="closeSubscriptionModal()" 
+      class="absolute top-4 right-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg">
+      ✕
+    </button>
+
+    <h2 class="text-2xl font-bold text-center mb-6">Choose a Subscription Plan</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- 1 Month Plan -->
+      <div class="border rounded-lg p-6 text-center shadow hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-4">1 Month</h3>
+        <ul class="text-gray-700 text-start space-y-2">
+          <li>Unlimited Rental Listings</li>
+          <li>Basic Support</li>
+          <li>Limited Analytics</li>
+        </ul>
+        <div class="text-2xl font-bold mt-4 mb-6">₱500</div>
+        <button (click)="openPaymentModal(1, 500)" class="btn btn-success btn-wide">Select</button>
+      </div>
+
       <!-- 3 Months Plan -->
-      <div class="pricing-plan">
-        <!--
-        <img
-          src="https://via.placeholder.com/150?text=3+Months+Plan"
-          alt="3 Months Plan"
-          class="pricing-img"
-        />
-        -->
-        <h2 class="pricing-header">1 Month</h2>
-        <ul class="pricing-features">
-          <li class="pricing-features-item">4 Rental Listings</li>
-          <li class="pricing-features-item">Basic Support</li>
-          <li class="pricing-features-item">Limited analytics</li>
+      <div class="border rounded-lg p-6 text-center shadow hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-4">3 Months</h3>
+        <ul class="text-gray-700 text-start space-y-2">
+          <li>Unlimited Rental Listings</li>
+          <li>Priority Support</li>
+          <li>Enhanced Analytics</li>
         </ul>
-        <span class="pricing-price">₱50</span>
-        <a (click)="openPaymentModal(1, 50)" class="pricing-button">Select</a>
+        <div class="text-2xl font-bold mt-4 mb-6">₱1,450</div>
+        <button (click)="openPaymentModal(3, 1450)" class="btn btn-primary btn-wide">Select</button>
       </div>
-  
+
       <!-- 6 Months Plan -->
-      <div class="pricing-plan">
-       <!--
-        <img
-          src="https://via.placeholder.com/150?text=6+Months+Plan"
-          alt="6 Months Plan"
-          class="pricing-img"
-        /> 
-       -->
-        <h2 class="pricing-header">3 Months</h2>
-        <ul class="pricing-features">
-          <li class="pricing-features-item">10 Rental Listings</li>
-          <li class="pricing-features-item">Priority Support</li>
-          <li class="pricing-features-item">Enhanced analytics</li>
+      <div class="border rounded-lg p-6 text-center shadow hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-4">6 Months</h3>
+        <ul class="text-gray-700 text-start space-y-2">
+          <li>Unlimited Rental Listings</li>
+          <li>24/7 Dedicated Support</li>
+          <li>Advanced Analytics & Insights</li>
+          <li>Featured Placement for Listings</li>
         </ul>
-        <span class="pricing-price">₱70</span>
-        <a (click)="openPaymentModal(3, 70)" class="pricing-button">Select</a>
-      </div>
-  
-      <!-- 12 Months Plan -->
-      <div class="pricing-plan">
-        <!--
-        <img
-          src="https://via.placeholder.com/150?text=12+Months+Plan"
-          alt="12 Months Plan"
-          class="pricing-img"
-        />
-        -->
-        <h2 class="pricing-header">6 Months</h2>
-        <ul class="pricing-features">
-          <li class="pricing-features-item">Unlimited Rental Listings</li>
-          <li class="pricing-features-item">24/7 Dedicated Support</li>
-          <li class="pricing-features-item">Advanced analytics and insights</li>
-          <li class="pricing-features-item">Featured placement for listings</li>
-        </ul>
-        <span class="pricing-price">₱85</span>
-        <a (click)="openPaymentModal(6, 85)" class="pricing-button">Select</a>
+        <div class="text-2xl font-bold mt-4 mb-6">₱2,900</div>
+        <button (click)="openPaymentModal(6, 2900)" class="btn btn-success btn-wide">Select</button>
       </div>
     </div>
   </div>
-    
-  </div>
+</div>
 
 <!-- QR Code Payment Modal -->
 <div *ngIf="showPaymentModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

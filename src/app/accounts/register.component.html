@@ -106,15 +106,20 @@
       </div>
 
       <!-- Accept Terms -->
-      <label class="flex items-center gap-2">
-        <input type="checkbox" formControlName="acc_acceptTerms" 
-        class="checkbox checkbox-md" [ngClass]="{ 'input-error': submitted && f.acc_acceptTerms.errors }">
-        <span class="text-gray-600">Accept Terms and Conditions</span>
+      <label class="flex items-center gap-3 mt-3">
+        <input
+          type="checkbox"
+          formControlName="acc_acceptTerms"
+          class="checkbox checkbox-md border-black-300"
+          [ngClass]="{ 'border-red-500': submitted && f.acc_acceptTerms.errors }"
+        /> 
+        <span class="text-gray-700 text-sm">Accept Terms and Conditions</span>
       </label>
-      <div *ngIf="submitted && f.acc_acceptTerms.errors" class="text-red-500 text-sm">
+
+      <!-- Validation Error -->
+      <div *ngIf="submitted && f.acc_acceptTerms.errors" class="text-red-500 text-sm mt-1">
         <div *ngIf="f.acc_acceptTerms.errors.required">You must accept the terms</div>
       </div>
-
       <!-- Submit Button -->
       <button class="btn btn-dark w-full" [disabled]="loading">
         <span>Register Now</span>

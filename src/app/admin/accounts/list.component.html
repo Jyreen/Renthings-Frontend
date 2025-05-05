@@ -27,6 +27,8 @@
                                         <th class="text-gray-600">Role</th>
                                         <th class="text-gray-600">Account Status</th>
                                         <th class="text-gray-600">Subscription Status</th>
+                                        <th class="text-gray-600">Verification Status</th>
+                                        <th class="text-gray-600">Verification Image</th>
                                         <th class="text-gray-600">Actions</th>
                                     </tr>
                                 </thead>
@@ -36,10 +38,40 @@
                                         <td>{{ account.acc_email }}</td>
                                         <td>{{ account.acc_role }}</td>
                                         <td>{{ account.acc_status }}</td>
-                                        <td>{{ account.acc_subscription === 'active' ? 'Active' : 'Inactive' }}</td>
                                         <td>
-                                            <!-- Edit button to open the modal for editing the account -->
-                                            <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary">Edit</a> &nbsp;
+                                            <span *ngIf="account.acc_role === 'Admin'">-</span>
+                                            <span *ngIf="account.acc_role !== 'Admin'">{{ account.acc_subscription === 'active' ? 'Active' : 'Inactive' }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="account.acc_role === 'Admin'">-</span>
+                                            <span *ngIf="account.acc_role !== 'Admin'">{{ account.acc_verification_status }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="account.acc_role === 'Admin'">-</span>
+                                            <span *ngIf="account.acc_role !== 'Admin'">
+                                                <img
+                                                    [src]="'http://localhost:4000/assets/' + account.acc_verification_image"
+                                                    alt="Account Image"
+                                                    class="img-thumbnail"
+                                                    style="width: 50px; cursor: pointer;"
+                                                    (click)="showImage(account.acc_verification_image)"
+                                                />
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                                            <button 
+                                                *ngIf="account.acc_role !== 'Admin' && account.acc_verification_status === 'pending'"
+                                                class="btn btn-sm btn-success mr-1"
+                                                (click)="approveAccount(account.id)">
+                                                Approve
+                                            </button>
+                                            <button 
+                                                *ngIf="account.acc_role !== 'Admin' && account.acc_verification_status === 'pending'"
+                                                class="btn btn-sm btn-danger"
+                                                (click)="rejectAccount(account.id)">
+                                                Reject
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -47,7 +79,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
         </div>

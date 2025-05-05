@@ -59,8 +59,10 @@
           <div class="row">
             <div class="col-md-12">
               <h4 class="text-gray-500">Price: ₱{{ item.Item_price }}</h4>
-              <p>Description:</p>
+              <p><strong>Description:</strong></p>
               <p> {{ item.Item_Description }} </p>
+              <p><strong>Location:</strong></p>
+              <p>{{ item.account?.acc_address}}</p>
             </div>
           </div>
           <div class="card shadow-md p-4 rounded-lg bg-white">
@@ -168,17 +170,6 @@
         <div class="total-price">
           <h3>Total Price: ₱{{ totalPrice }}</h3>
         </div>
-        <div class="divider"></div>
-        
-        <label class="mb-3">
-          <div>
-            <span class="label-text">Upload Verification Image:</span>
-            <span class="label-text-alt"></span>
-          </div>
-          <input type="file" id="verificationImage" name="verificationImage" (change)="onFileSelected($event)"
-          class="file-input file-input-bordered w-full max-w-xs" />
-          <div class="label"></div>
-        </label>
 
         <br />
         <div class="modal-actions modal-footer" style="display: flex; justify-content: space-between;">

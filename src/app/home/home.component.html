@@ -12,7 +12,9 @@
           <p class="py-6">Find the best items for rent at unbeatable prices.</p>
           <div class="btn-wrap">
             <a routerLink="/rent" class="btn btn-primary btn-medium d-flex align-items-center" tabindex="0">Rent Items <i class="icon icon-arrow-io"></i></a> <br>
-            <a routerLink="/list" class="btn btn-primary btn-medium d-flex align-items-center" tabindex="0">List Items <i class="icon icon-arrow-io"></i></a>
+            <a (click)="confirmAndRedirect()" class="btn btn-primary btn-medium d-flex align-items-center" tabindex="0">
+              List Items <i class="icon icon-arrow-io"></i>
+            </a>
           </div>
       </div>
   </div>
@@ -107,6 +109,7 @@
       <a href="#" class="text-gray-600">Instagram</a>
   </div>
 </footer>
+
 
 <!--
 <script>

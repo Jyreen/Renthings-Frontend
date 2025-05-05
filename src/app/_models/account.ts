@@ -16,4 +16,13 @@ export class Account {
     acc_created? : Date;
     acc_status: string; 
     acc_subscription: string; 
+
+    acc_verificationToken?: string;
+    acc_verified?: Date;
+    acc_passwordReset?: Date;
+
+    acc_verification_image? : string;
+    acc_verification_status?: 'pending' | 'approved' | 'rejected';
+    acc_verification_notes?: string;
+
 }

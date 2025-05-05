@@ -170,4 +170,24 @@ export class AccountService {
           withCredentials: true
         });
     }
+
+    uploadVerificationImages(id: number, files: File[]) {
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append('verification_images', file);
+        });
+        return this.http.post(`${baseUrl}/${id}/verification-image`, formData);
+    }
+
+    getVerificationStatus(id: number) {
+        return this.http.get(`${baseUrl}/${id}/verification-status`);
+    }
+
+    approveVerification(id: number) {
+        return this.http.put(`${baseUrl}/${id}/approve-verification`, {});
+    }
+
+    rejectVerification(id: number, notes?: string) {
+        return this.http.put(`${baseUrl}/${id}/reject-verification`, { notes });
+    }
 }

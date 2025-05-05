@@ -9,4 +9,6 @@ export class Item {
     Item_price: number;
     Item_approvalstatus: string;
     Item_status: string;
+
+    acc_address?: string; 
 }

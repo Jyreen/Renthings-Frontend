@@ -28,6 +28,7 @@ export class ListComponent implements OnInit {
     showDetailsModal = false;
     account: any;
 
+    isLoading = false;
 
     constructor(private accountService: AccountService) {}
 
@@ -130,5 +131,64 @@ export class ListComponent implements OnInit {
 
         // Save PDF
         doc.save(`Account_List.pdf`);
+    }
+
+    showImage(imagePath: string) {
+        const fullImageUrl = `http://localhost:4000/assets/${imagePath}`;
+        Swal.fire({
+          imageUrl: fullImageUrl,
+          imageAlt: 'Verification ID',
+          title: 'Verification ID',
+          showCloseButton: true,
+          showConfirmButton: false,
+          imageWidth: '100%',
+          imageHeight: 'auto',
+        });
+    }
+
+    approveAccount(id: string) {
+        this.isLoading = true;
+        Swal.fire({
+            title: 'Approve Verification',
+            text: 'Are you sure you want to approve this account verification?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.accountService.approveVerification(Number(id))
+                    .pipe(first())
+                    .subscribe({
+                        next: (updatedAccount) => {
+                            this.accounts = this.accounts.map(account =>
+                                account.id === id
+                                    ? { ...account, acc_verification_status: 'approved' }
+                                    : account
+                            );
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Approved!',
+                                text: 'The account verification has been approved.',
+                                confirmButtonText: 'OK'
+                            });
+                            this.isLoading = false;
+                        },
+                        error: (error) => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'There was an issue approving the verification. Please try again.',
+                                confirmButtonText: 'OK'
+                            });
+                            this.isLoading = false;
+                        }
+                    });
+            } else {
+                this.isLoading = false;
+            }
+        });
     }
 }

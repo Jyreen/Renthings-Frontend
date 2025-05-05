@@ -3,6 +3,7 @@ import { ItemService } from '../_services/item.service';
 import { Item } from '../_models/item';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AccountService } from '../_services';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class RentItemsComponent implements OnInit {
   searchSubject: Subject<string> = new Subject<string>();
   
 
-  constructor(private itemService: ItemService) {}
+  constructor(private itemService: ItemService, private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.loadApprovedItems();
@@ -30,11 +31,16 @@ export class RentItemsComponent implements OnInit {
   loadApprovedItems(): void {
     this.itemService.getApprovedItems().subscribe(
       (items) => {
-        console.log("Approved Items:", items);  // Debugging: Check if data is received
         this.approvedItems = items;
-        this.filteredItems = items;  // Initialize filtered list with all items
-      },
-      (error) => console.error("Failed to fetch approved items", error)
+        this.filteredItems = items;
+    
+        // For each item, fetch the account info
+        items.forEach(item => {
+          this.accountService.getById(item.acc_id.toString()).subscribe(account => {
+            item.acc_address = account.acc_address; // attach it
+          });
+        });
+      }
     );
   }
 
@@ -51,9 +57,12 @@ export class RentItemsComponent implements OnInit {
         return;
     }
 
-    // Filter by name only
+    console.log('First item:', this.approvedItems[0]);
+
+    // Filter by name or address
     this.filteredItems = this.approvedItems.filter(item =>
-        item.Item_name.toLowerCase().includes(query.toLowerCase())
+        item.Item_name.toLowerCase().includes(query.toLowerCase()) ||
+        item.acc_address?.toLowerCase().includes(query.toLowerCase())
     );
 }
 

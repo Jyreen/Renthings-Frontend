@@ -12,12 +12,12 @@
           <th class="text-center">Name</th>
           <th class="text-center">Rental Period</th>
           <th class="text-center">Status</th>
-          <th class="text-center">Verification</th>
+          <!-- <th class="text-center">Verification</th> -->
           <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let renter of renters" class="hover">
+        <tr *ngFor="let renter of renters" class="hover:scale-110 transition-transform">
           <td class="text-center font-semibold">
             {{ renter.renter.acc_firstName }} {{ renter.renter.acc_lastName }}
           </td>
@@ -26,23 +26,23 @@
           </td>
           <td class="text-center">
             <span
-              class="badge badge-md"
+              class="badge badge-md hover:scale-110 transition-transform"
               [ngClass]="{
                 'badge-warning': renter.rental_status === 'Pending',
-                'badge-success': renter.rental_status === 'Approved'
+                'badge-success': renter.rental_status === 'Completed'
               }"
             >
               {{ renter.rental_status }}
             </span>
           </td>
-          <td class="text-center">
+          <!-- <td class="text-center">
             <img
               [src]="'http://localhost:4000/assets/' + renter.verification_image"
               alt="Verification"
               class="w-12 h-12 rounded cursor-pointer object-cover hover:scale-110 transition-transform"
               (click)="openImageModal(renter.verification_image)"
             />
-          </td>
+          </td> -->
           <td class="flex justify-center gap-2">
             <button class="btn btn-sm btn-primary" (click)="sendMessage(renter.renter_acc_id)">
               <i class="fa fa-envelope mr-1"></i> Message

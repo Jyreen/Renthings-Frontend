@@ -32,18 +32,18 @@ export class RentItemService {
   }
 
   // Create a new rental item
-  create(rentItemData: FormData): Observable<RentItem> {
+  create(rentItemData: any): Observable<RentItem> {
     return this.http.post<RentItem>(`${baseUrl}`, rentItemData);
   }
-
+  
   // Update an existing rental item
-  update(id: number, rentItem: Partial<RentItem>, verificationImage?: File): Observable<RentItem> {
+  update(id: number, rentItem: Partial<RentItem>): Observable<RentItem> {
     const formData = new FormData();
     if (rentItem.Item_id) formData.append('Item_id', rentItem.Item_id.toString());
     if (rentItem.renter_acc_id) formData.append('renter_acc_id', rentItem.renter_acc_id.toString());
     if (rentItem.rental_start_date) formData.append('rental_start_date', rentItem.rental_start_date.toISOString());
     if (rentItem.rental_end_date) formData.append('rental_end_date', rentItem.rental_end_date.toISOString());
-    if (verificationImage) formData.append('verification_image', verificationImage);
+    //if (verificationImage) formData.append('verification_image', verificationImage);
     
     return this.http.put<RentItem>(`${baseUrl}/${id}`, formData);
   }
